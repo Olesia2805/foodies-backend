@@ -1,9 +1,10 @@
-import express from "express";
-import morgan from "morgan";
 import cors from "cors";
 import "dotenv/config";
+import express from "express";
+import morgan from "morgan";
 
 import authRouter from "./routes/authRouter.js";
+import testimonialsRouter from "./routes/testimonialsRouter.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
+app.use("/api/testimonials", testimonialsRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
