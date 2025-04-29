@@ -4,6 +4,11 @@ import sequelize from "../Sequelize.js";
 const Area = sequelize.define(
   "area",
   {
+    _id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,

@@ -5,16 +5,21 @@ import User from "./User.js";
 const Testimonial = sequelize.define(
   "testimonial",
   {
+    _id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false,
+    },
     testimonial: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
     owner: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,
-        key: "id",
+        key: "_id",
       },
     },
   },

@@ -14,7 +14,7 @@ const getTestimonials = async (req, res) => {
       {
         model: User,
         as: "user",
-        attributes: ["id", "email", "avatarURL"],
+        attributes: ["_id", "email", "avatarURL"],
         required: false,
       },
     ],

@@ -7,6 +7,11 @@ import Category from "./category.js";
 const Recipe = sequelize.define(
   "recipe",
   {
+    _id: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+      allowNull: false,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -40,11 +45,11 @@ const Recipe = sequelize.define(
       allowNull: true,
     },
     userId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,
-        key: "id",
+        key: "_id",
       },
     },
   },

@@ -4,10 +4,14 @@ import { emailRegexp } from "../../constants/auth.js";
 import sequelize from "../Sequelize.js";
 
 const User = sequelize.define("user", {
-  id: {
-    type: DataTypes.INTEGER,
+  _id: {
+    type: DataTypes.STRING,
     primaryKey: true,
-    autoIncrement: true,
+    allowNull: false,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   password: {
     type: DataTypes.STRING,

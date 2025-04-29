@@ -33,8 +33,11 @@ const seedData = async () => {
 
     // Підготовка даних користувачів
     const hashedUsersData = usersData.map((user) => ({
-      ...user,
+      _id: user._id.$oid,
+      name: user.name,
       password: bcrypt.hashSync(user.password || "defaultPassword", 10),
+      email: user.email,
+      avatarURL: user.avatarURL,
     }));
 
     // Синхронізуємо моделі з базою даних
@@ -47,28 +50,20 @@ const seedData = async () => {
     const createdUsers = await User.bulkCreate(hashedUsersData);
     console.log(`Створено ${createdUsers.length} користувачів`);
 
-    // Створюємо мапу для зв'язку MongoDB ID з Sequelize ID
-    const userMap = {};
-    createdUsers.forEach((user, index) => {
-      const mongoId = usersData[index]._id.$oid;
-      userMap[mongoId] = user.id;
-    });
-
     // Створюємо відгуки
     console.log("Створюємо відгуки...");
-    const testimonialsForSequelize = testimonialsData.map((testimonial) => {
-      const mongoUserId = testimonial.owner.$oid;
-      return {
-        testimonial: testimonial.testimonial,
-        owner: userMap[mongoUserId] || 1, // Використовуємо ID 1 як запасний варіант
-      };
-    });
+    const testimonialsForSequelize = testimonialsData.map((testimonial) => ({
+      _id: testimonial._id.$oid,
+      testimonial: testimonial.testimonial,
+      owner: testimonial.owner.$oid,
+    }));
     await Testimonial.bulkCreate(testimonialsForSequelize);
     console.log(`Створено ${testimonialsForSequelize.length} відгуків`);
 
     // Створюємо кухні світу (areas)
     console.log("Створюємо кухні світу...");
     const areasForSequelize = areasData.map((area) => ({
+      _id: area._id.$oid,
       name: area.name,
     }));
     await Area.bulkCreate(areasForSequelize);
@@ -77,6 +72,7 @@ const seedData = async () => {
     // Створюємо категорії
     console.log("Створюємо категорії...");
     const categoriesForSequelize = categoriesData.map((category) => ({
+      _id: category._id.$oid,
       name: category.name,
     }));
     await Category.bulkCreate(categoriesForSequelize);
@@ -85,7 +81,7 @@ const seedData = async () => {
     // Створюємо інгредієнти
     console.log("Створюємо інгредієнти...");
     const ingredientsForSequelize = ingredientsData.map((ingredient) => ({
-      _id: ingredient._id.$oid,
+      _id: ingredient._id,
       name: ingredient.name,
       desc: ingredient.desc,
       img: ingredient.img,
@@ -95,20 +91,18 @@ const seedData = async () => {
 
     // Створюємо рецепти
     console.log("Створюємо рецепти...");
-    const recipesForSequelize = recipesData.map((recipe) => {
-      const mongoUserId = recipe.owner.$oid;
-      return {
-        title: recipe.title,
-        category: recipe.category,
-        area: recipe.area,
-        instructions: recipe.instructions,
-        description: recipe.description,
-        thumb: recipe.thumb,
-        time: recipe.time,
-        ingredients: recipe.ingredients,
-        userId: userMap[mongoUserId] || 1, // Використовуємо ID 1 як запасний варіант
-      };
-    });
+    const recipesForSequelize = recipesData.map((recipe) => ({
+      _id: recipe._id.$oid,
+      title: recipe.title,
+      category: recipe.category,
+      area: recipe.area,
+      instructions: recipe.instructions,
+      description: recipe.description,
+      thumb: recipe.thumb,
+      time: recipe.time,
+      ingredients: recipe.ingredients,
+      userId: recipe.owner.$oid,
+    }));
     await Recipe.bulkCreate(recipesForSequelize);
     console.log(`Створено ${recipesForSequelize.length} рецептів`);
 
