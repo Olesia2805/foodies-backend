@@ -5,7 +5,6 @@ import validateBody from "../helpers/validateBody.js";
 import { createUserSchema, getUserSchema } from "../schemas/authSchema.js";
 
 import auth from "../middlewares/auth.js";
-import upload from "../middlewares/upload.js";
 
 const authRouter = express.Router();
 
@@ -23,8 +22,6 @@ authRouter.post(
 
 authRouter.post("/logout", auth, authController.logout);
 
-authRouter.get("/current", auth, authController.getCurrentUser);
-
-authRouter.patch("/avatars", upload.single("avatar"), auth, authController.updateAvatar);
+authRouter.get("/me", auth, authController.getMe)
 
 export default authRouter;

@@ -2,23 +2,20 @@ import { UniqueConstraintError } from "sequelize";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
-import * as path from "node:path";
-import * as fs from "node:fs/promises";
 
 import User from "../db/models/User.js";
 import HttpError from "../helpers/HttpError.js";
 
-const avatarsDir = path.join("public", "avatars");
-
-const register = async ({ email, password }) => {
+const register = async ({ name, email, password }) => {
     try {
         const hashPassword = bcrypt.hashSync(password, 10);
         const avatarURL = gravatar.url(email, { protocol: 'https' });
 
         return await User.create({
+            name,
             email,
             password: hashPassword,
-            avatarURL: avatarURL,
+            avatar: avatarURL,
         });
     } catch (error) {
         if (error instanceof UniqueConstraintError) {
@@ -53,8 +50,9 @@ const login = async ({ email, password }) => {
     await user.save();
 
     return {
+        avatar: user.avatar,
+        name: user.name,
         email: user.email,
-        subscription: user.subscription,
         token,
     };
 };
@@ -63,37 +61,31 @@ const logout = async (userId) => {
     const user = await User.findByPk(userId);
 
     if (!user) {
-        throw HttpError(401, "Not authorized");
+        throw HttpError(404, "User not found");
     }
 
     user.token = null;
     await user.save();
 };
 
-const updateAvatar = async (userId, file) => {
-    if (!file) {
-        throw HttpError(400, "Field 'avatar' is required");
+
+const getMe = async (req, res) => {
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) {
+        throw HttpError(404, "User not found");
     }
 
-    const { path: oldPath, filename } = file;
-    const newPath = path.join(avatarsDir, filename);
-
-    await fs.rename(oldPath, newPath);
-    const avatarURL = path.join("avatars", filename);
-
-    const user = await User.findOne({ where: { id: userId } });
-
-    if (!user) return null;
-
-    return user.update(
-        { avatarURL: `${process.env.HOST}:${process.env.PORT}/${avatarURL}` },
-        { returning: true }
-    );
+    return {
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar,
+    }
 }
 
 export default {
     register,
     login,
     logout,
-    updateAvatar,
+    getMe,
 };

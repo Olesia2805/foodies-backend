@@ -7,5 +7,9 @@ const baseAuthSchema = {
     password: Joi.string().min(6).required(),
 };
 
-export const createUserSchema = Joi.object(baseAuthSchema);
+export const createUserSchema = Joi.object({
+    ...baseAuthSchema,
+    name: Joi.string().required(),
+});
+
 export const getUserSchema = Joi.object(baseAuthSchema);
