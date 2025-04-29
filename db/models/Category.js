@@ -12,6 +12,6 @@ const Category = sequelize.define(
     },
 );
 
-Category.sync();
+// Category.sync({force: true});
 
 export default Category;

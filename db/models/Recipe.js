@@ -14,7 +14,11 @@ const Recipe = sequelize.define(
             type: DataTypes.STRING(200),
             allowNull: false,
         },
-        imageURL: {
+        thumb: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        area: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -22,14 +26,14 @@ const Recipe = sequelize.define(
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        cookingTime: {
+        time: {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate: {
                 min: 1,
             },
         },
-        userId: {
+        owner: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -37,21 +41,16 @@ const Recipe = sequelize.define(
                 key: 'id'
             }
         },
-        categoryId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: Category,
-                key: 'id'
-            }
+        category: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     },
 );
 
 // Define associations
-Recipe.belongsTo(User, { foreignKey: 'userId' });
-Recipe.belongsTo(Category, { foreignKey: 'categoryId' });
+Recipe.belongsTo(User, { foreignKey: 'owner', as: 'user' });
 
-Recipe.sync();
+// Recipe.sync({force: true});
 
 export default Recipe;

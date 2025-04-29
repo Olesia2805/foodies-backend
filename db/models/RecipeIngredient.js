@@ -33,6 +33,6 @@ const RecipeIngredient = sequelize.define(
 Recipe.belongsToMany(Ingredient, { through: RecipeIngredient });
 Ingredient.belongsToMany(Recipe, { through: RecipeIngredient });
 
-RecipeIngredient.sync();
+// RecipeIngredient.sync({force: true});
 
 export default RecipeIngredient;

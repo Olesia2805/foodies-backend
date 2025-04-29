@@ -10,17 +10,18 @@ const createRecipe = async (recipeData) => {
     
     // Create transaction to ensure all operations succeed or fail together
     const t = await sequelize.transaction();
+    let recipe = null;
     
     try {
         // First create the recipe
-        const recipe = await Recipe.create(recipeFields, { transaction: t });
+        recipe = await Recipe.create(recipeFields, { transaction: t });
         
         // Then add all ingredients
         if (ingredients && ingredients.length > 0) {
             const recipeIngredients = ingredients.map(item => ({
                 recipeId: recipe.id,
-                ingredientId: item.ingredientId,
-                quantity: item.quantity
+                ingredientId: item.ingredientId || item.id, // Support both formats
+                quantity: item.quantity || item.measure // Support both formats
             }));
             
             await RecipeIngredient.bulkCreate(recipeIngredients, { transaction: t });
@@ -32,13 +33,14 @@ const createRecipe = async (recipeData) => {
         // Return the newly created recipe with its ingredients
         return await Recipe.findByPk(recipe.id, {
             include: [
-                { model: Category },
                 { model: Ingredient }
             ]
         });
     } catch (error) {
         // Rollback transaction in case of error
-        await t.rollback();
+        if (t && !t.finished) {
+            await t.rollback();
+        }
         throw HttpError(500, error.message);
     }
 };
@@ -55,11 +57,10 @@ const getIngredients = async () => {
     });
 };
 
-const getUserRecipes = async (userId) => {
+const getUserRecipes = async (owner) => {
     return await Recipe.findAll({
-        where: { userId },
+        where: { owner },
         include: [
-            { model: Category },
             { model: Ingredient }
         ],
         order: [['createdAt', 'DESC']]

@@ -16,6 +16,6 @@ const Ingredient = sequelize.define(
     },
 );
 
-Ingredient.sync();
+// Ingredient.sync({force: true});
 
 export default Ingredient;
