@@ -41,4 +41,6 @@ const getTestimonials = async (req, res) => {
 };
 
 // Експортуємо функції, обгорнуті в errorWrapper
-export const getTestimonialsCtrl = errorWrapper(getTestimonials);
+export default {
+  getTestimonialsCtrl: errorWrapper(getTestimonials),
+};
