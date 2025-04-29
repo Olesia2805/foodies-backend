@@ -9,7 +9,7 @@ const Testimonial = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    userId: {
+    owner: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -24,8 +24,8 @@ const Testimonial = sequelize.define(
 );
 
 // Визначаємо зв'язок між моделями
-Testimonial.belongsTo(User, { foreignKey: "userId", as: "owner" });
-User.hasMany(Testimonial, { foreignKey: "userId", as: "testimonials" });
+Testimonial.belongsTo(User, { foreignKey: "owner", as: "user" });
+User.hasMany(Testimonial, { foreignKey: "owner", as: "testimonials" });
 
 // Синхронізуємо модель з базою даних
 Testimonial.sync();

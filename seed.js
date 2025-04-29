@@ -60,7 +60,7 @@ const seedData = async () => {
       const mongoUserId = testimonial.owner.$oid;
       return {
         testimonial: testimonial.testimonial,
-        userId: userMap[mongoUserId] || 1, // Використовуємо ID 1 як запасний варіант
+        owner: userMap[mongoUserId] || 1, // Використовуємо ID 1 як запасний варіант
       };
     });
     await Testimonial.bulkCreate(testimonialsForSequelize);
@@ -85,6 +85,7 @@ const seedData = async () => {
     // Створюємо інгредієнти
     console.log("Створюємо інгредієнти...");
     const ingredientsForSequelize = ingredientsData.map((ingredient) => ({
+      _id: ingredient._id.$oid,
       name: ingredient.name,
       desc: ingredient.desc,
       img: ingredient.img,
