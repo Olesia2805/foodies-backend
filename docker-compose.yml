@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - ./foodies-data:/app/data
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+    # depends_on:
+    #   - db
+
+  frontend:
+    build:
+      context: ../foodies-frontend
+    ports:
+      - "3001:3001"
+    volumes:
+      - ../foodies-frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+
+  #db:
+    # Removed the db service as the application will use the Render database
+    # image: postgres:15
+    # container_name: foodies-postgres
+    # environment:
+    #   POSTGRES_USER: postgres
+    #   POSTGRES_PASSWORD: password
+    #   POSTGRES_DB: foodies
+    # ports:
+    #   - "5432:5432"
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
