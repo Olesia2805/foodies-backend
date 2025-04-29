@@ -1,0 +1,156 @@
+# Інструкція з використання проекту Foodies
+
+## Вимоги
+- Docker та Docker Compose повинні бути встановлені на вашій системі.
+- Node.js та npm (для локальної розробки без Docker).
+
+## Структура проекту
+
+Проект повинен мати наступну структуру папок:
+
+```
+foodies-backend/
+  app.js
+  docker-compose.yml
+  Dockerfile
+  package.json
+  README.md
+  seed.js
+  constants/
+    auth.js
+  controllers/
+    authControllers.js
+  db/
+    Sequelize.js
+    models/
+      User.js
+  data/
+    areas.json
+    categories.json
+    ingredients.json
+    recipes.json
+    testimonials.json
+    users.json
+  helpers/
+    errorWrapper.js
+    HttpError.js
+    validateBody.js
+  middlewares/
+    auth.js
+    upload.js
+  public/
+    avatars/
+  routes/
+    authRouter.js
+  schemas/
+    authSchema.js
+  services/
+    authServices.js
+  temp/
+foodies-frontend/
+  Dockerfile
+  eslint.config.js
+  index.html
+  package.json
+  README.md
+  vite.config.js
+  public/
+    vite.svg
+  src/
+    App.css
+    App.jsx
+    index.css
+    main.jsx
+    assets/
+      react.svg
+```
+
+> **Увага!** Запускати проект потрібно саме з папки `foodies-backend`, оскільки всі основні конфігурації та `docker-compose.yml` знаходяться саме там.
+
+## Запуск проекту за допомогою Docker Compose
+
+1. Відкрийте термінал і перейдіть до папки `foodies-backend`:
+   ```bash
+   cd /Users/someuser/Desktop/foodies/foodies-backend
+   ```
+
+2. Запустіть сервіси за допомогою Docker Compose:
+   ```bash
+   docker-compose up
+   ```
+
+3. Після запуску:
+   - **Бекенд** буде доступний за адресою: [http://localhost:3000](http://localhost:3000)
+   - **Фронтенд** буде доступний за адресою: [http://localhost:3001](http://localhost:3001)
+
+4. Для зупинки сервісів натисніть `Ctrl+C` у терміналі або виконайте:
+   ```bash
+   docker-compose down
+   ```
+
+## Локальна розробка без Docker
+
+### Запуск бекенду
+
+1. Перейдіть до папки `foodies-backend`:
+   ```bash
+   cd foodies-backend
+   ```
+
+2. Встановіть залежності:
+   ```bash
+   npm install
+   ```
+
+3. Запустіть сервер у режимі розробки:
+   ```bash
+   npm run dev
+   ```
+
+4. Бекенд буде доступний за адресою: [http://localhost:3000](http://localhost:3000)
+
+### Запуск фронтенду
+
+1. Перейдіть до папки `foodies-frontend`:
+   ```bash
+   cd ../foodies-frontend
+   ```
+
+2. Встановіть залежності:
+   ```bash
+   npm install
+   ```
+
+3. Запустіть фронтенд у режимі розробки:
+   ```bash
+   npm run dev
+   ```
+
+4. Фронтенд буде доступний за адресою: [http://localhost:3001](http://localhost:3001)
+
+## Використання seed-функції
+
+Seed-функція дозволяє заповнити базу даних тестовими даними з папки `foodies-data`.
+
+1. Переконайтеся, що база даних запущена (наприклад, через Docker Compose).
+
+2. Запустіть seed-скрипт:
+   ```bash
+   node seed.js
+   ```
+
+3. Якщо все пройшло успішно, ви побачите повідомлення:
+   ```
+   Дані успішно завантажено до бази даних!
+   ```
+
+4. У разі помилки перевірте логи для отримання додаткової інформації.
+
+## Додаткова інформація
+
+- **База даних**: У проекті використовується PostgreSQL. Дані зберігаються у Docker volume `postgres_data`.
+- **Зміна портів**: Якщо потрібно змінити порти, відредагуйте файл `docker-compose.yml`.
+- **Логи**: Логи сервісів можна переглянути у терміналі під час запуску або за допомогою команди:
+  ```bash
+  docker-compose logs
+  ```
