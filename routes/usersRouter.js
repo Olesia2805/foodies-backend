@@ -15,10 +15,10 @@ usersRouter.patch(
 
 usersRouter.get('/followings', auth, usersControllers.getFollowing);
 
-usersRouter.post('/following/:followerId', auth, usersControllers.followUser);
+usersRouter.post('/followings/:followerId', auth, usersControllers.followUser);
 
 usersRouter.delete(
-  '/following/:followerId',
+  '/followings/:followerId',
   auth,
   usersControllers.unfollowUser
 );

@@ -1,11 +1,11 @@
 import { UniqueConstraintError } from 'sequelize';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import gravatar from 'gravatar';
 
 import User from '../db/models/User.js';
 import HttpError from '../helpers/HttpError.js';
 import { ERROR } from '../constants/messages.js';
+import { createToken } from '../helpers/jwtHelper.js';
 
 const register = async ({ name, email, password }) => {
   try {
@@ -44,11 +44,7 @@ const login = async ({ email, password }) => {
     email: user.email,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: '1h',
-  });
-
-  user.token = token;
+  user.token = createToken(payload);
 
   await user.save();
 
@@ -56,7 +52,7 @@ const login = async ({ email, password }) => {
     avatar: user.avatar,
     name: user.name,
     email: user.email,
-    token,
+    token: user.token,
   };
 };
 
@@ -71,8 +67,8 @@ const logout = async (userId) => {
   await user.save();
 };
 
-const getMe = async (req, res) => {
-  const user = await User.findByPk(req.user.id);
+const getMe = async (userId) => {
+  const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);

@@ -4,6 +4,7 @@ export const ERROR = {
   USER_NOT_FOUND: 'User not found',
   AVATAR_IS_REQUIRED: "Field 'avatar' is required",
   NOT_AUTHORIZED: 'Not authorized',
+  INVALID_FILE_EXTENSION: 'Invalid file extension',
 };
 
 export const SUCCESS = {

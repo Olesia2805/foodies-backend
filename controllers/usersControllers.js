@@ -14,7 +14,7 @@ const updateUserAvatar = async (req, res) => {
   );
 
   res.status(200).json({
-    avatarURL: updatedUser.avatarURL,
+    avatar: updatedUser.avatar,
   });
 };
 
