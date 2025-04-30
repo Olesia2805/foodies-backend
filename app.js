@@ -5,6 +5,7 @@ import "dotenv/config";
 
 import authRouter from "./routes/authRouter.js";
 import usersRouter from "./routes/usersRouter.js";
+import areasRouter from "./routes/areasRouter.js";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/areas", areasRouter);
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
