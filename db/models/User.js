@@ -1,21 +1,16 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from 'sequelize';
 
-import { emailRegexp } from "../../constants/auth.js";
-import sequelize from "../Sequelize.js";
+import sequelize from '../Sequelize.js';
+import { emailRegexp } from '../../constants/auth.js';
 
-const User = sequelize.define("user", {
-  _id: {
-    type: DataTypes.STRING,
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    allowNull: false,
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
   },
   email: {
     type: DataTypes.STRING,
@@ -25,13 +20,31 @@ const User = sequelize.define("user", {
       is: emailRegexp,
     },
   },
-  avatarURL: DataTypes.STRING,
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  avatar: {
+    type: DataTypes.STRING,
+  },
   token: {
     type: DataTypes.STRING,
     defaultValue: null,
   },
 });
 
-User.sync();
+User.belongsToMany(User, {
+  as: 'followers',
+  through: 'UserFollowers',
+  foreignKey: 'followingId',
+  otherKey: 'followerId',
+});
+
+User.belongsToMany(User, {
+  as: 'following',
+  through: 'UserFollowers',
+  foreignKey: 'followerId',
+  otherKey: 'followingId',
+});
 
 export default User;

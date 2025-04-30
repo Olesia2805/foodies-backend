@@ -6,6 +6,11 @@ import morgan from "morgan";
 import authRouter from "./routes/authRouter.js";
 import testimonialsRouter from "./routes/testimonialsRouter.js";
 
+import categoryRouter from "./routes/categoryRouter.js";
+
+import usersRouter from "./routes/usersRouter.js";
+
+
 const app = express();
 
 app.use(morgan("tiny"));
@@ -15,6 +20,11 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/testimonials", testimonialsRouter);
+
+app.use("/api/categories", categoryRouter);
+
+app.use("/api/users", usersRouter);
+
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
