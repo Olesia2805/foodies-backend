@@ -1,5 +1,7 @@
 import Recipe from "../db/models/Recipe.js";
 import RecipeIngredient from "../db/models/RecipeIngredient.js";
+import Ingredient from "../db/models/Ingredient.js";
+import User from "../db/models/User.js";
 import HttpError from "../helpers/HttpError.js";
 import sequelize from "../db/Sequelize.js";
 
