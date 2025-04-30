@@ -1,8 +1,7 @@
 import express from "express";
-import validateBody from "../helpers/validateBody.js";
 import ingredientController from "../controllers/ingredientController.js";
 import validateQuery from "../helpers/validateQuery.js";
-import { ingredientsGetAll, ingredientsGetList } from "../schemas/ingredientsShema.js";
+import { ingredientsGetAll, ingredientsGetList } from "../schemas/ingredientsSchema.js";
 
 const ingredientsRouter = express.Router();
 

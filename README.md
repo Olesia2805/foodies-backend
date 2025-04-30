@@ -1,6 +1,7 @@
 # Інструкція з використання проекту Foodies
 
 ## Вимоги
+
 - Docker та Docker Compose повинні бути встановлені на вашій системі.
 - Node.js та npm (для локальної розробки без Docker).
 
@@ -70,16 +71,19 @@ foodies-frontend/
 ## Запуск проекту за допомогою Docker Compose
 
 1. Відкрийте термінал і перейдіть до папки `foodies-backend`:
+
    ```bash
    cd /Users/someuser/Desktop/foodies/foodies-backend
    ```
 
 2. Запустіть сервіси за допомогою Docker Compose:
+
    ```bash
    docker-compose up
    ```
 
 3. Після запуску:
+
    - **Бекенд** буде доступний за адресою: [http://localhost:3000](http://localhost:3000)
    - **Фронтенд** буде доступний за адресою: [http://localhost:3001](http://localhost:3001)
 
@@ -93,16 +97,19 @@ foodies-frontend/
 ### Запуск бекенду
 
 1. Перейдіть до папки `foodies-backend`:
+
    ```bash
    cd foodies-backend
    ```
 
 2. Встановіть залежності:
+
    ```bash
    npm install
    ```
 
 3. Запустіть сервер у режимі розробки:
+
    ```bash
    npm run dev
    ```
@@ -112,16 +119,19 @@ foodies-frontend/
 ### Запуск фронтенду
 
 1. Перейдіть до папки `foodies-frontend`:
+
    ```bash
    cd ../foodies-frontend
    ```
 
 2. Встановіть залежності:
+
    ```bash
    npm install
    ```
 
 3. Запустіть фронтенд у режимі розробки:
+
    ```bash
    npm run dev
    ```
@@ -135,11 +145,13 @@ Seed-функція дозволяє заповнити базу даних те
 1. Переконайтеся, що база даних запущена (наприклад, через Docker Compose).
 
 2. Запустіть seed-скрипт:
+
    ```bash
    node seed.js
    ```
 
 3. Якщо все пройшло успішно, ви побачите повідомлення:
+
    ```
    Дані успішно завантажено до бази даних!
    ```
@@ -154,3 +166,21 @@ Seed-функція дозволяє заповнити базу даних те
   ```bash
   docker-compose logs
   ```
+
+## API
+
+| Method | Endpoint                          | Description                             |
+| ------ | --------------------------------- | --------------------------------------- |
+| POST   | /api/auth/register                | Register a new user                     |
+| POST   | /api/auth/login                   | Login a user and generate a JWT token   |
+| POST   | /api/auth/logout                  | Logout a user by invalidating the token |
+| GET    | /api/auth/me                      | Get information about a current user    |
+| PATCH  | /api/users/avatars                | Update a user avatar                    |
+| GET    | /api/users/followings             | Get current user followings list        |
+| POST   | /api/users/followings/:followerId | Follow the user with followerId         |
+| DELETE | /api/users/followings/:followerId | Unfollow the user with followerId       |
+| GET    | /api/users/followers              | Get current user followers list         |
+| GET    | /api/users/:userId                | Get user by Id                          |
+| GET    | /api/ingredients?limit=0&page=0   | Returns all ingredients with pagination |
+| GET    | /api/ingredients/list?ids=1&ids=2 | Returns a list of requested ingredients |
+| GET    | /api/ingredients/:id              | Returns one ingredient                  |
