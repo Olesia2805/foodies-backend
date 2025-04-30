@@ -33,7 +33,6 @@ const User = sequelize.define('User', {
   },
 });
 
-
 // User.sync({force: true});
 
 User.belongsToMany(User, {
@@ -49,6 +48,5 @@ User.belongsToMany(User, {
   foreignKey: 'followerId',
   otherKey: 'followingId',
 });
-
 
 export default User;
