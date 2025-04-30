@@ -184,3 +184,6 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/ingredients?limit=0&page=0   | Returns all ingredients with pagination |
 | GET    | /api/ingredients/list?ids=1&ids=2 | Returns a list of requested ingredients |
 | GET    | /api/ingredients/:id              | Returns one ingredient                  |
+| GET    | /api/users/followers              | Get current user followers list         |
+| GET    | /api/users/:userId                | Get user by Id                          |
+| GET    | /api/categories                   | Get list of all categories              |
