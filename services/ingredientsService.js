@@ -1,7 +1,7 @@
 import Ingredient from '../db/models/Ingredient.js';
 import HttpError from '../helpers/HttpError.js';
 
-const listIngredients = async (query = {}, filters = { page: 0 }) => {
+const listIngredients = async (query = {}, filters = {}) => {
   const { count, rows } = await Ingredient.findAndCountAll({
     where: query,
     ...filters,
