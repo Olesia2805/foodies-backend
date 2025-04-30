@@ -1,6 +1,4 @@
 import Recipe from "../db/models/Recipe.js";
-import Category from "../db/models/Category.js";
-import Ingredient from "../db/models/Ingredient.js";
 import RecipeIngredient from "../db/models/RecipeIngredient.js";
 import HttpError from "../helpers/HttpError.js";
 import sequelize from "../db/Sequelize.js";
@@ -45,18 +43,6 @@ const createRecipe = async (recipeData) => {
     }
 };
 
-const getCategories = async () => {
-    return await Category.findAll({
-        order: [['name', 'ASC']]
-    });
-};
-
-const getIngredients = async () => {
-    return await Ingredient.findAll({
-        order: [['name', 'ASC']]
-    });
-};
-
 const getUserRecipes = async (owner) => {
     return await Recipe.findAll({
         where: { owner },
@@ -69,7 +55,5 @@ const getUserRecipes = async (owner) => {
 
 export default {
     createRecipe,
-    getCategories,
-    getIngredients,
     getUserRecipes
 };

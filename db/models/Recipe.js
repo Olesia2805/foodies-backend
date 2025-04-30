@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../Sequelize.js";
 import User from "./User.js";
-import Category from "./Category.js";
 
 const Recipe = sequelize.define(
     "recipe",

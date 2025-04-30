@@ -31,21 +31,6 @@ const createRecipe = async (req, res) => {
     });
 };
 
-const getCategories = async (req, res) => {
-    const categories = await recipeService.getCategories();
-    
-    res.status(200).send({
-        categories
-    });
-};
-
-const getIngredients = async (req, res) => {
-    const ingredients = await recipeService.getIngredients();
-    
-    res.status(200).send({
-        ingredients
-    });
-};
 
 const getUserRecipes = async (req, res) => {
     const { id: userId } = req.user;
@@ -59,7 +44,5 @@ const getUserRecipes = async (req, res) => {
 
 export default {
     createRecipe: errorWrapper(createRecipe),
-    getCategories: errorWrapper(getCategories),
-    getIngredients: errorWrapper(getIngredients),
     getUserRecipes: errorWrapper(getUserRecipes),
 };

@@ -22,8 +22,5 @@ recipeRouter.post(
 // Private endpoint to get user's own recipes (requires authentication)
 recipeRouter.get("/own", auth, recipeController.getUserRecipes);
 
-// Endpoints to get categories and ingredients for recipe creation form
-recipeRouter.get("/categories", recipeController.getCategories);
-recipeRouter.get("/ingredients", recipeController.getIngredients);
 
 export default recipeRouter;
