@@ -3,9 +3,9 @@ import sequelize from "../Sequelize.js";
 import User from "./User.js";
 
 const Testimonial = sequelize.define(
-  "testimonial",
+  'testimonial',
   {
-    _id: {
+    id: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
@@ -15,11 +15,11 @@ const Testimonial = sequelize.define(
       allowNull: false,
     },
     owner: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       references: {
         model: User,
-        key: "_id",
+        key: 'id',
       },
     },
   },
