@@ -10,5 +10,5 @@ export const ERROR = {
 
 export const SUCCESS = {
   FOLLOWED: 'Successfully followed',
-  UNFOLLOWED: 'Successfully followed',
+  UNFOLLOWED: 'Successfully unfollowed',
 };
