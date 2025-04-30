@@ -1,5 +1,5 @@
 import express from "express";
-import ingredientController from "../controllers/ingredientController.js";
+import ingredientController from "../controllers/ingredientsController.js";
 import validateQuery from "../helpers/validateQuery.js";
 import { ingredientsGetAll, ingredientsGetList } from "../schemas/ingredientsSchema.js";
 
