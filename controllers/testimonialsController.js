@@ -1,24 +1,29 @@
-import Testimonial from "../db/models/testimonial.js";
-import User from "../db/models/User.js";
-import errorWrapper from "../helpers/errorWrapper.js";
-import HttpError from "../helpers/HttpError.js";
+import {
+  PAGINATION_DEFAULT_LIMIT,
+  PAGINATION_DEFAULT_PAGE,
+} from '../constants/defaults.js';
+import Testimonial from '../db/models/testimonial.js';
+import User from '../db/models/User.js';
+import errorWrapper from '../helpers/errorWrapper.js';
+import HttpError from '../helpers/HttpError.js';
 
 // Отримання списку відгуків
 const getTestimonials = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
+  const page = parseInt(req.query.page) || PAGINATION_DEFAULT_PAGE;
+  const limit = parseInt(req.query.limit) || PAGINATION_DEFAULT_LIMIT;
   const offset = (page - 1) * limit;
 
   const { count, rows: testimonials } = await Testimonial.findAndCountAll({
-    include: [
-      {
-        model: User,
-        as: "user",
-        attributes: ["_id", "email", "avatarURL"],
-        required: false,
-      },
-    ],
-    order: [["createdAt", "DESC"]],
+    // TODO: змінити зв'язок коли визначимось із типом ID 
+    // include: [
+    //   {
+    //     model: User,
+    //     as: 'user',
+    //     attributes: ['id', 'email', 'avatarURL'],
+    //     required: false,
+    //   },
+    // ],
+    order: [['createdAt', 'DESC']],
     limit,
     offset,
   });
@@ -26,7 +31,7 @@ const getTestimonials = async (req, res) => {
   const totalPages = Math.ceil(count / limit);
 
   res.json({
-    status: "success",
+    status: 'success',
     code: 200,
     data: {
       testimonials,
