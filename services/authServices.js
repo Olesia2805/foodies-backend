@@ -1,99 +1,89 @@
-import { UniqueConstraintError } from "sequelize";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import gravatar from "gravatar";
-import * as path from "node:path";
-import * as fs from "node:fs/promises";
+import { UniqueConstraintError } from 'sequelize';
+import bcrypt from 'bcrypt';
+import gravatar from 'gravatar';
 
-import User from "../db/models/User.js";
-import HttpError from "../helpers/HttpError.js";
+import User from '../db/models/User.js';
+import HttpError from '../helpers/HttpError.js';
+import { ERROR } from '../constants/messages.js';
+import { createToken } from '../helpers/jwtHelper.js';
 
-const avatarsDir = path.join("public", "avatars");
+const register = async ({ name, email, password }) => {
+  try {
+    const hashPassword = bcrypt.hashSync(password, 10);
+    const avatarURL = gravatar.url(email, { protocol: 'https' });
 
-const register = async ({ email, password }) => {
-    try {
-        const hashPassword = bcrypt.hashSync(password, 10);
-        const avatarURL = gravatar.url(email, { protocol: 'https' });
-
-        return await User.create({
-            email,
-            password: hashPassword,
-            avatarURL: avatarURL,
-        });
-    } catch (error) {
-        if (error instanceof UniqueConstraintError) {
-            throw HttpError(409, "Email in use")
-        }
-
-        throw error;
+    return await User.create({
+      name,
+      email,
+      password: hashPassword,
+      avatar: avatarURL,
+    });
+  } catch (error) {
+    if (error instanceof UniqueConstraintError) {
+      throw HttpError(409, ERROR.EMAIL_IN_USE);
     }
+    throw error;
+  }
 };
 
 const login = async ({ email, password }) => {
-    const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({ where: { email } });
 
-    if (!user) {
-        throw HttpError(401, "Email or password is wrong");
-    }
+  if (!user) {
+    throw HttpError(401, ERROR.EMAIL_OR_PASSWORD_IS_WRONG);
+  }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) {
-        throw HttpError(401, "Email or password is wrong");
-    }
+  if (!isPasswordValid) {
+    throw HttpError(401, ERROR.EMAIL_OR_PASSWORD_IS_WRONG);
+  }
 
-    const payload = {
-        id: user.id,
-        email: user.email,
-    };
+  const payload = {
+    id: user.id,
+    email: user.email,
+  };
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
-    user.token = token;
+  user.token = createToken(payload);
 
-    await user.save();
+  await user.save();
 
-    return {
-        email: user.email,
-        subscription: user.subscription,
-        token,
-    };
+  return {
+    avatar: user.avatar,
+    name: user.name,
+    email: user.email,
+    token: user.token,
+  };
 };
 
 const logout = async (userId) => {
-    const user = await User.findByPk(userId);
+  const user = await User.findByPk(userId);
 
-    if (!user) {
-        throw HttpError(401, "Not authorized");
-    }
+  if (!user) {
+    throw HttpError(404, ERROR.USER_NOT_FOUND);
+  }
 
-    user.token = null;
-    await user.save();
+  user.token = null;
+  await user.save();
 };
 
-const updateAvatar = async (userId, file) => {
-    if (!file) {
-        throw HttpError(400, "Field 'avatar' is required");
-    }
+const getMe = async (userId) => {
+  const user = await User.findByPk(userId);
 
-    const { path: oldPath, filename } = file;
-    const newPath = path.join(avatarsDir, filename);
+  if (!user) {
+    throw HttpError(404, ERROR.USER_NOT_FOUND);
+  }
 
-    await fs.rename(oldPath, newPath);
-    const avatarURL = path.join("avatars", filename);
-
-    const user = await User.findOne({ where: { id: userId } });
-
-    if (!user) return null;
-
-    return user.update(
-        { avatarURL: `${process.env.HOST}:${process.env.PORT}/${avatarURL}` },
-        { returning: true }
-    );
-}
+  return {
+    email: user.email,
+    name: user.name,
+    avatar: user.avatar,
+  };
+};
 
 export default {
-    register,
-    login,
-    logout,
-    updateAvatar,
+  register,
+  login,
+  logout,
+  getMe,
 };
