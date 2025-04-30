@@ -1,70 +1,46 @@
-import errorWrapper from "../helpers/errorWrapper.js";
-import authService from "../services/authServices.js";
-import HttpError from "../helpers/HttpError.js";
+import errorWrapper from '../helpers/errorWrapper.js';
+import authService from '../services/authServices.js';
 
 const register = async (req, res) => {
-    const newUser = await authService.register(req.body);
+  const newUser = await authService.register(req.body);
 
-    res.status(201).send({
-      user: {
-          email: newUser.email,
-          subscription: newUser.subscription,
-          avatar: newUser.avatar,
-      }
-    })
-}
+  res.status(201).send({
+    user: {
+      name: newUser.name,
+      email: newUser.email,
+      avatar: newUser.avatar,
+    },
+  });
+};
 
 const login = async (req, res) => {
-    const user = await authService.login(req.body);
+  const user = await authService.login(req.body);
 
-    res.status(200).send({
-        token: user.token,
-        user: {
-            email: user.email,
-            subscription: user.subscription,
-        }
-    })
-}
+  res.status(200).send({
+    token: user.token,
+    user: {
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+    },
+  });
+};
 
 const logout = async (req, res) => {
-    await authService.logout(req.user.id);
+  await authService.logout(req.user.id);
 
-    res.status(204).send();
+  res.status(204).send();
 };
 
-const getCurrentUser = async (req, res) => {
-    const user = req.user;
+const getMe = async (req, res) => {
+  const user = await authService.getMe(req.user.id);
 
-    if (!user) {
-        throw HttpError(401, "Not authorized");
-    }
-
-    res.status(200).json({
-        email: user.email,
-        subscription: user.subscription,
-    });
+  res.status(200).json(user);
 };
-
-const updateAvatar = async (req, res) => {
-    const user = req.user;
-
-    if (!user) {
-        throw HttpError(401, "Not authorized");
-    }
-
-    const updatedUser = await authService.updateAvatar(req.user.id, req.file);
-
-    if (!updatedUser) throw HttpError(404, "Not found");
-
-    res.status(200).json({
-        avatarURL: updatedUser.avatarURL,
-    })
-}
 
 export default {
-    register: errorWrapper(register),
-    login: errorWrapper(login),
-    logout: errorWrapper(logout),
-    getCurrentUser: errorWrapper(getCurrentUser),
-    updateAvatar: errorWrapper(updateAvatar),
+  register: errorWrapper(register),
+  login: errorWrapper(login),
+  logout: errorWrapper(logout),
+  getMe: errorWrapper(getMe),
 };
