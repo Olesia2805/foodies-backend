@@ -17,7 +17,7 @@ recipeRouter.post(
   "/",
   auth,
   upload.single("image"),
-  // upload.moveRecipeImageToPublic,
+  upload.moveRecipeImageToPublic,
   validateBody(createRecipeSchema),
   recipeController.createRecipe
 );
