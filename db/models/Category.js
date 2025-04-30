@@ -3,7 +3,7 @@ import sequelize from "../Sequelize.js";
 
 const Category = sequelize.define("category", {
   _id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     primaryKey: true,
   },
   name: {
