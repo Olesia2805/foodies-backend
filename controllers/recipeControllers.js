@@ -4,17 +4,14 @@ import recipeService from '../services/recipeServices.js';
 const createRecipe = async (req, res) => {
   const { id: owner } = req.user;
 
-  // Handle uploaded image
   let thumb = null;
   if (req.file) {
     const { filename } = req.file;
     thumb = `/recipes/${filename}`;
   }
 
-  // Parse ingredients from form data
   const ingredients = JSON.parse(req.body.ingredients || '[]');
 
-  // Prepare recipe data
   const recipeData = {
     ...req.body,
     owner,

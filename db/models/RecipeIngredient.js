@@ -25,7 +25,6 @@ const RecipeIngredient = sequelize.define('recipe_ingredient', {
   },
 });
 
-// Define associations for many-to-many relationship
 Recipe.belongsToMany(Ingredient, { through: RecipeIngredient });
 Ingredient.belongsToMany(Recipe, { through: RecipeIngredient });
 

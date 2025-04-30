@@ -9,7 +9,6 @@ import upload from '../middlewares/upload.js';
 
 const recipeRouter = express.Router();
 
-// Private endpoint for creating a recipe (requires authentication)
 recipeRouter.post(
   '/',
   auth,
@@ -19,7 +18,6 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
-// Private endpoint to get user's own recipes (requires authentication)
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
 export default recipeRouter;

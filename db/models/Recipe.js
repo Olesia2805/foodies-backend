@@ -44,7 +44,6 @@ const Recipe = sequelize.define('recipe', {
   },
 });
 
-// Define associations
 Recipe.belongsTo(User, { foreignKey: 'owner', as: 'user' });
 
 // Recipe.sync({force: true});
