@@ -28,7 +28,6 @@ const Ingredient = sequelize.define(
   }
 );
 
-// Синхронізуємо модель з базою даних
 Ingredient.sync();
 
 export default Ingredient;
