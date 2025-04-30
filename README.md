@@ -166,11 +166,11 @@ Seed-функція дозволяє заповнити базу даних те
   ```bash
   docker-compose logs
   ```
-
+  
 ## API
 
 | Method | Endpoint                          | Description                             |
-| ------ | --------------------------------- | --------------------------------------- |
+|--------|-----------------------------------|-----------------------------------------|
 | POST   | /api/auth/register                | Register a new user                     |
 | POST   | /api/auth/login                   | Login a user and generate a JWT token   |
 | POST   | /api/auth/logout                  | Logout a user by invalidating the token |
