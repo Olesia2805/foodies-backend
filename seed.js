@@ -37,6 +37,11 @@ const seedData = async () => {
 
     console.log('Дані успішно завантажено з файлів');
 
+    // Синхронізуємо моделі з базою даних
+    console.log('Синхронізуємо моделі з базою даних...');
+    await sequelize.sync({ force: true });
+    console.log('Моделі успішно синхронізовано');
+
     // Підготовка даних користувачів
     const hashedUsersData = usersData.map((user) => ({
       name: user.name,
@@ -46,30 +51,31 @@ const seedData = async () => {
       token: null,
     }));
 
-    // Синхронізуємо моделі з базою даних
-    console.log('Синхронізуємо моделі з базою даних...');
-    await sequelize.sync({ force: true });
-    console.log('Моделі успішно синхронізовано');
-
     // Створюємо користувачів
     console.log('Створюємо користувачів...');
-    const createdUsers = await User.bulkCreate(hashedUsersData);
+    const createdUsers = await User.bulkCreate(hashedUsersData, {
+      returning: true,
+    });
     console.log(`Створено ${createdUsers.length} користувачів`);
 
     // Створюємо відгуки
     console.log('Створюємо відгуки...');
-    const testimonialsForSequelize = testimonialsData.map((testimonial) => ({
-      _id: testimonial._id.$oid,
-      testimonial: testimonial.testimonial,
-      owner: testimonial.owner.$oid,
-    }));
+    const testimonialsForSequelize = testimonialsData.map((testimonial) => {
+      const userIndex =
+        usersData.findIndex((u) => u._id.$oid === testimonial.owner.$oid) + 1;
+      return {
+        _id: testimonial._id.$oid,
+        testimonial: testimonial.testimonial,
+        owner: userIndex,
+      };
+    });
     await Testimonial.bulkCreate(testimonialsForSequelize);
     console.log(`Створено ${testimonialsForSequelize.length} відгуків`);
 
     // Створюємо кухні світу (areas)
     console.log('Створюємо кухні світу...');
     const areasForSequelize = areasData.map((area) => ({
-      id: area._id.$oid,
+      _id: area._id.$oid,
       name: area.name,
     }));
     await Area.bulkCreate(areasForSequelize);
@@ -107,7 +113,7 @@ const seedData = async () => {
       thumb: recipe.thumb,
       time: recipe.time,
       ingredients: recipe.ingredients,
-      userId: recipe.owner.$oid,
+      userId: usersData.findIndex((u) => u._id.$oid === recipe.owner.$oid) + 1,
     }));
     await Recipe.bulkCreate(recipesForSequelize);
     console.log(`Створено ${recipesForSequelize.length} рецептів`);

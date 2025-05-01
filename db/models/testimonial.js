@@ -1,11 +1,11 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../Sequelize.js";
-import User from "./User.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../Sequelize.js';
+import User from './User.js';
 
 const Testimonial = sequelize.define(
   'testimonial',
   {
-    id: {
+    _id: {
       type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
@@ -15,11 +15,11 @@ const Testimonial = sequelize.define(
       allowNull: false,
     },
     owner: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,
-        key: 'id',
+        key: '_id',
       },
     },
   },
@@ -29,8 +29,8 @@ const Testimonial = sequelize.define(
 );
 
 // Визначаємо зв'язок між моделями
-Testimonial.belongsTo(User, { foreignKey: "owner", as: "user" });
-User.hasMany(Testimonial, { foreignKey: "owner", as: "testimonials" });
+Testimonial.belongsTo(User, { foreignKey: 'owner', as: 'user' });
+User.hasMany(Testimonial, { foreignKey: 'owner', as: 'testimonials' });
 
 // Синхронізуємо модель з базою даних
 Testimonial.sync();
