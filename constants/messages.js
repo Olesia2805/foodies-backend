@@ -5,9 +5,10 @@ export const ERROR = {
   AVATAR_IS_REQUIRED: "Field 'avatar' is required",
   NOT_AUTHORIZED: 'Not authorized',
   INVALID_FILE_EXTENSION: 'Invalid file extension',
+  CATEGORY_NOT_FOUND: 'Category not found',
 };
 
 export const SUCCESS = {
   FOLLOWED: 'Successfully followed',
-  UNFOLLOWED: 'Successfully followed',
+  UNFOLLOWED: 'Successfully unfollowed',
 };

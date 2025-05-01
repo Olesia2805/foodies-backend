@@ -179,7 +179,8 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/users/followings             | Get current user followings list        |
 | POST   | /api/users/followings/:followerId | Follow the user with followerId         |
 | DELETE | /api/users/followings/:followerId | Unfollow the user with followerId       |
-| GET    | /api/users/followers              | Get current user followers list         |
-| GET    | /api/users/:userId                | Get user by Id                          |
+| GET    | /api/users/followers             | Get current user followers list         |
+| GET    | /api/users/:userId               | Get user by Id                          |
+| GET    | /api/categories                  | Get list of all categories              |
 | POST   | /api/recipes                      | Create a new recipe                     |
 | GET    | /api/recipes/own                  | Get current user recipes list           |

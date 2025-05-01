@@ -6,6 +6,7 @@ import "dotenv/config";
 import authRouter from "./routes/authRouter.js";
 
 import recipeRouter from "./routes/recipeRouter.js";
+import categoryRouter from "./routes/categoryRouter.js";
 
 import usersRouter from "./routes/usersRouter.js";
 
@@ -20,6 +21,7 @@ app.use(express.static("public"));
 app.use("/api/auth", authRouter);
 
 app.use("/api/recipes", recipeRouter);
+app.use("/api/categories", categoryRouter);
 
 app.use("/api/users", usersRouter);
 
