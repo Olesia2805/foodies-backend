@@ -64,7 +64,6 @@ const seedData = async () => {
       const userIndex =
         usersData.findIndex((u) => u._id.$oid === testimonial.owner.$oid) + 1;
       return {
-        _id: testimonial._id.$oid,
         testimonial: testimonial.testimonial,
         owner: userIndex,
       };

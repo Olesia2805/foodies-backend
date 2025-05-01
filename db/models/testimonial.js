@@ -6,9 +6,9 @@ const Testimonial = sequelize.define(
   'testimonial',
   {
     _id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     testimonial: {
       type: DataTypes.TEXT,
@@ -28,11 +28,9 @@ const Testimonial = sequelize.define(
   }
 );
 
-// Визначаємо зв'язок між моделями
 Testimonial.belongsTo(User, { foreignKey: 'owner', as: 'user' });
 User.hasMany(Testimonial, { foreignKey: 'owner', as: 'testimonials' });
 
-// Синхронізуємо модель з базою даних
-Testimonial.sync();
+// Testimonial.sync();
 
 export default Testimonial;

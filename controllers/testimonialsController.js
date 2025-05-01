@@ -14,7 +14,6 @@ const getTestimonials = async (req, res) => {
   const offset = (page - 1) * limit;
 
   const { count, rows: testimonials } = await Testimonial.findAndCountAll({
-    // TODO: змінити зв'язок коли визначимось із типом ID
     // attributes: ['testimonial'],
     include: [
       {
