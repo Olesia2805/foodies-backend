@@ -2,6 +2,7 @@ import Recipe from '../db/models/Recipe.js';
 import RecipeIngredient from '../db/models/RecipeIngredient.js';
 import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
+import User from '../db/models/User.js';
 
 const createRecipe = async (recipeData) => {
   const { ingredients, ...recipeFields } = recipeData;
@@ -43,7 +44,21 @@ const getUserRecipes = async (owner) => {
   });
 };
 
+const ddToFavorites = async (userId, recipeId) => {
+  const recipe = await Recipe.findByPk(recipeId);
+
+  if (!recipe) throw HttpError(400, "Recipe not found")
+  
+  const user = await User.findByPk(userId);
+  const result = await user.addFavorite(recipe);
+
+  console.log('result :>> ', result);
+
+  return result
+}
+
 export default {
   createRecipe,
   getUserRecipes,
+  ddToFavorites,
 };

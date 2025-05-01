@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize';
 
 import sequelize from '../Sequelize.js';
 import { emailRegexp } from '../../constants/auth.js';
+import Recipe from './Recipe.js';
 
 const User = sequelize.define('User', {
   id: {
@@ -30,7 +31,7 @@ const User = sequelize.define('User', {
   token: {
     type: DataTypes.STRING,
     defaultValue: null,
-  },
+  }
 });
 
 // User.sync({force: true});
@@ -47,6 +48,20 @@ User.belongsToMany(User, {
   through: 'UserFollowers',
   foreignKey: 'followerId',
   otherKey: 'followingId',
+});
+
+User.belongsToMany(Recipe, {
+  as: 'favorites',
+  through: 'UserFavorites',
+  foreignKey: 'userId',
+  otherKey: 'recipeId',
+});
+
+Recipe.belongsToMany(User, {
+  as: 'favoritedBy',
+  through: 'UserFavorites',
+  foreignKey: 'recipeId',
+  otherKey: 'userId',
 });
 
 export default User;
