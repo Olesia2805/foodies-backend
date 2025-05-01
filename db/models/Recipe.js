@@ -42,9 +42,18 @@ const Recipe = sequelize.define('recipe', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  ingredients: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Ingredient,
+      key: 'id',
+    },
+  },
 });
 
 Recipe.belongsTo(User, { foreignKey: 'owner', as: 'user' });
+Recipe.belongsTo(Ingredient, { foreignKey: 'ingredients', as: 'ingredient' });
 
 // Recipe.sync({force: true});
 
