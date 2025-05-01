@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
+import Area from './db/models/Areas.js';
 import User from './db/models/User.js';
-import Area from './db/models/area.js';
 import Category from './db/models/category.js';
 import Ingredient from './db/models/ingredient.js';
 import Recipe from './db/models/recipe.js';
@@ -69,7 +69,7 @@ const seedData = async () => {
     // Створюємо кухні світу (areas)
     console.log('Створюємо кухні світу...');
     const areasForSequelize = areasData.map((area) => ({
-      _id: area._id.$oid,
+      id: area._id.$oid,
       name: area.name,
     }));
     await Area.bulkCreate(areasForSequelize);
