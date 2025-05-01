@@ -185,6 +185,8 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/ingredients                  | Get all ingredients (paginated)         |
 | GET    | /api/ingredients/list?ids=1&ids=2 | Get requested ingredients by ID list    |
 | GET    | /api/ingredients/:id              | Get ingredient by ID                    |
+| GET    | /api/areas/                       | Get List of All Areas                   |
+| GET    | /api/areas/search                 | Get Country by name                     |
 
 `Note: GET /ingredients`
 
