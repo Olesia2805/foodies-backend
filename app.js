@@ -6,6 +6,7 @@ import morgan from "morgan";
 import authRouter from "./routes/authRouter.js";
 import testimonialsRouter from "./routes/testimonialsRouter.js";
 
+import ingredientsRouter from "./routes/ingredientsRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 
 import usersRouter from "./routes/usersRouter.js";
@@ -21,6 +22,7 @@ app.use(express.static("public"));
 app.use("/api/auth", authRouter);
 app.use("/api/testimonials", testimonialsRouter);
 
+app.use("/api/ingredients", ingredientsRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use("/api/users", usersRouter);

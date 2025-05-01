@@ -182,4 +182,20 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/users/followers              | Get current user followers list                                               |
 | GET    | /api/users/:userId                | Get user by Id                                                                |
 | GET    | /api/categories                   | Get list of all categories                                                    |
+| GET    | /api/ingredients                  | Get all ingredients (paginated)                                               |
+| GET    | /api/ingredients/list?ids=1&ids=2 | Get requested ingredients by ID list                                          |
+| GET    | /api/ingredients/:id              | Get ingredient by ID                                                          |
 | GET    | /api/testimonials?page=1&limit=10 | Get list of all testimonials <br>Pagination: page default 1, limit default 10 |
+
+`Note: GET /ingredients`
+
+| Parameter | Type   | Required | Description             |
+| --------- | ------ | -------- | ----------------------- |
+| limit     | number | No       | Items per page (min: 1) |
+| page      | number | No       | Page number (min: 1)    |
+
+Example:
+
+```bash
+GET /api/ingredients?limit=10&page=2
+```
