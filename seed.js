@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
 import User from './db/models/User.js';
+import Area from './db/models/Areas.js';
 import bcrypt from 'bcrypt';
 
 const seedData = async () => {
@@ -9,8 +10,13 @@ const seedData = async () => {
     
     const dataDir = path.join(process.cwd(), 'data');
     const usersData = JSON.parse(await fs.readFile(path.join(dataDir, 'users.json'), 'utf-8'));
+    const areasData = JSON.parse(await fs.readFile(path.join(dataDir, 'areas.json'), 'utf-8'));
 
-    
+    const formattedAreasData = areasData.map(area => ({
+      id: area._id.$oid, 
+      name: area.name
+    }));
+
     const hashedUsersData = usersData.map(user => ({
       ...user,
       password: bcrypt.hashSync(user.password || 'defaultPassword', 10),
@@ -21,6 +27,7 @@ const seedData = async () => {
 
     
     await User.bulkCreate(hashedUsersData);
+    await Area.bulkCreate(formattedAreasData);
 
     console.log('Дані успішно завантажено до бази даних!');
     process.exit(0);

@@ -9,6 +9,7 @@ import ingredientsRouter from "./routes/ingredientsRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 
 import usersRouter from "./routes/usersRouter.js";
+import areasRouter from "./routes/areasRouter.js";
 
 
 const app = express();
@@ -24,6 +25,7 @@ app.use("/api/ingredients", ingredientsRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use("/api/users", usersRouter);
+app.use("/api/areas", areasRouter);
 
 
 app.use((_, res) => {
