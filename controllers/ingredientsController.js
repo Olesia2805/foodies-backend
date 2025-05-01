@@ -5,17 +5,22 @@ import { Op } from 'sequelize';
 import { ERROR } from '../constants/messages.js';
 
 const getIngredients = async (req, res) => {
-  const { page, limit } = req.query;
-
+  let { page, limit, ...restQuery } = req.query;
   const filters = {};
+
+  page = Number(page);
+  limit = Number(limit);
+
   if (limit) {
-    filters.limit = Number(limit);
-    if (page) filters.offset = Number(page) * Number(limit) - 1; // page in DB starts from zero
+    filters.limit = limit;
+    if (page) {
+      filters.offset = (page - 1) * limit;
+    }
   }
 
-  const data = await ingredientsService.listIngredients(null, filters);
+  const data = await ingredientsService.listIngredients(restQuery, filters);
 
-  if (!data) {
+  if (!Array.isArray(data?.data) || data.data.length === 0) {
     throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
   }
 
@@ -25,21 +30,34 @@ const getIngredients = async (req, res) => {
 const getIngredientByID = async (req, res) => {
   const data = await ingredientsService.oneIngredient(req.params.id);
 
-  if (!data) throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
+  if (!data) {
+    throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
+  }
 
   res.status(200).json(data);
 };
 
 const getIngredienList = async (req, res) => {
-  const { ids } = req.query;
+  let { ids } = req.query;
+
+  if (typeof ids === 'string') {
+    ids = [ids];
+  }
 
   const uniqueIds = [...new Set(ids)];
   const query = { _id: { [Op.in]: uniqueIds } };
 
   const { data } = await ingredientsService.listIngredients(query);
 
-  if (data.length !== uniqueIds.length)
+  if (!data || data.length !== uniqueIds.length) {
+    const foundIds = data ? data.map((item) => item._id.toString()) : [];
+    const notFoundIds = uniqueIds.filter((id) => !foundIds.includes(id));
+
+    if (notFoundIds.length > 0) {
+      throw HttpError(404, ERROR.INGREDIENTS_WITH_ID_NOT_FOUND(notFoundIds));
+    }
     throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
+  }
 
   res.status(200).json(data);
 };
