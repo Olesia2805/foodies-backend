@@ -1,16 +1,19 @@
 import Area from '../db/models/Areas.js';
 import { Op } from 'sequelize';
 
-export const getAllAreas = () => Area.findAll();
-export const getAreaById = (id) => Area.findByPk(id);
+export const getAllAreas = async () => {
+  const areas = await Area.findAll();
+  return areas;
+};
 
-export const findAreasByName = (name) => {
-  return Area.findAll({
+export const findAreasByName = async (name) => {
+  const areasByName = await Area.findAll({
     where: {
       name: {
-        [Op.iLike]: `%${name}%` 
-      }
+        [Op.iLike]: `%${name}%`,
+      },
     },
-    order: [['name', 'ASC']] 
+    order: [['name', 'ASC']],
   });
+  return areasByName;
 };

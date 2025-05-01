@@ -9,6 +9,7 @@ export const ERROR = {
   INGREDIENTS_WITH_ID_NOT_FOUND: (ids) =>
     `Not found ingredients with IDs: ${ids.join(', ')}`,
   CATEGORY_NOT_FOUND: 'Category not found',
+  AREAS_NOT_FOUND: 'Areas not found',
 };
 
 export const SUCCESS = {

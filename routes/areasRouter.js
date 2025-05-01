@@ -1,5 +1,7 @@
 import express from 'express';
 import areasControllers from '../controllers/areasControllers.js';
+import validateQuery from '../helpers/validateQuery.js';
+import { areasGetByName } from '../schemas/areasSchema.js';
 
 const areasRouter = express.Router();
 
@@ -46,8 +48,6 @@ const areasRouter = express.Router();
  */
 areasRouter.get('/', areasControllers.getAreas);
 
-
-
 /**
  * @swagger
  * /api/areas/search:
@@ -85,6 +85,10 @@ areasRouter.get('/', areasControllers.getAreas);
  *                     description: The name of the area
  *                     example: Ukrainian
  */
-areasRouter.get('/search', areasControllers.getAreasByName); 
+areasRouter.get(
+  '/search',
+  validateQuery(areasGetByName),
+  areasControllers.getAreasByName
+);
 
 export default areasRouter;
