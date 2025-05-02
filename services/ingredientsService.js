@@ -7,16 +7,21 @@ const listIngredients = async (query = {}, filters = {}) => {
   });
 
   const pages = Math.ceil(count / filters?.limit || 1);
+  const currentPage = filters?.limit
+    ? Math.floor(filters?.offset / filters?.limit) + 1
+    : 1;
 
   return {
     total: count,
+    currentPage: currentPage,
     pages: pages,
     data: rows,
   };
 };
 
 const oneIngredient = async (id) => {
-  return Ingredient.findByPk(id);
+  const ingredientId = await Ingredient.findByPk(id);
+  return ingredientId;
 };
 
 export default {
