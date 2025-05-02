@@ -169,13 +169,13 @@ Seed-функція дозволяє заповнити базу даних те
 
 ## API
 
-| Method | Endpoint                           | Description                             |
-| ------ | ---------------------------------- | --------------------------------------- |
-| POST   | /api/auth/register                 | Register a new user                     |
-| POST   | /api/auth/login                    | Login a user and generate a JWT token   |
-| POST   | /api/auth/logout                   | Logout a user by invalidating the token |
-| GET    | /api/auth/me                       | Get information about a current user    |
-| PATCH  | /api/users/avatars                 | Update a user avatar                    |
+| Method | Endpoint                          | Description                             |
+| ------ | --------------------------------- | --------------------------------------- |
+| POST   | /api/auth/register                | Register a new user                     |
+| POST   | /api/auth/login                   | Login a user and generate a JWT token   |
+| POST   | /api/auth/logout                  | Logout a user by invalidating the token |
+| GET    | /api/auth/me                      | Get information about a current user    |
+| PATCH  | /api/users/avatars                | Update a user avatar                    |
 | GET    | /api/users/followings             | Get current user followings list        |
 | POST   | /api/users/followings/:followerId | Follow the user with followerId         |
 | DELETE | /api/users/followings/:followerId | Unfollow the user with followerId       |
@@ -187,6 +187,8 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/ingredients/:id              | Get ingredient by ID                    |
 | GET    | /api/areas                        | Get List of All Areas                   |
 | GET    | /api/areas/search?name=someName   | Get Country by name                     |
+| POST   | /api/recipes                      | Create a new recipe                     |
+| GET    | /api/recipes/own                  | Get current user recipes list           |
 
 
 
@@ -200,5 +202,4 @@ Seed-функція дозволяє заповнити базу даних те
 Example:
 ```bash
 GET /api/ingredients?limit=10&page=2
-```| POST   | /api/recipes                      | Create a new recipe                     |
-| GET    | /api/recipes/own                  | Get current user recipes list           |
+```
