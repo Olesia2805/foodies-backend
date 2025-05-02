@@ -6,7 +6,6 @@ import { initModels, RecipeIngredient } from './db/initModels.js';
 import Area from './db/models/Areas.js';
 import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
-
 import User from './db/models/User.js';
 import Recipe from './db/models/Recipe.js';
 import Testimonial from './db/models/testimonial.js';
@@ -15,11 +14,11 @@ import UserFavorites from './db/models/UserFavorites.js';
 
 const seedData = async () => {
   try {
-    console.log('Починаємо завантаження даних...');
+    console.log('Starting data loading...');
 
     const dataDir = path.join(process.cwd(), 'data');
 
-    // Завантажуємо дані з файлів
+    // Load data from files
     const usersData = JSON.parse(
       await fs.readFile(path.join(dataDir, 'users.json'), 'utf-8')
     );
@@ -39,15 +38,32 @@ const seedData = async () => {
       await fs.readFile(path.join(dataDir, 'recipes.json'), 'utf-8')
     );
 
-    console.log('Дані успішно завантажено з файлів');
+    console.log('Data successfully loaded from files');
 
-    // Синхронізуємо моделі з базою даних
-    console.log('Синхронізуємо моделі з базою даних...');
+    // Initialize models and their associations
+    console.log('Initializing models...');
     initModels();
-    await sequelize.sync({ force: true });
-    console.log('Моделі успішно синхронізовано');
 
-    // Підготовка даних користувачів
+    // Sync tables in the correct order
+    console.log('Syncing tables...');
+    await sequelize.query('SET CONSTRAINTS ALL DEFERRED;');
+    
+    // Drop all tables
+    await sequelize.drop();
+    
+    // Create tables in the correct order
+    await Area.sync({ force: true });
+    await Category.sync({ force: true });
+    await User.sync({ force: true });
+    await Ingredient.sync({ force: true });
+    await Recipe.sync({ force: true });
+    await Testimonial.sync({ force: true });
+    await UserFavorites.sync({ force: true });
+    await RecipeIngredient.sync({ force: true });
+
+    console.log('Tables successfully synced');
+
+    // Prepare user data
     const hashedUsersData = usersData.map((user) => ({
       name: user.name,
       password: bcrypt.hashSync(user.password || 'defaultPassword', 10),
@@ -56,15 +72,15 @@ const seedData = async () => {
       token: null,
     }));
 
-    // Створюємо користувачів
-    console.log('Створюємо користувачів...');
+    // Create users
+    console.log('Creating users...');
     const createdUsers = await User.bulkCreate(hashedUsersData, {
       returning: true,
     });
-    console.log(`Створено ${createdUsers.length} користувачів`);
+    console.log(`Created ${createdUsers.length} users`);
 
-    // Створюємо відгуки
-    console.log('Створюємо відгуки...');
+    // Create testimonials
+    console.log('Creating testimonials...');
     const testimonialsForSequelize = testimonialsData.map((testimonial) => {
       const userIndex =
         usersData.findIndex((u) => u._id.$oid === testimonial.owner.$oid) + 1;
@@ -74,47 +90,41 @@ const seedData = async () => {
       };
     });
     await Testimonial.bulkCreate(testimonialsForSequelize);
-    console.log(`Створено ${testimonialsForSequelize.length} відгуків`);
+    console.log(`Created ${testimonialsForSequelize.length} testimonials`);
 
-    // Створюємо кухні світу (areas)
-    console.log('Створюємо кухні світу...');
+    // Create areas
+    console.log('Creating areas...');
     const areasForSequelize = areasData.map((area) => ({
-      // _id: area._id.$oid,
       name: area.name,
     }));
     await Area.bulkCreate(areasForSequelize);
-    console.log(`Створено ${areasForSequelize.length} кухонь світу`);
+    console.log(`Created ${areasForSequelize.length} areas`);
 
-    // Створюємо категорії
-    console.log('Створюємо категорії...');
+    // Create categories
+    console.log('Creating categories...');
     const categoriesForSequelize = categoriesData.map((category) => ({
-      // _id: category._id.$oid,
       name: category.name,
     }));
     await Category.bulkCreate(categoriesForSequelize);
-    console.log(`Створено ${categoriesForSequelize.length} категорій`);
+    console.log(`Created ${categoriesForSequelize.length} categories`);
 
-    // Створюємо інгредієнти
-    console.log('Створюємо інгредієнти...');
+    // Create ingredients
+    console.log('Creating ingredients...');
     const ingredientsForSequelize = ingredientsData.map((ingredient) => ({
-      // _id: ingredient._id,
       name: ingredient.name,
       desc: ingredient.desc,
       img: ingredient.img,
     }));
     await Ingredient.bulkCreate(ingredientsForSequelize);
-    console.log(`Створено ${ingredientsForSequelize.length} інгредієнтів`);
+    console.log(`Created ${ingredientsForSequelize.length} ingredients`);
 
-    // Створюємо рецепти з інгредієнтами через bulkCreate
-    console.log('Створюємо рецепти з інгредієнтами...');
+    // Create recipes with ingredients
+    console.log('Creating recipes with ingredients...');
 
     const recipesForSequelize = recipesData.map((recipe) => ({
-      // _id: recipe._id.$oid,
       title: recipe.title,
-      // category: recipe.category,
       categoryId:
         categoriesData.findIndex((c) => c.name === recipe.category) + 1,
-      // area: recipe.area,
       areaId: areasData.findIndex((a) => a.name === recipe.area) + 1,
       instructions: recipe.instructions,
       description: recipe.description,
@@ -126,7 +136,7 @@ const seedData = async () => {
     const createdRecipes = await Recipe.bulkCreate(recipesForSequelize, {
       returning: true,
     });
-    console.log(`Створено ${createdRecipes.length} рецептів`);
+    console.log(`Created ${createdRecipes.length} recipes`);
 
     const recipeIngredientsBulk = [];
 
@@ -145,20 +155,20 @@ const seedData = async () => {
             measure: ing.measure,
           });
         } else {
-          console.warn(`Інгредієнт з id ${ing.id} не знайдено`);
+          console.warn(`Ingredient with id ${ing.id} not found`);
         }
       }
     }
 
     await RecipeIngredient.bulkCreate(recipeIngredientsBulk);
     console.log(
-      `Створено ${recipeIngredientsBulk.length} зв'язків рецепт-інгредієнт`
+      `Created ${recipeIngredientsBulk.length} recipe-ingredient relationships`
     );
 
-    console.log('Дані успішно завантажено до бази даних!');
+    console.log('Data successfully loaded into the database!');
     process.exit(0);
   } catch (error) {
-    console.error('Помилка під час завантаження даних:', error);
+    console.error('Error during data loading:', error);
     process.exit(1);
   }
 };

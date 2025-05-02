@@ -45,3 +45,13 @@ export const createRecipeSchema = Joi.object({
       'string.max': 'Ingredients must not exceed 2000 characters',
     }),
 });
+
+export const addToFavorites = Joi.object({
+  // id: Joi.string().max(100).required().messages({
+  //   'any.required': 'Filed "id" is required',
+  //   'string.empty': 'Filed "id" cannot be empty',
+  //   'string.max': 'Filed "id" must not exceed 100 characters',
+  // }),
+
+  id: Joi.number().integer().min(1).required()
+})

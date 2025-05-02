@@ -37,7 +37,21 @@ const getUserRecipes = async (req, res) => {
   });
 };
 
+const addToFavorites = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { id } = req.body;
+
+  const result = await recipeService.addToFavorites(userId, id)
+
+  res.status(201).json({
+    message: `Recipe ${id} added to favorite successfully`,
+    result: result
+  })
+
+}
+
 export default {
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
+  addToFavorites: errorWrapper(addToFavorites),
 };

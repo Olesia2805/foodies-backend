@@ -2,7 +2,7 @@ import express from 'express';
 
 import recipeController from '../controllers/recipeControllers.js';
 import validateBody from '../helpers/validateBody.js';
-import { createRecipeSchema } from '../schemas/recipeSchema.js';
+import { addToFavorites, createRecipeSchema } from '../schemas/recipeSchema.js';
 
 import auth from '../middlewares/auth.js';
 import upload from '../middlewares/upload.js';
@@ -19,5 +19,12 @@ recipeRouter.post(
 );
 
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
+
+recipeRouter.post(
+  '/favorites',
+  auth,
+  validateBody(addToFavorites),
+  recipeController.addToFavorites
+);
 
 export default recipeRouter;

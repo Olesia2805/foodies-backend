@@ -1,9 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
-import User from './User.js';
-import Recipe from './Recipe.js';
 
-const UserFavorites = sequelize.define('userFavorites', {
+const UserFavorites = sequelize.define('user_favorites', {
   _id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -15,7 +13,6 @@ const UserFavorites = sequelize.define('userFavorites', {
     references: {
       model: 'users',
       key: '_id',
-    //   deferrable: DataTypes.Deferrable.INITIALLY_DEFERRED
     },
   },
   recipe_id: {
@@ -24,7 +21,6 @@ const UserFavorites = sequelize.define('userFavorites', {
     references: {
       model: 'recipes',
       key: '_id',
-    //   deferrable: DataTypes.Deferrable.INITIALLY_DEFERRED
     },
   },
   createdAt: {
@@ -48,6 +44,6 @@ const UserFavorites = sequelize.define('userFavorites', {
 });
 
 // UserFavorites.sync();
-UserFavorites.sync({force: true});
+// UserFavorites.sync({force: true});
 
 export default UserFavorites; 

@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
 
 const Area = sequelize.define(
-  'Area',
+  'areas',
   {
     _id: {
       type: DataTypes.INTEGER,
@@ -15,7 +15,6 @@ const Area = sequelize.define(
     },
   },
   {
-    tableName: 'areas',
     timestamps: false,
   }
 );
