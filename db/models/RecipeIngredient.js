@@ -8,7 +8,7 @@ const RecipeIngredient = sequelize.define('recipe_ingredient', {
     allowNull: false,
     references: {
       model: Recipe,
-      key: 'id',
+      key: '_id',
     },
   },
   ingredientId: {

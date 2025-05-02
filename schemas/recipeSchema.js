@@ -24,17 +24,16 @@ export const createRecipeSchema = Joi.object({
     'number.integer': 'Cooking time must be an integer',
     'number.min': 'Cooking time must be at least 1 minute',
   }),
-  categoryId: Joi.number().integer().required().messages({
+  category: Joi.string().required().messages({
     'any.required': 'Category is required',
-    'number.base': 'Category must be a number',
-    'number.integer': 'Category must be an integer',
+    'string.empty': 'Category cannot be empty',
   }),
   ingredients: Joi.alternatives()
     .try(
       Joi.string().max(2000),
       Joi.array().items(
         Joi.object({
-          ingredientId: Joi.number().integer().required(),
+          ingredientId: Joi.string().required(),
           quantity: Joi.string().required(),
         })
       )

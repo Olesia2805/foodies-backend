@@ -1,5 +1,6 @@
 import Recipe from '../db/models/Recipe.js';
 import RecipeIngredient from '../db/models/RecipeIngredient.js';
+import Ingredient from '../db/models/Ingredient.js';
 import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
 
@@ -14,8 +15,8 @@ const createRecipe = async (recipeData) => {
 
     if (ingredients && ingredients.length > 0) {
       const recipeIngredients = ingredients.map((item) => ({
-        recipeId: recipe.id,
-        ingredientId: item.ingredientId || item.id,
+        recipeId: recipe._id,
+        ingredientId: item.ingredientId || item._id,
         quantity: item.quantity || item.measure,
       }));
 
@@ -24,8 +25,8 @@ const createRecipe = async (recipeData) => {
 
     await t.commit();
 
-    return await Recipe.findByPk(recipe.id, {
-      include: [{ model: Ingredient }],
+    return await Recipe.findByPk(recipe._id, {
+      include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
     });
   } catch (error) {
     if (t && !t.finished) {
@@ -38,7 +39,7 @@ const createRecipe = async (recipeData) => {
 const getUserRecipes = async (owner) => {
   return await Recipe.findAll({
     where: { owner },
-    include: [{ model: Ingredient }],
+    include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
     order: [['createdAt', 'DESC']],
   });
 };

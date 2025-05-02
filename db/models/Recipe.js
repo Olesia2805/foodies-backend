@@ -3,6 +3,11 @@ import sequelize from '../Sequelize.js';
 import User from './User.js';
 
 const Recipe = sequelize.define('recipe', {
+  _id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -35,25 +40,16 @@ const Recipe = sequelize.define('recipe', {
     allowNull: false,
     references: {
       model: User,
-      key: 'id',
+      key: '_id',
     },
   },
   category: {
     type: DataTypes.STRING,
     allowNull: true,
   },
-  ingredients: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Ingredient,
-      key: 'id',
-    },
-  },
 });
 
 Recipe.belongsTo(User, { foreignKey: 'owner', as: 'user' });
-Recipe.belongsTo(Ingredient, { foreignKey: 'ingredients', as: 'ingredient' });
 
 // Recipe.sync({force: true});
 

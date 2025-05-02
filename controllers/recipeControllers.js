@@ -2,7 +2,7 @@ import errorWrapper from '../helpers/errorWrapper.js';
 import recipeService from '../services/recipeServices.js';
 
 const createRecipe = async (req, res) => {
-  const { id: owner } = req.user;
+  const { _id: owner } = req.user;
 
   let thumb = null;
   if (req.file) {
@@ -28,7 +28,7 @@ const createRecipe = async (req, res) => {
 };
 
 const getUserRecipes = async (req, res) => {
-  const { id: userId } = req.user;
+  const { _id: userId } = req.user;
 
   const recipes = await recipeService.getUserRecipes(userId);
 
