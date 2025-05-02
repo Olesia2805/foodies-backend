@@ -76,7 +76,7 @@ const seedData = async () => {
     // Створюємо кухні світу (areas)
     console.log('Створюємо кухні світу...');
     const areasForSequelize = areasData.map((area) => ({
-      _id: area._id.$oid,
+      // _id: area._id.$oid,
       name: area.name,
     }));
     await Area.bulkCreate(areasForSequelize);

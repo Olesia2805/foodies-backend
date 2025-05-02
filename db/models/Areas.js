@@ -5,10 +5,9 @@ const Area = sequelize.define(
   'Area',
   {
     _id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
-      field: '_id',
     },
     name: {
       type: DataTypes.STRING,
