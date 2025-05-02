@@ -33,6 +33,8 @@ const User = sequelize.define('User', {
   },
 });
 
+// User.sync({force: true});
+
 User.belongsToMany(User, {
   as: 'followers',
   through: 'UserFollowers',
