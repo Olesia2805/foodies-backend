@@ -4,9 +4,9 @@ import path from 'path';
 import sequelize from './db/Sequelize.js';
 import { initModels, RecipeIngredient } from './db/initModels.js';
 import Area from './db/models/Areas.js';
+import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
-import Category from './db/models/Category.js';
 import Recipe from './db/models/recipe.js';
 import Testimonial from './db/models/testimonial.js';
 
@@ -108,7 +108,9 @@ const seedData = async () => {
     const recipesForSequelize = recipesData.map((recipe) => ({
       // _id: recipe._id.$oid,
       title: recipe.title,
-      category: recipe.category,
+      // category: recipe.category,
+      categoryId:
+        categoriesData.findIndex((c) => c.name === recipe.category) + 1,
       area: recipe.area,
       instructions: recipe.instructions,
       description: recipe.description,
