@@ -85,7 +85,7 @@ const seedData = async () => {
     // Створюємо категорії
     console.log('Створюємо категорії...');
     const categoriesForSequelize = categoriesData.map((category) => ({
-      _id: category._id.$oid,
+      // _id: category._id.$oid,
       name: category.name,
     }));
     await Category.bulkCreate(categoriesForSequelize);
