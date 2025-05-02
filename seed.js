@@ -6,7 +6,7 @@ import { initModels, RecipeIngredient } from './db/initModels.js';
 import Area from './db/models/Areas.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
-import Category from './db/models/Category_.js';
+import Category from './db/models/Category.js';
 import Recipe from './db/models/recipe.js';
 import Testimonial from './db/models/testimonial.js';
 
