@@ -1,51 +1,32 @@
-import {
-  PAGINATION_DEFAULT_LIMIT,
-  PAGINATION_DEFAULT_PAGE,
-} from '../constants/defaults.js';
-import Testimonial from '../db/models/testimonial.js';
-import User from '../db/models/User.js';
+import testimonialsService from '../services/testimonialsService.js';
 import errorWrapper from '../helpers/errorWrapper.js';
 import HttpError from '../helpers/HttpError.js';
+import { ERROR } from '../constants/messages.js';
 
-// Отримання списку відгуків
 const getTestimonials = async (req, res) => {
-  const page = parseInt(req.query.page) || PAGINATION_DEFAULT_PAGE;
-  const limit = parseInt(req.query.limit) || PAGINATION_DEFAULT_LIMIT;
-  const offset = (page - 1) * limit;
+  let { page, limit } = req.query;
+  const filters = {};
+  filters.offset = 0;
 
-  const { count, rows: testimonials } = await Testimonial.findAndCountAll({
-    // attributes: ['testimonial'],
-    include: [
-      {
-        model: User,
-        as: 'user',
-        attributes: ['_id', 'email', 'avatar'],
-        required: false,
-      },
-    ],
-    order: [['createdAt', 'DESC']],
-    limit,
-    offset,
-  });
+  page = Number(page);
+  limit = Number(limit);
 
-  const totalPages = Math.ceil(count / limit);
+  if (limit) {
+    filters.limit = limit;
+    if (page) {
+      filters.offset = (page - 1) * limit;
+    }
+  }
 
-  res.json({
-    status: 'success',
-    code: 200,
-    data: {
-      testimonials,
-      pagination: {
-        totalItems: count,
-        currentPage: page,
-        totalPages,
-        itemsPerPage: limit,
-      },
-    },
-  });
+  const data = await testimonialsService.listTestimonials(filters);
+
+  if (!Array.isArray(data?.data) || data.data.length === 0) {
+    throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
+  }
+
+  res.status(200).json(data);
 };
 
-// Експортуємо функції, обгорнуті в errorWrapper
 export default {
   getTestimonialsCtrl: errorWrapper(getTestimonials),
 };
