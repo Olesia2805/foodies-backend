@@ -9,7 +9,7 @@ const getUserById = async (req, res) => {
 
 const updateUserAvatar = async (req, res) => {
   const updatedUser = await usersServices.updateUserAvatar(
-    req.user.id,
+    req.user._id,
     req.file
   );
 
@@ -20,7 +20,7 @@ const updateUserAvatar = async (req, res) => {
 
 const followUser = async (req, res) => {
   const response = await usersServices.follow(
-    req.user.id,
+    req.user._id,
     req.params.followerId
   );
 
@@ -29,7 +29,7 @@ const followUser = async (req, res) => {
 
 const unfollowUser = async (req, res) => {
   const response = await usersServices.unfollow(
-    req.user.id,
+    req.user._id,
     req.params.followerId
   );
 
@@ -37,13 +37,13 @@ const unfollowUser = async (req, res) => {
 };
 
 const getFollowing = async (req, res) => {
-  const response = await usersServices.getFollowing(req.user.id);
+  const response = await usersServices.getFollowing(req.user._id);
 
   res.status(200).json(response);
 };
 
 const getFollowers = async (req, res) => {
-  const response = await usersServices.getFollowers(req.user.id);
+  const response = await usersServices.getFollowers(req.user._id);
 
   res.status(200).json(response);
 };

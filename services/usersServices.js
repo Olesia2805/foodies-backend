@@ -30,7 +30,7 @@ const getUserById = async (authUser, userId) => {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
-  const isCurrentUser = authUser.id === user.id;
+  const isCurrentUser = authUser._id === user._id;
 
   return {
     name: user.name,
