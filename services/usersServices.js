@@ -14,13 +14,13 @@ const getUserById = async (authUser, userId) => {
       {
         model: User,
         as: 'followers',
-        attributes: ['id'],
+        attributes: ['_id'],
         through: { attributes: [] },
       },
       {
         model: User,
         as: 'following',
-        attributes: ['id'],
+        attributes: ['_id'],
         through: { attributes: [] },
       },
     ],
@@ -37,9 +37,9 @@ const getUserById = async (authUser, userId) => {
     email: user.email,
     avatar: user.avatar,
 
-    followers: user.followers.map((follower) => follower.id),
+    followers: user.followers.map((follower) => follower._id),
     ...(isCurrentUser && {
-      following: user.following.map((follower) => follower.id),
+      following: user.following.map((follower) => follower._id),
     }),
   };
 };
