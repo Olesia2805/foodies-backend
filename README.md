@@ -170,16 +170,16 @@ Seed-функція дозволяє заповнити базу даних те
 ## API
 
 | Method | Endpoint                          | Description                              |
-| ------ | --------------------------------- | -----------------------------------------|
+| ------ |-----------------------------------|------------------------------------------|
 | POST   | /api/auth/register                | Register a new user                      |
 | POST   | /api/auth/login                   | Login a user and generate a JWT token    |
 | POST   | /api/auth/logout                  | Logout a user by invalidating the token  |
 | GET    | /api/auth/me                      | Get information about a current user     |
 | PATCH  | /api/users/avatars                | Update a user avatar                     |
-| GET    | /api/users/followings             | Get current user followings list         |
+| GET    | /api/users/followings/:userId     | Get user followings list by user Id      |
 | POST   | /api/users/followings/:followerId | Follow the user with followerId          |
 | DELETE | /api/users/followings/:followerId | Unfollow the user with followerId        |
-| GET    | /api/users/followers              | Get current user followers list          |
+| GET    | /api/users/followers/:userId      | Get user followers list by user Id       |
 | GET    | /api/users/:userId                | Get user by Id                           |
 | GET    | /api/categories                   | Get list of all categories               |
 | GET    | /api/ingredients                  | Get all ingredients (paginated)          |

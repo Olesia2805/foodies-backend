@@ -27,13 +27,13 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  await authService.logout(req.user.id);
+  await authService.logout(req.user._id);
 
   res.status(204).send();
 };
 
 const getMe = async (req, res) => {
-  const user = await authService.getMe(req.user.id);
+  const user = await authService.getMe(req.user._id);
 
   res.status(200).json(user);
 };
