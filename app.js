@@ -12,6 +12,7 @@ import categoryRouter from "./routes/categoryRouter.js";
 import usersRouter from "./routes/usersRouter.js";
 import areasRouter from "./routes/areasRouter.js";
 
+import "./db/associations.js"
 
 const app = express();
 
