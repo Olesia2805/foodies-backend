@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
 
-const User = sequelize.define('User', {
+const Area = sequelize.define('Area', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -10,25 +10,12 @@ const User = sequelize.define('User', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
-  },
-  avatar: {
-    type: DataTypes.STRING,
-    allowNull: true,
   },
 }, {
   timestamps: true,
   createdAt: 'created_at',
-  updatedAt: 'updated_at',
+  updatedAt: false,
 });
 
-// User.sync({force: true});
-
-export default User;
+export default Area; 

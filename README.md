@@ -170,7 +170,7 @@ Seed-функція дозволяє заповнити базу даних те
 ## API
 
 | Method | Endpoint                          | Description                             |
-| ------ | --------------------------------- | --------------------------------------- |
+|--------|-----------------------------------|-----------------------------------------|
 | POST   | /api/auth/register                | Register a new user                     |
 | POST   | /api/auth/login                   | Login a user and generate a JWT token   |
 | POST   | /api/auth/logout                  | Logout a user by invalidating the token |
@@ -181,5 +181,19 @@ Seed-функція дозволяє заповнити базу даних те
 | DELETE | /api/users/followings/:followerId | Unfollow the user with followerId       |
 | GET    | /api/users/followers              | Get current user followers list         |
 | GET    | /api/users/:userId                | Get user by Id                          |
-| POST   | /api/recipes                      | Create a new recipe                     |
-| GET    | /api/recipes/own                  | Get current user recipes list           |
+| GET    | /api/categories                   | Get list of all categories              |
+| GET    | /api/ingredients                  | Get all ingredients (paginated)         |
+| GET    | /api/ingredients/list?ids=1&ids=2 | Get requested ingredients by ID list    |
+| GET    | /api/ingredients/:id              | Get ingredient by ID                    |
+
+`Note: GET /ingredients`
+
+| Parameter | Type   | Required | Description                |
+|-----------|--------|----------|----------------------------|
+| limit     | number | No       | Items per page (min: 1)    |
+| page      | number | No       | Page number (min: 1)       |
+
+Example:
+```bash
+GET /api/ingredients?limit=10&page=2
+```

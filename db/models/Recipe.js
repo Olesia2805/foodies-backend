@@ -1,51 +1,48 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
-import User from './User.js';
 
-const Recipe = sequelize.define('recipe', {
+const Recipe = sequelize.define('Recipe', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   description: {
-    type: DataTypes.STRING(200),
-    allowNull: false,
-  },
-  thumb: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  area: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   instructions: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  time: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 1,
-    },
-  },
-  owner: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'id',
-    },
-  },
-  category: {
+  thumb: {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  time: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  category_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  area_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  owner_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+}, {
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
 });
-
-Recipe.belongsTo(User, { foreignKey: 'owner', as: 'user' });
-
-// Recipe.sync({force: true});
 
 export default Recipe;

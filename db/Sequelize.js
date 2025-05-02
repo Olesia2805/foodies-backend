@@ -23,4 +23,5 @@ try {
   process.exit(1);
 }
 
+export { sequelize };
 export default sequelize;

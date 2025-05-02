@@ -1,42 +1,36 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
 
-const RecipeIngredient = sequelize.define('RecipeIngredient', {
+const Testimonial = sequelize.define('Testimonial', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  recipe_id: {
+  user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Recipes',
+      model: 'Users',
       key: 'id',
     },
   },
-  ingredient_id: {
+  text: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  rating: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: 'Ingredients',
-      key: 'id',
+    validate: {
+      min: 1,
+      max: 5,
     },
-  },
-  measure: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
   },
 }, {
   timestamps: true,
   createdAt: 'created_at',
   updatedAt: false,
-  indexes: [
-    {
-      unique: true,
-      fields: ['recipe_id', 'ingredient_id'],
-    },
-  ],
 });
 
-export default RecipeIngredient;
+export default Testimonial; 
