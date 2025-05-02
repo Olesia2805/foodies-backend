@@ -169,18 +169,36 @@ Seed-функція дозволяє заповнити базу даних те
 
 ## API
 
-| Method | Endpoint                          | Description                             |
-| ------ | --------------------------------- | --------------------------------------- |
-| POST   | /api/auth/register                | Register a new user                     |
-| POST   | /api/auth/login                   | Login a user and generate a JWT token   |
-| POST   | /api/auth/logout                  | Logout a user by invalidating the token |
-| GET    | /api/auth/me                      | Get information about a current user    |
-| PATCH  | /api/users/avatars                | Update a user avatar                    |
+| Method | Endpoint                           | Description                             |
+| ------ | ---------------------------------- | --------------------------------------- |
+| POST   | /api/auth/register                 | Register a new user                     |
+| POST   | /api/auth/login                    | Login a user and generate a JWT token   |
+| POST   | /api/auth/logout                   | Logout a user by invalidating the token |
+| GET    | /api/auth/me                       | Get information about a current user    |
+| PATCH  | /api/users/avatars                 | Update a user avatar                    |
 | GET    | /api/users/followings             | Get current user followings list        |
 | POST   | /api/users/followings/:followerId | Follow the user with followerId         |
 | DELETE | /api/users/followings/:followerId | Unfollow the user with followerId       |
-| GET    | /api/users/followers             | Get current user followers list         |
-| GET    | /api/users/:userId               | Get user by Id                          |
-| GET    | /api/categories                  | Get list of all categories              |
-| POST   | /api/recipes                      | Create a new recipe                     |
+| GET    | /api/users/followers              | Get current user followers list         |
+| GET    | /api/users/:userId                | Get user by Id                          |
+| GET    | /api/categories                   | Get list of all categories              |
+| GET    | /api/ingredients                  | Get all ingredients (paginated)         |
+| GET    | /api/ingredients/list?ids=1&ids=2 | Get requested ingredients by ID list    |
+| GET    | /api/ingredients/:id              | Get ingredient by ID                    |
+| GET    | /api/areas                        | Get List of All Areas                   |
+| GET    | /api/areas/search?name=someName   | Get Country by name                     |
+
+
+
+`Note: GET /ingredients`
+
+| Parameter | Type   | Required | Description                |
+|-----------|--------|----------|----------------------------|
+| limit     | number | No       | Items per page (min: 1)    |
+| page      | number | No       | Page number (min: 1)       |
+
+Example:
+```bash
+GET /api/ingredients?limit=10&page=2
+```| POST   | /api/recipes                      | Create a new recipe                     |
 | GET    | /api/recipes/own                  | Get current user recipes list           |
