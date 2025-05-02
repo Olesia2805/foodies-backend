@@ -111,7 +111,8 @@ const seedData = async () => {
       // category: recipe.category,
       categoryId:
         categoriesData.findIndex((c) => c.name === recipe.category) + 1,
-      area: recipe.area,
+      // area: recipe.area,
+      areaId: areasData.findIndex((a) => a.name === recipe.area) + 1,
       instructions: recipe.instructions,
       description: recipe.description,
       thumb: recipe.thumb,
