@@ -37,9 +37,9 @@ const getUserById = async (authUser, userId) => {
     email: user.email,
     avatar: user.avatar,
 
-    followers: user.followers.map((follower) => follower.id),
+    followers: user.followers.map((follower) => follower._id),
     ...(isCurrentUser && {
-      following: user.following.map((follower) => follower.id),
+      following: user.following.map((follower) => follower._id),
     }),
   };
 };
@@ -93,6 +93,8 @@ const unfollow = async (followerId, followingId) => {
 
 const getFollowing = async (userId) => {
   const user = await User.findByPk(userId);
+
+  console.log('user', user);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);

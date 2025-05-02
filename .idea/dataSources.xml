@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="foodies_2p0w@dpg-d07u80i4d50c73fhfnrg-a.frankfurt-postgres.render.com" uuid="704a4b88-9b10-4f9c-a540-24e1639dc827">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://dpg-d07u80i4d50c73fhfnrg-a.frankfurt-postgres.render.com:5432/foodies_2p0w</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

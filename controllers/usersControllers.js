@@ -37,13 +37,13 @@ const unfollowUser = async (req, res) => {
 };
 
 const getFollowing = async (req, res) => {
-  const response = await usersServices.getFollowing(req.user._id);
+  const response = await usersServices.getFollowing(req.params.userId);
 
   res.status(200).json(response);
 };
 
 const getFollowers = async (req, res) => {
-  const response = await usersServices.getFollowers(req.user._id);
+  const response = await usersServices.getFollowers(req.params.userId);
 
   res.status(200).json(response);
 };
