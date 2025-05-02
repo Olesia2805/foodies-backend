@@ -6,9 +6,9 @@ const Recipe = sequelize.define(
   'recipe',
   {
     _id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     title: {
       type: DataTypes.STRING,
@@ -36,10 +36,6 @@ const Recipe = sequelize.define(
     },
     time: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
-    ingredients: {
-      type: DataTypes.JSON,
       allowNull: true,
     },
     userId: {

@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
-import { initModels } from './db/initModels.js';
+import { initModels, RecipeIngredient } from './db/initModels.js';
 import Area from './db/models/Areas.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
@@ -102,10 +102,11 @@ const seedData = async () => {
     await Ingredient.bulkCreate(ingredientsForSequelize);
     console.log(`Створено ${ingredientsForSequelize.length} інгредієнтів`);
 
-    // Створюємо рецепти
-    console.log('Створюємо рецепти...');
+    // Створюємо рецепти з інгредієнтами через bulkCreate
+    console.log('Створюємо рецепти з інгредієнтами...');
+
     const recipesForSequelize = recipesData.map((recipe) => ({
-      _id: recipe._id.$oid,
+      // _id: recipe._id.$oid,
       title: recipe.title,
       category: recipe.category,
       area: recipe.area,
@@ -113,11 +114,40 @@ const seedData = async () => {
       description: recipe.description,
       thumb: recipe.thumb,
       time: recipe.time,
-      ingredients: recipe.ingredients,
       userId: usersData.findIndex((u) => u._id.$oid === recipe.owner.$oid) + 1,
     }));
-    await Recipe.bulkCreate(recipesForSequelize);
-    console.log(`Створено ${recipesForSequelize.length} рецептів`);
+
+    const createdRecipes = await Recipe.bulkCreate(recipesForSequelize, {
+      returning: true,
+    });
+    console.log(`Створено ${createdRecipes.length} рецептів`);
+
+    const recipeIngredientsBulk = [];
+
+    for (let i = 0; i < recipesData.length; i++) {
+      const recipe = recipesData[i];
+      const recipeInstance = createdRecipes[i];
+
+      for (const ing of recipe.ingredients) {
+        const ingredientDbId =
+          ingredientsData.findIndex((i) => i._id === ing.id) + 1;
+
+        if (ingredientDbId) {
+          recipeIngredientsBulk.push({
+            recipeId: recipeInstance._id,
+            ingredientId: ingredientDbId,
+            measure: ing.measure,
+          });
+        } else {
+          console.warn(`Інгредієнт з id ${ing.id} не знайдено`);
+        }
+      }
+    }
+
+    await RecipeIngredient.bulkCreate(recipeIngredientsBulk);
+    console.log(
+      `Створено ${recipeIngredientsBulk.length} зв'язків рецепт-інгредієнт`
+    );
 
     console.log('Дані успішно завантажено до бази даних!');
     process.exit(0);
