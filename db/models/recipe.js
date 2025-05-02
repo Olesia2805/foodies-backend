@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
+import Ingredient from './Ingredient_.js';
+import RecipeIngredient from './RecipeIngredient.js';
 import User from './User.js';
-import Area from './Areas.js';
-import Category from './category.js';
 
 const Recipe = sequelize.define(
   'recipe',
@@ -58,11 +58,6 @@ const Recipe = sequelize.define(
   }
 );
 
-// Визначаємо зв'язок між моделями
-Recipe.belongsTo(User, { foreignKey: 'userId', as: 'owner' });
-User.hasMany(Recipe, { foreignKey: 'userId', as: 'recipes' });
-
-// Синхронізуємо модель з базою даних
-Recipe.sync();
+// Recipe.sync();
 
 export default Recipe;

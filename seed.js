@@ -2,10 +2,11 @@ import bcrypt from 'bcrypt';
 import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
+import { initModels } from './db/initModels.js';
 import Area from './db/models/Areas.js';
+import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
 import Category from './db/models/category.js';
-import Ingredient from './db/models/ingredient.js';
 import Recipe from './db/models/recipe.js';
 import Testimonial from './db/models/testimonial.js';
 
@@ -39,6 +40,7 @@ const seedData = async () => {
 
     // Синхронізуємо моделі з базою даних
     console.log('Синхронізуємо моделі з базою даних...');
+    initModels();
     await sequelize.sync({ force: true });
     console.log('Моделі успішно синхронізовано');
 
@@ -92,7 +94,7 @@ const seedData = async () => {
     // Створюємо інгредієнти
     console.log('Створюємо інгредієнти...');
     const ingredientsForSequelize = ingredientsData.map((ingredient) => ({
-      _id: ingredient._id,
+      // _id: ingredient._id,
       name: ingredient.name,
       desc: ingredient.desc,
       img: ingredient.img,
