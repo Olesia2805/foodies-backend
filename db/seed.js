@@ -167,34 +167,3 @@ const seedData = async () => {
 };
 
 seedData();
-
-// const testAssociations = async () => {
-//   try {
-//     console.log(Object.keys(Recipe.associations));
-// // Должно включать 'recipeIngredients'
-
-//     const recipes = await Recipe.findAll({
-//       include: [
-//         {
-//           model: RecipeIngredient,
-//           as: 'recipeIngredients',
-//           include: [
-//             {
-//               model: Ingredient,
-//               as: 'ingredient',
-//               attributes: ['_id', 'name', 'desc', 'img'],
-//             },
-//           ],
-//           attributes: ['measure'],
-//         },
-//       ],
-//       limit: 5, // Limit to 5 recipes for testing
-//     });
-
-//     console.log(JSON.stringify(recipes, null, 2));
-//   } catch (error) {
-//     console.error('Error testing associations:', error);
-//   }
-// };
-
-// testAssociations();
