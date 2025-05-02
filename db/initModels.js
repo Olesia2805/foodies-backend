@@ -1,4 +1,4 @@
-import Ingredient from './models/Ingredient_.js';
+import Ingredient from './models/Ingredient.js';
 import Recipe from './models/recipe.js';
 import RecipeIngredient from './models/RecipeIngredient.js';
 import User from './models/User.js';
