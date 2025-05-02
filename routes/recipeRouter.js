@@ -18,6 +18,10 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
-recipeRouter.get('/own', auth, recipeController.getUserRecipes);
+recipeRouter.get(
+  '/own',
+   auth,
+  recipeController.getUserRecipes
+  );
 
 export default recipeRouter;

@@ -26,7 +26,7 @@ const createRecipe = async (recipeData) => {
     await t.commit();
 
     return await Recipe.findByPk(recipe._id, {
-      include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
+      include: [{ model: Ingredient, through: { attributes: ['measure'] } }],
     });
   } catch (error) {
     if (t && !t.finished) {
@@ -38,8 +38,21 @@ const createRecipe = async (recipeData) => {
 
 const getUserRecipes = async (owner) => {
   return await Recipe.findAll({
-    where: { owner },
-    include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
+    where: { userId: owner },
+    include: [
+      {
+        model: RecipeIngredient,
+        as: 'recipeIngredients',
+        include: [
+          {
+            model: Ingredient,
+            as: 'ingredient',
+            attributes: ['_id', 'name', 'desc', 'img'],
+          },
+        ],
+        attributes: ['measure'],
+      },
+    ],
     order: [['createdAt', 'DESC']],
   });
 };

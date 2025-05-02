@@ -28,8 +28,16 @@ const Testimonial = sequelize.define(
   }
 );
 
-Testimonial.belongsTo(User, { foreignKey: 'owner', as: 'user' });
-User.hasMany(Testimonial, { foreignKey: 'owner', as: 'testimonials' });
+Testimonial.belongsTo(User, { 
+  foreignKey: 'owner', 
+  as: 'user' 
+});
+
+
+User.hasMany(Testimonial, { 
+  foreignKey: 'owner', 
+  as: 'testimonials' 
+});
 
 // Testimonial.sync();
 

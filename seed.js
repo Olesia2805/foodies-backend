@@ -2,14 +2,19 @@ import bcrypt from 'bcrypt';
 import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
-import { initModels, RecipeIngredient } from './db/initModels.js';
+import { initModels, Recipe, RecipeIngredient } from './db/initModels.js';
+
+
+// # TODO from initModels.js or from models?
 import Area from './db/models/Areas.js';
 import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
-
 import User from './db/models/User.js';
-import Recipe from './db/models/recipe.js';
 import Testimonial from './db/models/testimonial.js';
+
+
+initModels(); // 👈 Важно: ассоциации применяются только после этого
+
 
 const seedData = async () => {
   try {
@@ -162,3 +167,34 @@ const seedData = async () => {
 };
 
 seedData();
+
+// const testAssociations = async () => {
+//   try {
+//     console.log(Object.keys(Recipe.associations));
+// // Должно включать 'recipeIngredients'
+
+//     const recipes = await Recipe.findAll({
+//       include: [
+//         {
+//           model: RecipeIngredient,
+//           as: 'recipeIngredients',
+//           include: [
+//             {
+//               model: Ingredient,
+//               as: 'ingredient',
+//               attributes: ['_id', 'name', 'desc', 'img'],
+//             },
+//           ],
+//           attributes: ['measure'],
+//         },
+//       ],
+//       limit: 5, // Limit to 5 recipes for testing
+//     });
+
+//     console.log(JSON.stringify(recipes, null, 2));
+//   } catch (error) {
+//     console.error('Error testing associations:', error);
+//   }
+// };
+
+// testAssociations();
