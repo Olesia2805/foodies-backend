@@ -1,9 +1,10 @@
-import express from 'express';
-import morgan from 'morgan';
-import cors from 'cors';
-import 'dotenv/config';
+import cors from "cors";
+import "dotenv/config";
+import express from "express";
+import morgan from "morgan";
 
-import authRouter from './routes/authRouter.js';
+import authRouter from "./routes/authRouter.js";
+import testimonialsRouter from "./routes/testimonialsRouter.js";
 
 import ingredientsRouter from './routes/ingredientsRouter.js';
 import recipeRouter from './routes/recipeRouter.js';
@@ -17,7 +18,10 @@ const app = express();
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
+
+app.use("/api/auth", authRouter);
+app.use("/api/testimonials", testimonialsRouter);
 
 app.use('/api/auth', authRouter);
 

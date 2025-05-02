@@ -7,6 +7,7 @@ import { ERROR } from '../constants/messages.js';
 const getIngredients = async (req, res) => {
   let { page, limit, ...restQuery } = req.query;
   const filters = {};
+  filters.offset = 0;
 
   page = Number(page);
   limit = Number(limit);
