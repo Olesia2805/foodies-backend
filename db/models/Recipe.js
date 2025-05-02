@@ -24,7 +24,7 @@ const Recipe = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Category,
+        model: 'categories',
         key: '_id',
       },
     },
@@ -36,7 +36,7 @@ const Recipe = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: Area,
+        model: 'areas',
         key: '_id',
       },
     },
@@ -60,7 +60,7 @@ const Recipe = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: User,
+        model: 'users',
         key: '_id',
       },
     },
