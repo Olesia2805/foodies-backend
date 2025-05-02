@@ -14,13 +14,13 @@ const getUserById = async (authUser, userId) => {
       {
         model: User,
         as: 'followers',
-        attributes: ['id'],
+        attributes: ['_id'],
         through: { attributes: [] },
       },
       {
         model: User,
         as: 'following',
-        attributes: ['id'],
+        attributes: ['_id'],
         through: { attributes: [] },
       },
     ],
