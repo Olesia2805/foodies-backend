@@ -10,9 +10,14 @@ import ingredientsRouter from './routes/ingredientsRouter.js';
 import recipeRouter from './routes/recipeRouter.js';
 import categoryRouter from './routes/categoryRouter.js';
 
+
 import usersRouter from './routes/usersRouter.js';
 import areasRouter from './routes/areasRouter.js';
 import "./db/associations.js"
+
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 const app = express();
 

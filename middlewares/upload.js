@@ -1,9 +1,11 @@
-import * as path from 'node:path';
 import multer from 'multer';
 import fs from 'fs/promises';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import HttpError from '../helpers/HttpError.js';
 import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
 import { ERROR } from '../constants/messages.js';
+
 
 const tempDir = path.resolve('temp');
 const avatarsDir = path.resolve('public', 'avatars');
@@ -27,12 +29,18 @@ try {
   await fs.mkdir(recipesDir);
 }
 
-const storage = multer.diskStorage({
-  destination: tempDir,
-  filename: (req, file, callback) => {
-    const uniquePrefix = `${Date.now()}_${Math.round(Math.random() * 1e9)}`;
-    const filename = `${uniquePrefix}_${file.originalname}`;
-    callback(null, filename);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'avatars',
+    allowed_formats: AVAILABLE_AVATAR_IMAGE_TYPES,
   },
 });
 
@@ -45,7 +53,6 @@ const fileFilter = (req, file, callback) => {
   if (!AVAILABLE_AVATAR_IMAGE_TYPES.includes(ext)) {
     return callback(HttpError(400, ERROR.INVALID_FILE_EXTENSION));
   }
-
   callback(null, true);
 };
 

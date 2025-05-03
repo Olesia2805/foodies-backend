@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, INTEGER } from 'sequelize';
 import sequelize from '../Sequelize.js';
 import Area from './Areas.js';
 import Category from './Category.js';
@@ -24,7 +24,7 @@ const Recipe = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'categories',
+        model: Category,
         key: '_id',
       },
     },
@@ -36,7 +36,7 @@ const Recipe = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'areas',
+        model: Area,
         key: '_id',
       },
     },
@@ -60,7 +60,7 @@ const Recipe = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users',
+        model: User,
         key: '_id',
       },
     },

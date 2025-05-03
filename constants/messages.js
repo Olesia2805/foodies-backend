@@ -11,9 +11,13 @@ export const ERROR = {
   CATEGORY_NOT_FOUND: 'Category not found',
   AREAS_NOT_FOUND: 'Areas not found',
 
+
   // Recipe
   RECIPE_WITH_ID_NOT_FOUND: (id) => `Not found ingredients with IDs: ${id}`,
   FAVORITES_NOT_FOUND: `No favorite recipes found`,
+  INVALID_REFRESH_TOKEN: 'Invalid refresh token',
+  ACCESS_TOKEN_EXPIRED: 'Access token expired',
+
 };
 
 export const SUCCESS = {
