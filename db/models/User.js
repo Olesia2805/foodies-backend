@@ -31,6 +31,11 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     defaultValue: null,
   },
+  refreshToken: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+    allowNull: true,
+  }
 });
 
 // User.sync({force: true});

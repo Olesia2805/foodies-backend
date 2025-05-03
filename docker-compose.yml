@@ -28,18 +28,18 @@ services:
     environment:
       - NODE_ENV=development
 
-  #db:
+  db:
     # Removed the db service as the application will use the Render database
-    # image: postgres:15
-    # container_name: foodies-postgres
-    # environment:
-    #   POSTGRES_USER: postgres
-    #   POSTGRES_PASSWORD: password
-    #   POSTGRES_DB: foodies
-    # ports:
-    #   - "5432:5432"
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
+    image: postgres:15
+    container_name: foodies-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: foodies
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:

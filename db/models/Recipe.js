@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, INTEGER } from 'sequelize';
 import sequelize from '../Sequelize.js';
 import Area from './Areas.js';
 import Category from './Category.js';

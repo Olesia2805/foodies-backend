@@ -175,6 +175,7 @@ Seed-функція дозволяє заповнити базу даних те
 | POST   | /api/auth/login                   | Login a user and generate a JWT token    |
 | POST   | /api/auth/logout                  | Logout a user by invalidating the token  |
 | GET    | /api/auth/me                      | Get information about a current user     |
+| GET    | /api/auth/refresh-token           | Refresh JWT token                        |
 | PATCH  | /api/users/avatars                | Update a user avatar                     |
 | GET    | /api/users/followings/:userId     | Get user followings list by user Id      |
 | POST   | /api/users/followings/:followerId | Follow the user with followerId          |
