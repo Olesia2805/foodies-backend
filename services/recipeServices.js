@@ -44,7 +44,49 @@ const getUserRecipes = async (owner) => {
   });
 };
 
+const deleteRecipe = async (recipeId, userId) => {
+  const t = await sequelize.transaction();
+
+  try {
+    const recipe = await Recipe.findOne({
+      where: {
+        _id: recipeId,
+        userId: userId
+      }
+    });
+
+    if (!recipe) {
+      throw HttpError(404, 'Recipe not found or you do not have permission to delete it');
+    }
+
+    await RecipeIngredient.destroy({
+      where: {
+        recipeId: recipeId
+      },
+      transaction: t
+    });
+
+    await Recipe.destroy({
+      where: {
+        _id: recipeId,
+        userId: userId
+      },
+      transaction: t
+    });
+
+    await t.commit();
+
+    return { message: 'Recipe deleted successfully' };
+  } catch (error) {
+    if (t && !t.finished) {
+      await t.rollback();
+    }
+    throw error;
+  }
+};
+
 export default {
   createRecipe,
   getUserRecipes,
+  deleteRecipe,
 };
