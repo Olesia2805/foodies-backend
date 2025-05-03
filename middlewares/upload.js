@@ -2,8 +2,10 @@ import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import HttpError from '../helpers/HttpError.js';
+import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
+import { ERROR } from '../constants/messages.js';
 
-// Configure Cloudinary
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -24,9 +26,8 @@ const limits = {
 
 const fileFilter = (req, file, callback) => {
   const extension = file.originalname.split('.').pop();
-  if (extension === 'exe') {
-    return callback(HttpError(400, '.exe not allow extension'));
-  }
+  if (!AVAILABLE_AVATAR_IMAGE_TYPES.includes(extension)) {
+    return callback(HttpError(400, ERROR.INVALID_FILE_EXTENSION));
   callback(null, true);
 };
 
