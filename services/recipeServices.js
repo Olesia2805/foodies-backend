@@ -4,6 +4,7 @@ import Ingredient from '../db/models/Ingredient.js';
 import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
 import User from '../db/models/User.js';
+import UserFavorites from '../db/models/UserFavorites.js';
 
 const createRecipe = async (recipeData) => {
   const { ingredients, ...recipeFields } = recipeData;
@@ -45,35 +46,39 @@ const getUserRecipes = async (owner) => {
   });
 };
 
-const addToFavorites = async (userId, recipeId) => {
+const addToFavorites = async (user, recipeId) => {
   const recipe = await Recipe.findByPk(recipeId);
 
-  if (!recipe) throw HttpError(400, "Recipe not found")
-  
-  const user = await User.findByPk(userId);
+  if (!recipe) throw HttpError(400, 'Recipe not found');
+
+  const hasFavorite = await user.hasFavoriteRecipes(recipeId);
+  if (hasFavorite) {
+    throw HttpError(400, 'Recipe is already in your favorites');
+  }
 
   return user.addFavoriteRecipes(recipe);
-}
+};
 
-const deleteFromFavorites = async (userId, recipeId) => {
-  const user = await User.findByPk(userId);
-
-
-  const isFavorite = await user.hasFavoriteRecipes(recipeId);
-  if (!isFavorite) {
-    throw HttpError(400, "Recipe is not in your favorites")
+const deleteFromFavorites = async (user, recipeId) => {
+  const hasFavorite = await user.hasFavoriteRecipes(recipeId);
+  if (!hasFavorite) {
+    throw HttpError(400, 'Recipe is not in your favorites');
   }
 
   return user.removeFavoriteRecipes(recipeId);
+};
 
-}
+const getFavorites = async (user, filters = {}) => {
+  const { rows, count } = await UserFavorites.findAndCountAll({
+    where: {
+      user_id: user._id,
+    },
+    include: [{ model: Recipe, as: 'recipe' }],
+    ...filters,
+  });
 
-const getFavorites = async (userId, filters = {}) => {
-  const user = await User.findByPk(userId);
-
-  const {rows, count} = await user.getFavoriteRecipes(filters);
-  if (!rows) {
-    throw HttpError(400, "Recipe is not in your favorites")
+  if (!rows || rows.length === 0) {
+    throw HttpError(400, 'No favorite recipes found');
   }
 
   const pages = Math.ceil(count / filters?.limit || 1);
@@ -81,20 +86,20 @@ const getFavorites = async (userId, filters = {}) => {
     ? Math.floor(filters?.offset / filters?.limit) + 1
     : 1;
 
+  const recipes = rows.map((favorite) => favorite.recipe);
+
   return {
     total: count,
     currentPage: currentPage,
     pages: pages,
-    data: rows,
+    data: recipes,
   };
-}
-
-
+};
 
 export default {
   createRecipe,
   getUserRecipes,
   addToFavorites,
   deleteFromFavorites,
-  getFavorites
+  getFavorites,
 };

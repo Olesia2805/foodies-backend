@@ -47,11 +47,10 @@ export const createRecipeSchema = Joi.object({
 });
 
 export const addToFavorites = Joi.object({
-  // id: Joi.string().max(100).required().messages({
-  //   'any.required': 'Filed "id" is required',
-  //   'string.empty': 'Filed "id" cannot be empty',
-  //   'string.max': 'Filed "id" must not exceed 100 characters',
-  // }),
-
-  id: Joi.number().integer().min(1).required()
-})
+  id: Joi.number().integer().min(1).required().messages({
+    'any.required': 'Filed "id" is required',
+    'number.base': 'Filed "id" must be an integer',
+    'number.integer': 'Filed "id" must be an integer',
+    'number.min': 'Filed "id" must be greater than or equal to 1',
+  }),
+});
