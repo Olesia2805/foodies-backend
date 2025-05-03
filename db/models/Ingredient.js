@@ -1,13 +1,18 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../Sequelize.js";
+import { DataTypes } from 'sequelize';
+import sequelize from '../Sequelize.js';
 
 const Ingredient = sequelize.define(
-  "ingredient",
+  'ingredient',
   {
+    // _id: {
+    //   type: DataTypes.STRING,
+    //   primaryKey: true,
+    //   allowNull: false,
+    // },
     _id: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     name: {
       type: DataTypes.STRING,
@@ -30,6 +35,5 @@ const Ingredient = sequelize.define(
 );
 
 // Ingredient.sync();
-// Ingredient.sync({ force: true });
 
 export default Ingredient;

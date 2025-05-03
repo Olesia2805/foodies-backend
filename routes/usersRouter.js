@@ -13,7 +13,7 @@ usersRouter.patch(
   usersControllers.updateUserAvatar
 );
 
-usersRouter.get('/followings', auth, usersControllers.getFollowing);
+usersRouter.get('/followings/:userId', auth, usersControllers.getFollowing);
 
 usersRouter.post('/followings/:followerId', auth, usersControllers.followUser);
 
@@ -23,7 +23,7 @@ usersRouter.delete(
   usersControllers.unfollowUser
 );
 
-usersRouter.get('/followers', auth, usersControllers.getFollowers);
+usersRouter.get('/followers/:userId', auth, usersControllers.getFollowers);
 
 usersRouter.get('/:userId', auth, usersControllers.getUserById);
 

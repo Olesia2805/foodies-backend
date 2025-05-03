@@ -1,12 +1,12 @@
 import { DataTypes } from 'sequelize';
 
-import sequelize from '../Sequelize.js';
 import { emailRegexp } from '../../constants/auth.js';
+import sequelize from '../Sequelize.js';
 
 const User = sequelize.define('User', {
-  id: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+  _id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   name: {

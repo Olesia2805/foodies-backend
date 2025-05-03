@@ -1,6 +1,7 @@
 # Інструкція з використання проекту Foodies
 
 ## Вимоги
+
 - Docker та Docker Compose повинні бути встановлені на вашій системі.
 - Node.js та npm (для локальної розробки без Docker).
 
@@ -70,16 +71,19 @@ foodies-frontend/
 ## Запуск проекту за допомогою Docker Compose
 
 1. Відкрийте термінал і перейдіть до папки `foodies-backend`:
+
    ```bash
    cd /Users/someuser/Desktop/foodies/foodies-backend
    ```
 
 2. Запустіть сервіси за допомогою Docker Compose:
+
    ```bash
    docker-compose up
    ```
 
 3. Після запуску:
+
    - **Бекенд** буде доступний за адресою: [http://localhost:3000](http://localhost:3000)
    - **Фронтенд** буде доступний за адресою: [http://localhost:3001](http://localhost:3001)
 
@@ -93,16 +97,19 @@ foodies-frontend/
 ### Запуск бекенду
 
 1. Перейдіть до папки `foodies-backend`:
+
    ```bash
    cd foodies-backend
    ```
 
 2. Встановіть залежності:
+
    ```bash
    npm install
    ```
 
 3. Запустіть сервер у режимі розробки:
+
    ```bash
    npm run dev
    ```
@@ -112,16 +119,19 @@ foodies-frontend/
 ### Запуск фронтенду
 
 1. Перейдіть до папки `foodies-frontend`:
+
    ```bash
    cd ../foodies-frontend
    ```
 
 2. Встановіть залежності:
+
    ```bash
    npm install
    ```
 
 3. Запустіть фронтенд у режимі розробки:
+
    ```bash
    npm run dev
    ```
@@ -135,11 +145,13 @@ Seed-функція дозволяє заповнити базу даних те
 1. Переконайтеся, що база даних запущена (наприклад, через Docker Compose).
 
 2. Запустіть seed-скрипт:
+
    ```bash
    node seed.js
    ```
 
 3. Якщо все пройшло успішно, ви побачите повідомлення:
+
    ```
    Дані успішно завантажено до бази даних!
    ```
@@ -154,19 +166,39 @@ Seed-функція дозволяє заповнити базу даних те
   ```bash
   docker-compose logs
   ```
-  
+
 ## API
 
-| Method | Endpoint                          | Description                             |
-|--------|-----------------------------------|-----------------------------------------|
-| POST   | /api/auth/register                | Register a new user                     |
-| POST   | /api/auth/login                   | Login a user and generate a JWT token   |
-| POST   | /api/auth/logout                  | Logout a user by invalidating the token |
-| GET    | /api/auth/me                      | Get information about a current user    |
-| PATCH  | /api/users/avatars                | Update a user avatar                    |
-| GET    | /api/users/followings             | Get current user followings list        |
-| POST   | /api/users/followings/:followerId | Follow the user with followerId         |
-| DELETE | /api/users/followings/:followerId | Unfollow the user with followerId       |
-| GET    | /api/users/followers              | Get current user followers list         |
-| GET    | /api/users/:userId                | Get user by Id                          |
-| GET    | /api/recipes/:recipeId            | Get recipe by Id                        |
+| Method | Endpoint                          | Description                              |
+| ------ |-----------------------------------|------------------------------------------|
+| POST   | /api/auth/register                | Register a new user                      |
+| POST   | /api/auth/login                   | Login a user and generate a JWT token    |
+| POST   | /api/auth/logout                  | Logout a user by invalidating the token  |
+| GET    | /api/auth/me                      | Get information about a current user     |
+| PATCH  | /api/users/avatars                | Update a user avatar                     |
+| GET    | /api/users/followings/:userId     | Get user followings list by user Id      |
+| POST   | /api/users/followings/:followerId | Follow the user with followerId          |
+| DELETE | /api/users/followings/:followerId | Unfollow the user with followerId        |
+| GET    | /api/users/followers/:userId      | Get user followers list by user Id       |
+| GET    | /api/users/:userId                | Get user by Id                           |
+| GET    | /api/categories                   | Get list of all categories               |
+| GET    | /api/ingredients                  | Get all ingredients (paginated)          |
+| GET    | /api/ingredients/list?ids=1&ids=2 | Get requested ingredients by ID list     |
+| GET    | /api/ingredients/:id              | Get ingredient by ID                     |
+| GET    | /api/areas                        | Get List of All Areas                    |
+| GET    | /api/areas/search?name=someName   | Get Country by name                      |
+| GET    | /api/testimonials                 | Get list of all testimonials (paginated) |
+
+**Note:** `GET /api/ingredients` and `GET /api/testimonials`
+
+| Parameter | Type   | Required | Description             |
+| --------- | ------ | -------- | ----------------------- |
+| limit     | number | No       | Items per page (min: 1) |
+| page      | number | No       | Page number (min: 1)    |
+
+Example:
+
+```bash
+GET /api/ingredients?limit=10&page=2
+GET /api/ingredients?limit=10&page=2
+```

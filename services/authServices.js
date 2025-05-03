@@ -40,7 +40,7 @@ const login = async ({ email, password }) => {
   }
 
   const payload = {
-    id: user.id,
+    id: user._id,
     email: user.email,
   };
 
