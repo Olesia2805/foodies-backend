@@ -8,8 +8,8 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
-      - ./foodies-data:/app/data
       - /app/node_modules
+      - ./foodies-data:/app/data
     command: npm run dev
     environment:
       - NODE_ENV=development

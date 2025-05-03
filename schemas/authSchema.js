@@ -12,4 +12,8 @@ export const createUserSchema = Joi.object({
   name: Joi.string().required(),
 });
 
+export const refreshTokenSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+})
+
 export const getUserSchema = Joi.object(baseAuthSchema);
