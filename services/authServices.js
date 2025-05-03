@@ -1,5 +1,5 @@
 import { UniqueConstraintError } from 'sequelize';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import gravatar from 'gravatar';
 
 import User from '../db/models/User.js';
