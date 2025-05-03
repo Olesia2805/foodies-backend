@@ -7,7 +7,7 @@ import sendEmail from '../helpers/sendEmail.js';
 import User from '../db/models/User.js';
 import HttpError from '../helpers/HttpError.js';
 import { ERROR } from '../constants/messages.js';
-import { createToken } from '../helpers/jwtHelper.js';
+import { createAccessToken, createRefreshToken, verifyRefreshToken } from '../helpers/jwtHelper.js';
 
 const register = async ({ name, email, password }) => {
   try {
@@ -61,7 +61,11 @@ const login = async ({ email, password }) => {
     email: user.email,
   };
 
-  user.token = createToken(payload);
+  const accessToken = createAccessToken(payload);
+  const refreshToken = createRefreshToken(payload);
+
+  user.token = accessToken;
+  user.refreshToken = refreshToken;
 
   await user.save();
 
@@ -69,7 +73,9 @@ const login = async ({ email, password }) => {
     avatar: user.avatar,
     name: user.name,
     email: user.email,
-    token: user.token,
+
+    token: accessToken,
+    refreshToken,
   };
 };
 
@@ -81,6 +87,8 @@ const logout = async (userId) => {
   }
 
   user.token = null;
+  user.refreshToken = null;
+
   await user.save();
 };
 
@@ -97,6 +105,7 @@ const getMe = async (userId) => {
     avatar: user.avatar,
   };
 };
+
 
 const verifyUser = async (verificationToken) => {
   const user = await User.findOne({ where: { verificationToken } });
@@ -127,6 +136,34 @@ const resendVerificationEmail = async (user) => {
     text: 'Please verify your email.',
     user: { verificationToken: user.verificationToken },
   });
+
+const refresh = async (refreshToken) => {
+  let payload;
+
+  try {
+    payload = verifyRefreshToken(refreshToken);
+  } catch {
+    throw HttpError(403, ERROR.INVALID_REFRESH_TOKEN);
+  }
+
+  const user = await User.findByPk(payload.id);
+
+  if (!user || user.refreshToken !== refreshToken)
+    throw HttpError(403, ERROR.INVALID_REFRESH_TOKEN);
+
+  const newAccessToken = createAccessToken({ id: user._id, email: user.email });
+  const newRefreshToken = createRefreshToken({ id: user._id, email: user.email });
+
+  user.token = newAccessToken;
+  user.refreshToken = newRefreshToken;
+
+  await user.save();
+
+  return {
+    token: newAccessToken,
+    refreshToken: newRefreshToken,
+  };
+
 };
 
 export default {
@@ -138,4 +175,5 @@ export default {
   findUserByEmail,
   findUserByVerificationToken,
   resendVerificationEmail,
+  refresh,
 };

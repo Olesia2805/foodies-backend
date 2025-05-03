@@ -18,6 +18,7 @@ const login = async (req, res) => {
 
   res.status(200).send({
     token: user.token,
+    refreshToken: user.refreshToken,
     user: {
       name: user.name,
       email: user.email,
@@ -37,6 +38,7 @@ const getMe = async (req, res) => {
 
   res.status(200).json(user);
 };
+
 
 const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
@@ -73,6 +75,13 @@ const resendVerificationEmail = async (req, res) => {
   res.status(200).json({ message: 'Verification email sent' });
 };
 
+const refresh = async (req, res) => {
+  const token = await authService.refresh(req.body.refreshToken);
+
+  res.status(200).send(token);
+}
+
+
 export default {
   register: errorWrapper(register),
   login: errorWrapper(login),
@@ -80,4 +89,5 @@ export default {
   getMe: errorWrapper(getMe),
   verifyEmail: errorWrapper(verifyEmail),
   resendVerificationEmail: errorWrapper(resendVerificationEmail),
+  refresh: errorWrapper(refresh),
 };

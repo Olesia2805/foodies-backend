@@ -2,7 +2,7 @@ import express from 'express';
 
 import authController from '../controllers/authControllers.js';
 import validateBody from '../helpers/validateBody.js';
-import { createUserSchema, getUserSchema } from '../schemas/authSchema.js';
+import { createUserSchema, getUserSchema, refreshTokenSchema } from '../schemas/authSchema.js';
 
 import auth from '../middlewares/auth.js';
 
@@ -23,5 +23,8 @@ authRouter.get('/me', auth, authController.getMe);
 authRouter.get('/verify/:verificationToken', authController.verifyEmail);
 
 authRouter.post('/verify', authController.resendVerificationEmail);
+
+authRouter.post('/refresh-token', validateBody(refreshTokenSchema), authController.refresh);
+
 
 export default authRouter;

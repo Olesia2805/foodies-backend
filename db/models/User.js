@@ -38,6 +38,11 @@ const User = sequelize.define('User', {
   verificationToken: {
     type: DataTypes.STRING,
   },
+  refreshToken: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+    allowNull: true,
+  }
 });
 
 User.belongsToMany(User, {
