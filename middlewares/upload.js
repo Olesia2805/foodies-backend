@@ -5,7 +5,7 @@ import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import HttpError from '../helpers/HttpError.js';
 import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
 import { ERROR } from '../constants/messages.js';
-
+import path from 'node:path';
 
 const tempDir = path.resolve('temp');
 const avatarsDir = path.resolve('public', 'avatars');

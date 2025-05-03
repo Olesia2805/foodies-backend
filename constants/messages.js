@@ -13,7 +13,7 @@ export const ERROR = {
 
 
   // Recipe
-  RECIPE_WITH_ID_NOT_FOUND: (id) => `Not found ingredients with IDs: ${id}`,
+  RECIPE_WITH_ID_NOT_FOUND: (id) => `Not found recipe ${id}`,
   FAVORITES_NOT_FOUND: `No favorite recipes found`,
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',

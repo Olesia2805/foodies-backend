@@ -52,21 +52,41 @@ const addToFavorites = async (user, recipeId) => {
 
   if (!recipe) throw HttpError(400, ERROR.RECIPE_WITH_ID_NOT_FOUND(recipeId));
 
-  const hasFavorite = await user.hasFavoriteRecipes(recipeId);
-  if (hasFavorite) {
+  const existingFavorite = await UserFavorites.findOne({
+    where: {
+      user_id: user._id,
+      recipe_id: recipeId,
+    },
+  });
+
+  if (existingFavorite) {
     throw HttpError(400, 'Recipe is already in your favorites');
   }
 
-  return user.addFavoriteRecipes(recipe);
+  return await UserFavorites.create({
+    user_id: user._id,
+    recipe_id: recipeId,
+  });
 };
 
 const deleteFromFavorites = async (user, recipeId) => {
-  const hasFavorite = await user.hasFavoriteRecipes(recipeId);
-  if (!hasFavorite) {
+  const favorite = await UserFavorites.findOne({
+    where: {
+      user_id: user._id,
+      recipe_id: recipeId,
+    },
+  });
+
+  if (!favorite) {
     throw HttpError(400, ERROR.RECIPE_WITH_ID_NOT_FOUND(recipeId));
   }
 
-  return user.removeFavoriteRecipes(recipeId);
+  return await UserFavorites.destroy({
+    where: {
+      user_id: user._id,
+      recipe_id: recipeId,
+    },
+  });
 };
 
 const getFavorites = async (user, filters = {}) => {
