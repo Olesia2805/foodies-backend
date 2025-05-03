@@ -25,8 +25,8 @@ const limits = {
 };
 
 const fileFilter = (req, file, callback) => {
-  const extension = file.originalname.split('.').pop();
-  if (!AVAILABLE_AVATAR_IMAGE_TYPES.includes(extension)) {
+  const ext = file.originalname.split('.').pop();
+  if (!AVAILABLE_AVATAR_IMAGE_TYPES.includes(ext)) {
     return callback(HttpError(400, ERROR.INVALID_FILE_EXTENSION));
   callback(null, true);
 };
