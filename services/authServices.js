@@ -6,8 +6,12 @@ import sendEmail from '../helpers/sendEmail.js';
 
 import User from '../db/models/User.js';
 import HttpError from '../helpers/HttpError.js';
-import { ERROR } from '../constants/messages.js';
-import { createAccessToken, createRefreshToken, verifyRefreshToken } from '../helpers/jwtHelper.js';
+import { ERROR, SUCCESS } from '../constants/messages.js';
+import {
+  createAccessToken,
+  createRefreshToken,
+  verifyRefreshToken,
+} from '../helpers/jwtHelper.js';
 
 const register = async ({ name, email, password }) => {
   try {
@@ -16,11 +20,11 @@ const register = async ({ name, email, password }) => {
     const verificationToken = uuidv4();
 
     const newUser = await User.create({
-      name,
-      email,
+      name: name,
+      email: email,
       password: hashPassword,
       avatar: avatarURL,
-      verificationToken,
+      verificationToken: verificationToken,
     });
 
     await sendEmail({
@@ -73,9 +77,8 @@ const login = async ({ email, password }) => {
     avatar: user.avatar,
     name: user.name,
     email: user.email,
-
     token: accessToken,
-    refreshToken,
+    refreshToken: refreshToken,
   };
 };
 
@@ -106,19 +109,18 @@ const getMe = async (userId) => {
   };
 };
 
-
 const verifyUser = async (verificationToken) => {
   const user = await User.findOne({ where: { verificationToken } });
 
   if (!user) {
-    throw HttpError(404, 'User not found');
+    throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
   user.verificationToken = null;
   user.verify = true;
   await user.save();
 
-  return { message: 'Verification successful' };
+  return { message: SUCCESS.VERIFICATION_SUCCESSFULL };
 };
 
 const findUserByEmail = async (email) => {
@@ -136,6 +138,7 @@ const resendVerificationEmail = async (user) => {
     text: 'Please verify your email.',
     user: { verificationToken: user.verificationToken },
   });
+};
 
 const refresh = async (refreshToken) => {
   let payload;
@@ -151,8 +154,14 @@ const refresh = async (refreshToken) => {
   if (!user || user.refreshToken !== refreshToken)
     throw HttpError(403, ERROR.INVALID_REFRESH_TOKEN);
 
-  const newAccessToken = createAccessToken({ id: user._id, email: user.email });
-  const newRefreshToken = createRefreshToken({ id: user._id, email: user.email });
+  const newAccessToken = createAccessToken({
+    id: user._id,
+    email: user.email,
+  });
+  const newRefreshToken = createRefreshToken({
+    id: user._id,
+    email: user.email,
+  });
 
   user.token = newAccessToken;
   user.refreshToken = newRefreshToken;
@@ -163,7 +172,6 @@ const refresh = async (refreshToken) => {
     token: newAccessToken,
     refreshToken: newRefreshToken,
   };
-
 };
 
 export default {
