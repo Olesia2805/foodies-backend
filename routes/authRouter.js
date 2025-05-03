@@ -20,4 +20,8 @@ authRouter.post('/logout', auth, authController.logout);
 
 authRouter.get('/me', auth, authController.getMe);
 
+authRouter.get('/verify/:verificationToken', authController.verifyEmail);
+
+authRouter.post('/verify', authController.resendVerificationEmail);
+
 export default authRouter;

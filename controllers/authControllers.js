@@ -38,9 +38,46 @@ const getMe = async (req, res) => {
   res.status(200).json(user);
 };
 
+const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.params;
+  const user = await authService.findUserByVerificationToken(verificationToken);
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const response = await authService.verifyUser(verificationToken);
+
+  res.status(200).json(response);
+};
+
+const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: 'missing required field email' });
+  }
+
+  const user = await authService.findUserByEmail(email);
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  if (user.verify) {
+    return res.status(400).json({ message: 'Verification has already been passed' });
+  }
+
+  await authService.resendVerificationEmail(user);
+
+  res.status(200).json({ message: 'Verification email sent' });
+};
+
 export default {
   register: errorWrapper(register),
   login: errorWrapper(login),
   logout: errorWrapper(logout),
   getMe: errorWrapper(getMe),
+  verifyEmail: errorWrapper(verifyEmail),
+  resendVerificationEmail: errorWrapper(resendVerificationEmail),
 };
