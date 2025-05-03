@@ -49,18 +49,14 @@ const updateUserAvatar = async (userId, file) => {
     throw HttpError(400, ERROR.AVATAR_IS_REQUIRED);
   }
 
-  const { path: oldPath, filename } = file;
-  const newPath = path.join(avatarsDir, filename);
+  const avatarURL = file.path;
 
-  await fs.rename(oldPath, newPath);
-  const avatarURL = path.join('avatars', filename);
-
-  const user = await User.findOne({ where: { id: userId } });
+  const user = await User.findOne({ where: { _id: userId } });
 
   if (!user) throw HttpError(404, ERROR.USER_NOT_FOUND);
 
   return user.update(
-    { avatar: `${process.env.HOST}:${process.env.PORT}/${avatarURL}` },
+    { avatar: avatarURL },
     { returning: true }
   );
 };
