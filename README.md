@@ -170,7 +170,7 @@ Seed-функція дозволяє заповнити базу даних те
 ## API
 
 | Method | Endpoint                          | Description                              |
-| ------ |-----------------------------------|------------------------------------------|
+| ------ | --------------------------------- | ---------------------------------------- |
 | POST   | /api/auth/register                | Register a new user                      |
 | POST   | /api/auth/login                   | Login a user and generate a JWT token    |
 | POST   | /api/auth/logout                  | Logout a user by invalidating the token  |
@@ -189,8 +189,9 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/areas/search?name=someName   | Get Country by name                      |
 | GET    | /api/testimonials                 | Get list of all testimonials (paginated) |
 | POST   | /api/recipes                      | Create a new recipe                      |
-| GET    | /api/recipes/own                  | Get current user recipes list            |
 | POST   | /api/recipes/favorites            | Add to favorites recipe                  |
+| DELETE | /api/recipes/:id                  | Delete recipe by id                      |
+| GET    | /api/recipes/own                  | Get current user recipes list            |
 
 **Note:** `GET /api/ingredients` and `GET /api/testimonials`
 

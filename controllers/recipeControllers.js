@@ -84,10 +84,20 @@ const getFavorites = async (req, res) => {
   res.status(200).json(data);
 };
 
+const deleteRecipe = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user._id;
+
+  const result = await recipeService.deleteRecipe(id, userId);
+
+  res.status(200).json(result);
+};
+
 export default {
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
   addToFavorites: errorWrapper(addToFavorites),
   deleteFromFavorites: errorWrapper(deleteFromFavorites),
   getFavorites: errorWrapper(getFavorites),
+  deleteRecipe: errorWrapper(deleteRecipe),
 };

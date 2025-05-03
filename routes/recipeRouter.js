@@ -20,6 +20,8 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
+recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
+
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
 recipeRouter.post(
