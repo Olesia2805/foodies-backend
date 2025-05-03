@@ -49,7 +49,7 @@ const updateUserAvatar = async (userId, file) => {
     throw HttpError(400, ERROR.AVATAR_IS_REQUIRED);
   }
 
-  const avatarURL = file.path; // Use Cloudinary URL directly
+  const avatarURL = file.path;
 
   const user = await User.findOne({ where: { _id: userId } });
 
