@@ -6,6 +6,8 @@ import { addToFavorites, createRecipeSchema } from '../schemas/recipeSchema.js';
 
 import auth from '../middlewares/auth.js';
 import upload from '../middlewares/upload.js';
+import { paginationSchema } from '../schemas/paginationSchema.js';
+import validateQuery from '../helpers/validateQuery.js';
 
 const recipeRouter = express.Router();
 
@@ -25,6 +27,20 @@ recipeRouter.post(
   auth,
   validateBody(addToFavorites),
   recipeController.addToFavorites
+);
+
+recipeRouter.delete(
+  '/favorites',
+  auth,
+  validateBody(addToFavorites),
+  recipeController.deleteFromFavorites
+);
+
+recipeRouter.get(
+  '/favorites',
+  auth,
+  validateQuery(paginationSchema),
+  recipeController.getFavorites
 );
 
 export default recipeRouter;

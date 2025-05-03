@@ -51,16 +51,42 @@ const addToFavorites = async (userId, recipeId) => {
   if (!recipe) throw HttpError(400, "Recipe not found")
   
   const user = await User.findByPk(userId);
-  // console.log(user)
-  // console.log(typeof user)
-  // console.log('Own properties:', Object.getOwnPropertyNames(user))
-  // console.log('Prototype methods:', Object.getOwnPropertyNames(Object.getPrototypeOf(user)))
 
-  const result = await user.addFavoriteRecipes(recipe);
+  return user.addFavoriteRecipes(recipe);
+}
 
-  console.log('result :>> ', result);
+const deleteFromFavorites = async (userId, recipeId) => {
+  const user = await User.findByPk(userId);
 
-  return result
+
+  const isFavorite = await user.hasFavoriteRecipes(recipeId);
+  if (!isFavorite) {
+    throw HttpError(400, "Recipe is not in your favorites")
+  }
+
+  return user.removeFavoriteRecipes(recipeId);
+
+}
+
+const getFavorites = async (userId, filters = {}) => {
+  const user = await User.findByPk(userId);
+
+  const {rows, count} = await user.getFavoriteRecipes(filters);
+  if (!rows) {
+    throw HttpError(400, "Recipe is not in your favorites")
+  }
+
+  const pages = Math.ceil(count / filters?.limit || 1);
+  const currentPage = filters?.limit
+    ? Math.floor(filters?.offset / filters?.limit) + 1
+    : 1;
+
+  return {
+    total: count,
+    currentPage: currentPage,
+    pages: pages,
+    data: rows,
+  };
 }
 
 
@@ -68,5 +94,7 @@ const addToFavorites = async (userId, recipeId) => {
 export default {
   createRecipe,
   getUserRecipes,
-  addToFavorites
+  addToFavorites,
+  deleteFromFavorites,
+  getFavorites
 };

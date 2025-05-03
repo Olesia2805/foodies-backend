@@ -41,12 +41,50 @@ const addToFavorites = async (req, res) => {
   const { _id: userId } = req.user;
   const { id } = req.body;
 
-  const result = await recipeService.addToFavorites(userId, id)
+  await recipeService.addToFavorites(userId, id)
 
   res.status(201).json({
-    message: `Recipe ${id} added to favorite successfully`,
-    result: result
+    message: `Recipe with Id: "${id}" added to favorite successfully`,
   })
+
+}
+
+const deleteFromFavorites = async (req, res) => {
+  const { _id: userId } = req.user;
+  const { id } = req.body;
+
+  await recipeService.deleteFromFavorites(userId, id)
+
+  res.status(200).json({
+    message: `Recipe with Id: "${id}" deleted from favorite successfully`,
+  })
+
+}
+
+const getFavorites = async (req, res) => {
+  let { page, limit} = req.query;
+  const filters = {};
+  filters.offset = 0;
+
+  page = Number(page);
+  limit = Number(limit);
+
+  if (limit) {
+    filters.limit = limit;
+    if (page) {
+      filters.offset = (page - 1) * limit;
+    }
+  }
+
+  const { _id: userId } = req.user;
+
+  const data =  await recipeService.getFavorites(userId, filters)
+
+  if (!Array.isArray(data?.data) || data.data.length === 0) {
+      throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
+  }
+
+  res.status(200).json(data);
 
 }
 
@@ -54,4 +92,6 @@ export default {
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
   addToFavorites: errorWrapper(addToFavorites),
+  deleteFromFavorites: errorWrapper(deleteFromFavorites),
+  getFavorites: errorWrapper(getFavorites),
 };
