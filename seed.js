@@ -9,6 +9,7 @@ import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
 import Recipe from './db/models/recipe.js';
 import Testimonial from './db/models/testimonial.js';
+import UserFavorites from './db/models/UserFavorites.js';
 
 const seedData = async () => {
   try {
