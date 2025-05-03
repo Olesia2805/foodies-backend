@@ -5,7 +5,6 @@ import HttpError from '../helpers/HttpError.js';
 import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
 import { ERROR } from '../constants/messages.js';
 
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -16,7 +15,7 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'avatars',
-    allowed_formats: ['jpg', 'png', 'jpeg'],
+    allowed_formats: AVAILABLE_AVATAR_IMAGE_TYPES,
   },
 });
 

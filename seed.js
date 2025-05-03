@@ -7,7 +7,7 @@ import Area from './db/models/Areas.js';
 import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
-import Recipe from './db/models/recipe.js';
+import Recipe from './db/models/Recipe.js';
 import Testimonial from './db/models/testimonial.js';
 
 const seedData = async () => {
