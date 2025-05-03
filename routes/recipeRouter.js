@@ -18,6 +18,8 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
+recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
+
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
 export default recipeRouter;

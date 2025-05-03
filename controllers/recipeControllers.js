@@ -37,7 +37,17 @@ const getUserRecipes = async (req, res) => {
   });
 };
 
+const deleteRecipe = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user._id;
+
+  const result = await recipeService.deleteRecipe(id, userId);
+
+  res.status(200).json(result);
+};
+
 export default {
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
+  deleteRecipe: errorWrapper(deleteRecipe),
 };
