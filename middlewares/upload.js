@@ -28,13 +28,10 @@ const fileFilter = (req, file, callback) => {
   const ext = file.originalname.split('.').pop();
   if (!AVAILABLE_AVATAR_IMAGE_TYPES.includes(ext)) {
     return callback(HttpError(400, ERROR.INVALID_FILE_EXTENSION));
+  }
   callback(null, true);
 };
 
-const upload = multer({
-  storage,
-  limits,
-  fileFilter,
-});
+const upload = multer({ storage, limits, fileFilter });
 
 export default upload;
