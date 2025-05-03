@@ -10,6 +10,8 @@ export const ERROR = {
     `Not found ingredients with IDs: ${ids.join(', ')}`,
   CATEGORY_NOT_FOUND: 'Category not found',
   AREAS_NOT_FOUND: 'Areas not found',
+  INVALID_REFRESH_TOKEN: 'Invalid refresh token',
+  ACCESS_TOKEN_EXPIRED: 'Access token expired',
 };
 
 export const SUCCESS = {
