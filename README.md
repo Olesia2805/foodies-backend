@@ -190,10 +190,12 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/testimonials                 | Get list of all testimonials (paginated) |
 | POST   | /api/recipes                      | Create a new recipe                      |
 | POST   | /api/recipes/favorites            | Add to favorites recipe                  |
+| DELETE | /api/recipes/favorites            | Delete from favorites recipe             |
+| GET    | /api/recipes/favorites            | Get list of favorites recipes            |
 | DELETE | /api/recipes/:id                  | Delete recipe by id                      |
 | GET    | /api/recipes/own                  | Get current user recipes list            |
 
-**Note:** `GET /api/ingredients` and `GET /api/testimonials`
+**Note:** `GET /api/ingredients`, `GET /api/testimonials` and `GET /api/recipes/favorites`
 
 | Parameter | Type   | Required | Description             |
 | --------- | ------ | -------- | ----------------------- |
