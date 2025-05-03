@@ -10,9 +10,17 @@ export const ERROR = {
     `Not found ingredients with IDs: ${ids.join(', ')}`,
   CATEGORY_NOT_FOUND: 'Category not found',
   AREAS_NOT_FOUND: 'Areas not found',
+
+  // Recipe
+  RECIPE_WITH_ID_NOT_FOUND: (id) => `Not found ingredients with IDs: ${id}`,
+  FAVORITES_NOT_FOUND: `No favorite recipes found`,
 };
 
 export const SUCCESS = {
   FOLLOWED: 'Successfully followed',
   UNFOLLOWED: 'Successfully unfollowed',
+  RECIPE_FAVORITES_ADDED: (id) =>
+    `Recipe with Id: "${id}" added to favorite successfully`,
+  RECIPE_FAVORITES_DELETED: (id) =>
+    `Recipe with Id: "${id}" deleted from favorite successfully`,
 };

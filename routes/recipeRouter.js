@@ -20,10 +20,6 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
-recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
-
-recipeRouter.get('/own', auth, recipeController.getUserRecipes);
-
 recipeRouter.post(
   '/favorites',
   auth,
@@ -44,5 +40,9 @@ recipeRouter.get(
   validateQuery(paginationSchema),
   recipeController.getFavorites
 );
+
+recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
+
+recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
 export default recipeRouter;

@@ -1,4 +1,4 @@
-import { ERROR } from '../constants/messages.js';
+import { ERROR, SUCCESS } from '../constants/messages.js';
 import errorWrapper from '../helpers/errorWrapper.js';
 import recipeService from '../services/recipeServices.js';
 
@@ -45,7 +45,7 @@ const addToFavorites = async (req, res) => {
   await recipeService.addToFavorites(user, id);
 
   res.status(201).json({
-    message: `Recipe with Id: "${id}" added to favorite successfully`,
+    message: SUCCESS.RECIPE_FAVORITES_ADDED(id),
   });
 };
 
@@ -56,7 +56,7 @@ const deleteFromFavorites = async (req, res) => {
   await recipeService.deleteFromFavorites(user, id);
 
   res.status(200).json({
-    message: `Recipe with Id: "${id}" deleted from favorite successfully`,
+    message: SUCCESS.RECIPE_FAVORITES_DELETED(id),
   });
 };
 
@@ -76,10 +76,6 @@ const getFavorites = async (req, res) => {
   }
 
   const data = await recipeService.getFavorites(req.user, filters);
-
-  if (!Array.isArray(data?.data) || data.data.length === 0) {
-    throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
-  }
 
   res.status(200).json(data);
 };

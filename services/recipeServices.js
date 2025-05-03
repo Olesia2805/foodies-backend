@@ -5,6 +5,7 @@ import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
 import User from '../db/models/User.js';
 import UserFavorites from '../db/models/UserFavorites.js';
+import { ERROR } from '../constants/messages.js';
 
 const createRecipe = async (recipeData) => {
   const { ingredients, ...recipeFields } = recipeData;
@@ -49,7 +50,7 @@ const getUserRecipes = async (owner) => {
 const addToFavorites = async (user, recipeId) => {
   const recipe = await Recipe.findByPk(recipeId);
 
-  if (!recipe) throw HttpError(400, 'Recipe not found');
+  if (!recipe) throw HttpError(400, ERROR.RECIPE_WITH_ID_NOT_FOUND(recipeId));
 
   const hasFavorite = await user.hasFavoriteRecipes(recipeId);
   if (hasFavorite) {
@@ -62,7 +63,7 @@ const addToFavorites = async (user, recipeId) => {
 const deleteFromFavorites = async (user, recipeId) => {
   const hasFavorite = await user.hasFavoriteRecipes(recipeId);
   if (!hasFavorite) {
-    throw HttpError(400, 'Recipe is not in your favorites');
+    throw HttpError(400, ERROR.RECIPE_WITH_ID_NOT_FOUND(recipeId));
   }
 
   return user.removeFavoriteRecipes(recipeId);
@@ -77,16 +78,17 @@ const getFavorites = async (user, filters = {}) => {
     ...filters,
   });
 
-  if (!rows || rows.length === 0) {
-    throw HttpError(400, 'No favorite recipes found');
-  }
+  // I suppouse empty array is not an error.
+  // if (!rows || rows.length === 0) {
+  //   throw HttpError(400, ERROR.FAVORITES_NOT_FOUND);
+  // }
 
   const pages = Math.ceil(count / filters?.limit || 1);
   const currentPage = filters?.limit
     ? Math.floor(filters?.offset / filters?.limit) + 1
     : 1;
 
-  const recipes = rows.map((favorite) => favorite.recipe);
+  const recipes = rows?.map((favorite) => favorite.recipe) || [];
 
   return {
     total: count,
