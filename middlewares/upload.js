@@ -13,13 +13,13 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'avatars', // Folder in Cloudinary to store avatars
+    folder: 'avatars',
     allowed_formats: ['jpg', 'png', 'jpeg'],
   },
 });
 
 const limits = {
-  fileSize: 1024 * 1024 * 5, // 5MB limit
+  fileSize: 1024 * 1024 * 5,
 };
 
 const fileFilter = (req, file, callback) => {
