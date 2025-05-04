@@ -2,14 +2,20 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
-import { initModels, RecipeIngredient } from './db/initModels.js';
+import { initModels, RecipeIngredient, Recipe } from './db/initModels.js';
+
+
+// # TODO from initModels.js or from models?
 import Area from './db/models/Areas.js';
 import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
-
 import User from './db/models/User.js';
-import Recipe from './db/models/Recipe.js';
 import Testimonial from './db/models/testimonial.js';
+
+// import Recipe from './db/models/Recipe.js';
+
+
+initModels();
 
 const seedData = async () => {
   try {
@@ -41,7 +47,7 @@ const seedData = async () => {
 
     // Синхронізуємо моделі з базою даних
     console.log('Синхронізуємо моделі з базою даних...');
-    initModels();
+    // initModels();
     await sequelize.sync({ force: true });
     console.log('Моделі успішно синхронізовано');
 

@@ -50,26 +50,32 @@ const createRecipe = async (recipeData) => {
   }
 };
 
-const getUserRecipes = async (userId) => {
-  const recipes = await Recipe.findAll({
-    where: { userId },
+const getUserRecipes = async (owner) => {
+  return await Recipe.findAll({
+    where: { userId: owner },
     include: [
       {
-        model: Ingredient,
-        through: { attributes: ['measure'] },
-        as: 'ingredients',
+        model: RecipeIngredient,
+        as: 'recipeIngredients',
+        include: [
+          {
+            model: Ingredient,
+            as: 'ingredient',
+            attributes: ['_id', 'name', 'desc', 'img'],
+          },
+        ],
+        attributes: ['measure'],
       },
     ],
     order: [['createdAt', 'DESC']],
   });
+};
 
   //TODO
   // if (!recipes || recipes.length === 0) {
   //   throw HttpError(404, ERROR.RECIPE_NOT_FOUND);
   // }
 
-  return recipes;
-};
 
 const deleteRecipe = async (recipeId, userId) => {
   const t = await sequelize.transaction();
