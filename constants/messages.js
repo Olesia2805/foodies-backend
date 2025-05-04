@@ -12,9 +12,13 @@ export const ERROR = {
   AREAS_NOT_FOUND: 'Areas not found',
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
+  VERIFICATION_TOKEN_MISSING: 'Verification token is missing',
 };
 
 export const SUCCESS = {
   FOLLOWED: 'Successfully followed',
   UNFOLLOWED: 'Successfully unfollowed',
+  VERIFICATION_EMAIL_SENT: 'Verification email sent',
+  VERIFICATION_SUCCESSFULL: 'Verification successful',
+  VERIFICATION_ALREADY_PASSED: 'Verification has already been passed',
 };
