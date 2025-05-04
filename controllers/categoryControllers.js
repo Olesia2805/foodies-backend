@@ -1,5 +1,5 @@
+import { SUCCESS } from '../constants/messages.js';
 import errorWrapper from "../helpers/errorWrapper.js";
-
 import categoryService from "../services/categoryServices.js";
 
 const getAllCategories = async (req, res) => {
@@ -24,7 +24,7 @@ const createCategory = async (req, res) => {
 
   res.status(201).send({
     category,
-    message: 'Category created successfully',
+    message: SUCCESS.CATEGORY_CREATED,
   });
 };
 

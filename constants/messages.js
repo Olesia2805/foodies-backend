@@ -28,4 +28,5 @@ export const SUCCESS = {
   VERIFICATION_ALREADY_PASSED: 'Verification has already been passed',
   RECIPE_CREATED: 'Recipe created successfully',
   RECIPE_DELETED: 'Recipe deleted successfully',
+  CATEGORY_CREATED: 'Category created successfully',
 };
