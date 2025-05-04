@@ -7,8 +7,7 @@ const createRecipe = async (req, res) => {
 
   let thumb = null;
   if (req.file) {
-    const { filename } = req.file;
-    thumb = `/recipes/${filename}`;
+    thumb = req.file.path;
   }
 
   const ingredients = JSON.parse(req.body.ingredients || '[]');
