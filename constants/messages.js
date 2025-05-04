@@ -14,10 +14,12 @@ export const ERROR = {
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
   VERIFICATION_TOKEN_MISSING: 'Verification token is missing',
   RECIPE_NOT_FOUND: 'Recipe not found',
+  RECIPES_NOT_FOUND: 'Recipes not found',
   RECIPE_DELETE_PERMISSION_DENIED:
     'Recipe not found or you do not have permission to delete it',
   RECIPE_CREATION_FAILED:
     'Failed to create the recipe. Please try again later.',
+  TESTIMONIAL_NOT_FOUND: 'Testimonial not found',
 };
 
 export const SUCCESS = {

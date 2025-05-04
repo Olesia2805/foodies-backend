@@ -9,6 +9,8 @@ import upload from '../middlewares/upload.js';
 
 const recipeRouter = express.Router();
 
+recipeRouter.get('/', recipeController.getRecipes);
+
 recipeRouter.post(
   '/',
   auth,
