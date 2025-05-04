@@ -10,7 +10,7 @@ export const createRecipeSchema = Joi.object({
     'string.empty': 'Description cannot be empty',
     'string.max': 'Description must not exceed 200 characters',
   }),
-  area: Joi.string().max(200).messages({
+  area: Joi.string().max(200).optional().messages({
     'string.max': 'Area must not exceed 200 characters',
   }),
   instructions: Joi.string().max(2000).required().messages({
@@ -45,3 +45,31 @@ export const createRecipeSchema = Joi.object({
       'string.max': 'Ingredients must not exceed 2000 characters',
     }),
 });
+
+//TODO area and category
+// .valid('Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert')
+// message
+// 'any.only': 'Category must be one of [Breakfast, Lunch, Dinner, Snack, Dessert]',
+
+//TODO
+// ingredients: Joi.array()
+//   .items(
+//     Joi.object({
+//       ingredientId: Joi.string().uuid().required().messages({
+//         'any.required': 'Ingredient ID is required',
+//         'string.empty': 'Ingredient ID cannot be empty',
+//         'string.guid': 'Ingredient ID must be a valid UUID',
+//       }),
+//       quantity: Joi.string().max(50).required().messages({
+//         'any.required': 'Quantity is required',
+//         'string.empty': 'Quantity cannot be empty',
+//         'string.max': 'Quantity must not exceed 50 characters',
+//       }),
+//     })
+//   )
+//   .min(1)
+//   .required()
+//   .messages({
+//     'any.required': 'Ingredients are required',
+//     'array.min': 'At least one ingredient is required',
+//   }),
