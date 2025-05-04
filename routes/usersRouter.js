@@ -27,4 +27,6 @@ usersRouter.get('/followers/:userId', auth, usersControllers.getFollowers);
 
 usersRouter.get('/:userId', auth, usersControllers.getUserById);
 
+usersRouter.get('/', auth, usersControllers.listUsers);
+
 export default usersRouter;

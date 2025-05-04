@@ -41,8 +41,7 @@ const createRecipe = async (req, res) => {
 
   let thumb = null;
   if (req.file) {
-    const { filename } = req.file;
-    thumb = `/recipes/${filename}`;
+    thumb = req.file.path;
   }
 
   const ingredients = JSON.parse(req.body.ingredients || '[]');
@@ -116,10 +115,19 @@ const getRecipeById = async (req, res) => {
   });
 };
 
+const getRecipes = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
+  const recipes = await recipeService.listRecipes({ page: Number(page), limit: Number(limit) });
+
+  res.status(200).json(recipes);
+};
+
 export default {
   getRecipes: errorWrapper(getRecipes),
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
   deleteRecipe: errorWrapper(deleteRecipe),
   getRecipeById: errorWrapper(getRecipeById),
+  getRecipes: errorWrapper(getRecipes),
 };

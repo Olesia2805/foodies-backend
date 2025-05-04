@@ -4,6 +4,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { usersReturnsSchema } from '../schemas/userSchemas.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
+import { calculatePagination } from '../helpers/paginationHelper.js';
 
 const avatarsDir = path.join('public', 'avatars');
 
@@ -111,6 +112,25 @@ const getFollowers = async (userId) => {
   return usersReturnsSchema(followers);
 };
 
+const listUsers = async (filters = {}) => {
+  const { page, limit, offset } = calculatePagination(filters);
+
+  const { count, rows: users } = await User.findAndCountAll({
+    limit,
+    offset,
+    attributes: ['_id', 'name', 'email', 'avatar'],
+  });
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    total: count,
+    currentPage: page,
+    pages: totalPages,
+    data: users,
+  };
+};
+
 export default {
   getUserById,
   updateUserAvatar,
@@ -118,4 +138,5 @@ export default {
   unfollow,
   getFollowing,
   getFollowers,
+  listUsers,
 };

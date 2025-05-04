@@ -5,7 +5,7 @@ import validateBody from '../helpers/validateBody.js';
 import { createRecipeSchema } from '../schemas/recipeSchema.js';
 
 import auth from '../middlewares/auth.js';
-import upload from '../middlewares/upload.js';
+import { uploadRecipeImage } from '../middlewares/upload.js';
 
 const recipeRouter = express.Router();
 
@@ -14,11 +14,12 @@ recipeRouter.get('/', recipeController.getRecipes);
 recipeRouter.post(
   '/',
   auth,
-  upload.single('image'),
-  upload.moveRecipeImageToPublic,
+  uploadRecipeImage.single('image'),
   validateBody(createRecipeSchema),
   recipeController.createRecipe
 );
+
+recipeRouter.get('/', recipeController.getRecipes);
 
 recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
 
