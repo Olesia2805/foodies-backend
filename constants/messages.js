@@ -12,9 +12,20 @@ export const ERROR = {
   AREAS_NOT_FOUND: 'Areas not found',
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
+  VERIFICATION_TOKEN_MISSING: 'Verification token is missing',
+  RECIPE_NOT_FOUND: 'Recipe not found',
+  RECIPE_DELETE_PERMISSION_DENIED:
+    'Recipe not found or you do not have permission to delete it',
+  RECIPE_CREATION_FAILED:
+    'Failed to create the recipe. Please try again later.',
 };
 
 export const SUCCESS = {
   FOLLOWED: 'Successfully followed',
   UNFOLLOWED: 'Successfully unfollowed',
+  VERIFICATION_EMAIL_SENT: 'Verification email sent',
+  VERIFICATION_SUCCESSFULL: 'Verification successful',
+  VERIFICATION_ALREADY_PASSED: 'Verification has already been passed',
+  RECIPE_CREATED: 'Recipe created successfully',
+  RECIPE_DELETED: 'Recipe deleted successfully',
 };
