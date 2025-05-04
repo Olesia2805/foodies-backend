@@ -17,6 +17,8 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
+recipeRouter.get('/', recipeController.getRecipes);
+
 recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
 
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
