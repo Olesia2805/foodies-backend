@@ -232,26 +232,6 @@ const getRecipeById = async (recipeId) => {
   return recipe;
 };
 
-const listRecipes = async (filters = {}) => {
-  const { page, limit, offset } = calculatePagination(filters);
-
-  const { count, rows: recipes } = await Recipe.findAndCountAll({
-    limit,
-    offset,
-    include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
-    order: [['createdAt', 'DESC']],
-  });
-
-  const totalPages = Math.ceil(count / limit);
-
-  return {
-    total: count,
-    currentPage: page,
-    pages: totalPages,
-    data: recipes,
-  };
-};
-
 export default {
   getRecipes,
   createRecipe,

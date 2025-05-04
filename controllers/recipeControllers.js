@@ -115,14 +115,6 @@ const getRecipeById = async (req, res) => {
   });
 };
 
-const getRecipes = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-
-  const recipes = await recipeService.listRecipes({ page: Number(page), limit: Number(limit) });
-
-  res.status(200).json(recipes);
-};
-
 export default {
   getRecipes: errorWrapper(getRecipes),
   createRecipe: errorWrapper(createRecipe),
