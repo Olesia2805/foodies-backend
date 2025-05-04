@@ -7,18 +7,10 @@ const createRecipe = async (req, res) => {
 
   let thumb = null;
   if (req.file) {
-    const { filename } = req.file;
-    thumb = `/recipes/${filename}`;
+    thumb = req.file.path;
   }
 
   const ingredients = JSON.parse(req.body.ingredients || '[]');
-
-  //TODO
-  // try {
-  //   ingredients = JSON.parse(req.body.ingredients || '[]');
-  // } catch (error) {
-  //   return res.status(400).json({ message: 'Invalid ingredients format' });
-  // }
 
   const recipeData = {
     ...req.body,
