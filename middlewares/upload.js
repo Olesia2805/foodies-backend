@@ -1,7 +1,13 @@
 import multer from 'multer';
+
 import fs from 'fs/promises';
+
+import path from 'path';
+
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
+
+
 import HttpError from '../helpers/HttpError.js';
 import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
 import { ERROR } from '../constants/messages.js';
@@ -49,6 +55,10 @@ const limits = {
 };
 
 const fileFilter = (req, file, callback) => {
+  //TODO
+  // if (!file || !file.originalname) {
+  //   return callback(HttpError(400, 'Invalid file'));
+  // }
   const ext = file.originalname.split('.').pop();
   if (!AVAILABLE_AVATAR_IMAGE_TYPES.includes(ext)) {
     return callback(HttpError(400, ERROR.INVALID_FILE_EXTENSION));
@@ -75,6 +85,23 @@ const moveFile = (destination) => async (req, res, next) => {
     next();
   } catch (error) {
     next(HttpError(500, error.message));
+
+    //TODO
+    // console.error(
+    //   `Failed to move file from ${req.file.path} to ${destination}`,
+    //   error
+    // );
+
+    // try {
+    //   await fs.unlink(req.file.path);
+    // } catch (unlinkError) {
+    //   console.error(
+    //     `Failed to delete temporary file: ${req.file.path}`,
+    //     unlinkError
+    //   );
+    // }
+
+    // next(HttpError(500, 'Failed to process uploaded file'));
   }
 };
 

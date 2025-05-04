@@ -1,5 +1,6 @@
 import errorWrapper from '../helpers/errorWrapper.js';
 import authService from '../services/authServices.js';
+import { ERROR, SUCCESS } from '../constants/messages.js';
 
 const register = async (req, res) => {
   const newUser = await authService.register(req.body);
@@ -39,16 +40,59 @@ const getMe = async (req, res) => {
   res.status(200).json(user);
 };
 
+
+const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.params;
+
+  if (!verificationToken) {
+    return res.status(400).json({ message: ERROR.VERIFICATION_TOKEN_MISSING });
+  }
+
+  const user = await authService.findUserByVerificationToken(verificationToken);
+
+  if (!user) {
+    return res.status(404).json({ message: ERROR.USER_NOT_FOUND });
+  }
+
+  const response = await authService.verifyUser(verificationToken);
+
+  res.status(200).json(response);
+};
+
+const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await authService.findUserByEmail(email);
+
+  if (!user) {
+    return res.status(404).json({ message: ERROR.USER_NOT_FOUND });
+  }
+
+  if (user.verify) {
+    return res
+      .status(400)
+      .json({ message: SUCCESS.VERIFICATION_ALREADY_PASSED });
+  }
+
+  await authService.resendVerificationEmail(user);
+
+  res.status(200).json({ message: SUCCESS.VERIFICATION_EMAIL_SENT });
+};
+
+
 const refresh = async (req, res) => {
   const token = await authService.refresh(req.body.refreshToken);
 
   res.status(200).send(token);
-}
+};
+
 
 export default {
   register: errorWrapper(register),
   login: errorWrapper(login),
   logout: errorWrapper(logout),
   getMe: errorWrapper(getMe),
+  verifyEmail: errorWrapper(verifyEmail),
+  resendVerificationEmail: errorWrapper(resendVerificationEmail),
   refresh: errorWrapper(refresh),
 };

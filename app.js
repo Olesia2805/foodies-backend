@@ -19,6 +19,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
+import dotenv from 'dotenv';
+dotenv.config();
+
+
 const app = express();
 
 app.use(morgan('tiny'));

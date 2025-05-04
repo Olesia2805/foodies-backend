@@ -20,6 +20,7 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
+
 recipeRouter.post(
   '/favorites',
   auth,
@@ -43,6 +44,12 @@ recipeRouter.get(
 
 recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
 
+//TODO WHAT AMONG THESE TWO WE SHOULD LEFT?
+recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
+
+
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
+
+recipeRouter.get('/:recipeId', recipeController.getRecipeById);
 
 export default recipeRouter;
