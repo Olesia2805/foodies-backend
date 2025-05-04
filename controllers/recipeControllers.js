@@ -10,20 +10,26 @@ const createRecipe = async (req, res) => {
     thumb = req.file.path;
   }
 
-  const ingredients = JSON.parse(req.body.ingredients || '[]');
+  let ingredients = req.body.ingredients;
+  if (typeof ingredients === 'string') {
+    ingredients = JSON.parse(ingredients || '[]');
+  }
 
-  //TODO
-  // try {
-  //   ingredients = JSON.parse(req.body.ingredients || '[]');
-  // } catch (error) {
-  //   return res.status(400).json({ message: 'Invalid ingredients format' });
-  // }
+  const categoryId = await recipeService.getCategoryIdByName(req.body.category);
+  const areaId = await recipeService.getAreaIdByName(req.body.area);
+
+  if (!categoryId || !areaId) {
+    throw new Error('Invalid category or area');
+  }
 
   const recipeData = {
     ...req.body,
     owner,
     thumb,
     ingredients,
+    categoryId,
+    areaId,
+    userId: owner,
   };
 
   const recipe = await recipeService.createRecipe(recipeData);

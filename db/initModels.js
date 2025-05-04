@@ -47,7 +47,7 @@ const initModels = () => {
 
   RecipeIngredient.belongsTo(Ingredient, { 
     foreignKey: 'ingredientId', 
-    as: 'ingredient' 
+    as: 'ingredients' 
   });
 
   User.hasMany(Recipe, { 

@@ -80,6 +80,7 @@ const uploadRecipeImage = multer({
   storage: recipeStorage,
   limits,
   fileFilter,
+  fieldName: 'thumb',
 });
 
 const moveFile = (destination) => async (req, res, next) => {

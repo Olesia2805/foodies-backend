@@ -12,15 +12,26 @@ const recipeRouter = express.Router();
 recipeRouter.post(
   '/',
   auth,
-  uploadRecipeImage.single('image'),
+  uploadRecipeImage.single('thumb'),
   validateBody(createRecipeSchema),
   recipeController.createRecipe
 );
 
-recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
+recipeRouter.delete(
+  '/:recipeId', 
+  auth, 
+  recipeController.deleteRecipe
+);
 
-recipeRouter.get('/own', auth, recipeController.getUserRecipes);
+recipeRouter.get(
+  '/own', 
+  auth, 
+  recipeController.getUserRecipes
+);
 
-recipeRouter.get('/:recipeId', recipeController.getRecipeById);
+recipeRouter.get(
+  '/:recipeId', 
+  recipeController.getRecipeById
+);
 
 export default recipeRouter;
