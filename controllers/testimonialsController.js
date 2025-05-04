@@ -2,21 +2,12 @@ import testimonialsService from '../services/testimonialsService.js';
 import errorWrapper from '../helpers/errorWrapper.js';
 import HttpError from '../helpers/HttpError.js';
 import { ERROR } from '../constants/messages.js';
+import { paginationSchema } from '../schemas/paginationSchema.js';
 
 const getTestimonials = async (req, res) => {
-  let { page, limit } = req.query;
-  const filters = {};
-  filters.offset = 0;
+  const { page, limit } = await paginationSchema.validateAsync(req.query);
 
-  page = Number(page);
-  limit = Number(limit);
-
-  if (limit) {
-    filters.limit = limit;
-    if (page) {
-      filters.offset = (page - 1) * limit;
-    }
-  }
+  const filters = { page, limit };
 
   const data = await testimonialsService.listTestimonials(filters);
 
