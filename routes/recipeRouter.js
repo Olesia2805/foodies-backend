@@ -18,10 +18,10 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
-recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
+recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
 
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
-recipeRouter.get("/:recipeId", recipeController.getRecipeById);
+recipeRouter.get('/:recipeId', recipeController.getRecipeById);
 
 export default recipeRouter;

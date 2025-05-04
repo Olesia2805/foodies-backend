@@ -38,10 +38,10 @@ const getUserRecipes = async (req, res) => {
 };
 
 const deleteRecipe = async (req, res) => {
-  const { id } = req.params;
+  const { recipeId } = req.params;
   const userId = req.user._id;
 
-  const result = await recipeService.deleteRecipe(id, userId);
+  const result = await recipeService.deleteRecipe(recipeId, userId);
 
   res.status(200).json(result);
 };
