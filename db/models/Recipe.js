@@ -1,10 +1,8 @@
-import { DataTypes, INTEGER } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import sequelize from '../Sequelize.js';
 import Area from './Areas.js';
 import Category from './Category.js';
 import User from './User.js';
-import RecipeIngredient from './RecipeIngredient.js';
-import Ingredient from './Ingredient.js';
 
 const Recipe = sequelize.define(
   'recipe',

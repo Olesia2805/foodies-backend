@@ -24,6 +24,11 @@ recipeRouter.delete(
 );
 
 recipeRouter.get(
+  '/', 
+  recipeController.getRecipes
+);
+
+recipeRouter.get(
   '/own', 
   auth, 
   recipeController.getUserRecipes
