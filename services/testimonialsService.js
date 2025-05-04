@@ -11,7 +11,7 @@ const listTestimonials = async (filters = {}) => {
       {
         model: User,
         as: 'user',
-        attributes: ['_id', 'email', 'avatar'],
+        attributes: ['_id', 'name','email', 'avatar'],
         required: false,
       },
     ],
