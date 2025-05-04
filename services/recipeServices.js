@@ -120,7 +120,7 @@ const getRecipeById = async (recipeId) => {
       {
         model: Ingredient,
         through: { attributes: ['measure'] },
-        as: 'ingredients',
+        as: 'recipeIngredients',
       },
       {
         model: User,
@@ -129,12 +129,12 @@ const getRecipeById = async (recipeId) => {
       },
       {
         model: Category,
-        as: 'category',
+        as: 'categoryOfRecipe',
         attributes: ['_id', 'name'],
       },
       {
         model: Area,
-        as: 'area',
+        as: 'areaOfRecipe',
         attributes: ['_id', 'name'],
       },
     ],
