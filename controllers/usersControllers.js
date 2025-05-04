@@ -48,6 +48,14 @@ const getFollowers = async (req, res) => {
   res.status(200).json(response);
 };
 
+const listUsers = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
+  const users = await usersServices.listUsers({ page: Number(page), limit: Number(limit) });
+
+  res.status(200).json(users);
+};
+
 export default {
   getUserById: errorWrapper(getUserById),
   updateUserAvatar: errorWrapper(updateUserAvatar),
@@ -55,4 +63,5 @@ export default {
   unfollowUser: errorWrapper(unfollowUser),
   getFollowing: errorWrapper(getFollowing),
   getFollowers: errorWrapper(getFollowers),
+  listUsers: errorWrapper(listUsers),
 };

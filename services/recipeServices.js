@@ -7,6 +7,7 @@ import Ingredient from '../db/models/Ingredient.js';
 import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
+import { calculatePagination } from '../helpers/paginationHelper.js';
 
 //TODO errors
 
@@ -50,26 +51,32 @@ const createRecipe = async (recipeData) => {
   }
 };
 
-const getUserRecipes = async (userId) => {
-  const recipes = await Recipe.findAll({
-    where: { userId },
+const getUserRecipes = async (owner) => {
+  return await Recipe.findAll({
+    where: { userId: owner },
     include: [
       {
-        model: Ingredient,
-        through: { attributes: ['measure'] },
-        as: 'ingredients',
+        model: RecipeIngredient,
+        as: 'recipeIngredients',
+        include: [
+          {
+            model: Ingredient,
+            as: 'ingredient',
+            attributes: ['_id', 'name', 'desc', 'img'],
+          },
+        ],
+        attributes: ['measure'],
       },
     ],
     order: [['createdAt', 'DESC']],
   });
+};
 
   //TODO
   // if (!recipes || recipes.length === 0) {
   //   throw HttpError(404, ERROR.RECIPE_NOT_FOUND);
   // }
 
-  return recipes;
-};
 
 const deleteRecipe = async (recipeId, userId) => {
   const t = await sequelize.transaction();
@@ -147,9 +154,30 @@ const getRecipeById = async (recipeId) => {
   return recipe;
 };
 
+const listRecipes = async (filters = {}) => {
+  const { page, limit, offset } = calculatePagination(filters);
+
+  const { count, rows: recipes } = await Recipe.findAndCountAll({
+    limit,
+    offset,
+    include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
+    order: [['createdAt', 'DESC']],
+  });
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    total: count,
+    currentPage: page,
+    pages: totalPages,
+    data: recipes,
+  };
+};
+
 export default {
   createRecipe,
   getUserRecipes,
   deleteRecipe,
   getRecipeById,
+  listRecipes,
 };

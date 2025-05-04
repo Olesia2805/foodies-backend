@@ -1,8 +1,11 @@
 import Testimonial from '../db/models/testimonial.js';
 import User from '../db/models/User.js';
+import { paginationSchema } from '../schemas/paginationSchema.js';
+import { calculatePagination } from '../helpers/paginationHelper.js';
 
 const listTestimonials = async (filters = {}) => {
-  const { limit, offset } = filters;
+  const { page, limit, offset } = calculatePagination(filters);
+
   const { count, rows: testimonials } = await Testimonial.findAndCountAll({
     include: [
       {
@@ -13,16 +16,15 @@ const listTestimonials = async (filters = {}) => {
       },
     ],
     order: [['createdAt', 'DESC']],
-    ...(limit && { limit }),
-    ...(offset && { offset }),
+    limit,
+    offset,
   });
 
-  const totalPages = Math.ceil(count / (limit || count));
-  const currentPage = limit ? Math.floor(offset / limit) + 1 : 1;
+  const totalPages = Math.ceil(count / limit);
 
   return {
     total: count,
-    currentPage: currentPage,
+    currentPage: page,
     pages: totalPages,
     data: testimonials,
   };

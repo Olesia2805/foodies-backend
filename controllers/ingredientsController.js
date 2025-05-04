@@ -3,21 +3,12 @@ import ingredientsService from '../services/ingredientsService.js';
 import HttpError from '../helpers/HttpError.js';
 import { Op } from 'sequelize';
 import { ERROR } from '../constants/messages.js';
+import { paginationSchema } from '../schemas/paginationSchema.js';
 
 const getIngredients = async (req, res) => {
-  let { page, limit, ...restQuery } = req.query;
-  const filters = {};
-  filters.offset = 0;
+  const { page, limit, ...restQuery } = await paginationSchema.validateAsync(req.query);
 
-  page = Number(page);
-  limit = Number(limit);
-
-  if (limit) {
-    filters.limit = limit;
-    if (page) {
-      filters.offset = (page - 1) * limit;
-    }
-  }
+  const filters = { page, limit };
 
   const data = await ingredientsService.listIngredients(restQuery, filters);
 
