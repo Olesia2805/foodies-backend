@@ -46,8 +46,19 @@ const deleteRecipe = async (req, res) => {
   res.status(200).json(result);
 };
 
+const getRecipeById = async (req, res) => {
+  const { recipeId } = req.params;
+
+  const recipe = await recipeService.getRecipeById(recipeId);
+
+  res.status(200).send({
+    recipe,
+  });
+};
+
 export default {
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
   deleteRecipe: errorWrapper(deleteRecipe),
+  getRecipeById: errorWrapper(getRecipeById),
 };
