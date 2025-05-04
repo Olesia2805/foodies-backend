@@ -3,6 +3,8 @@ import sequelize from '../Sequelize.js';
 import Area from './Areas.js';
 import Category from './Category.js';
 import User from './User.js';
+import RecipeIngredient from './RecipeIngredient.js';
+import Ingredient from './Ingredient.js';
 
 const Recipe = sequelize.define(
   'recipe',
@@ -69,6 +71,45 @@ const Recipe = sequelize.define(
     timestamps: true,
   }
 );
+
+Recipe.belongsToMany(Ingredient, {
+  through: RecipeIngredient,
+  foreignKey: 'recipeId',
+  otherKey: 'ingredientId',
+  as: 'ingredients'
+});
+
+Ingredient.belongsToMany(Recipe, {
+  through: RecipeIngredient,
+  foreignKey: 'ingredientId',
+  otherKey: 'recipeId',
+  as: 'recipes'
+});
+
+User.hasMany(Recipe, {
+  foreignKey: 'userId',
+  as: 'recipes',
+});
+
+Recipe.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'owner',
+});
+
+Recipe.belongsTo(Category, {
+  foreignKey: 'categoryId',
+  as: 'category',
+});
+Category.hasMany(Recipe);
+
+Recipe.belongsTo(Area, {
+  foreignKey: 'areaId',
+  as: 'area',
+});
+Area.hasMany(Recipe, {
+  foreignKey: 'areaId',
+  as: 'recipes',
+});
 
 // Recipe.sync();
 

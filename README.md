@@ -191,6 +191,10 @@ Seed-функція дозволяє заповнити базу даних те
 | GET    | /api/areas                          | Get List of All Areas                                        |
 | GET    | /api/areas/search?name=someName     | Get Country by name                                          |
 | GET    | /api/testimonials                   | Get list of all testimonials (paginated)                     |
+| POST   | /api/recipes                        | Create a new recipe                                          |
+| DELETE | /api/recipes/:recipeId              | Delete recipe by id                                          |
+| GET    | /api/recipes/own                    | Get current user recipes list                                |
+| GET    | /api/recipes/:recipeId              | Get recipe by id                                             |
 
 **Note:** `GET /api/ingredients` and `GET /api/testimonials`
 
