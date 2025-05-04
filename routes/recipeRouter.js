@@ -42,11 +42,7 @@ recipeRouter.get(
   recipeController.getFavorites
 );
 
-recipeRouter.delete('/:id', auth, recipeController.deleteRecipe);
-
-//TODO WHAT AMONG THESE TWO WE SHOULD LEFT?
 recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
-
 
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
