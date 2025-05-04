@@ -72,44 +72,44 @@ const Recipe = sequelize.define(
   }
 );
 
-Recipe.belongsToMany(Ingredient, {
-  through: RecipeIngredient,
-  foreignKey: 'recipeId',
-  otherKey: 'ingredientId',
-  as: 'ingredients'
-});
+// Recipe.belongsToMany(Ingredient, {
+//   through: RecipeIngredient,
+//   foreignKey: 'recipeId',
+//   otherKey: 'ingredientId',
+//   as: 'ingredients'
+// });
 
-Ingredient.belongsToMany(Recipe, {
-  through: RecipeIngredient,
-  foreignKey: 'ingredientId',
-  otherKey: 'recipeId',
-  as: 'recipes'
-});
+// Ingredient.belongsToMany(Recipe, {
+//   through: RecipeIngredient,
+//   foreignKey: 'ingredientId',
+//   otherKey: 'recipeId',
+//   as: 'recipes'
+// });
 
-User.hasMany(Recipe, {
-  foreignKey: 'userId',
-  as: 'recipes',
-});
+// User.hasMany(Recipe, {
+//   foreignKey: 'userId',
+//   as: 'recipes',
+// });
 
-Recipe.belongsTo(User, {
-  foreignKey: 'userId',
-  as: 'owner',
-});
+// Recipe.belongsTo(User, {
+//   foreignKey: 'userId',
+//   as: 'owner',
+// });
 
-Recipe.belongsTo(Category, {
-  foreignKey: 'categoryId',
-  as: 'category',
-});
-Category.hasMany(Recipe);
+// Recipe.belongsTo(Category, {
+//   foreignKey: 'categoryId',
+//   as: 'category',
+// });
+// Category.hasMany(Recipe);
 
-Recipe.belongsTo(Area, {
-  foreignKey: 'areaId',
-  as: 'area',
-});
-Area.hasMany(Recipe, {
-  foreignKey: 'areaId',
-  as: 'recipes',
-});
+// Recipe.belongsTo(Area, {
+//   foreignKey: 'areaId',
+//   as: 'area',
+// });
+// Area.hasMany(Recipe, {
+//   foreignKey: 'areaId',
+//   as: 'recipes',
+// });
 
 // Recipe.sync();
 
