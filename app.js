@@ -26,8 +26,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-// // Initialize Sequelize models and associations
-// initModels();
+// Initialize Sequelize models and associations
+initModels();
 
 const swaggerOptions = {
   definition: {

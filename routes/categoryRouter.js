@@ -33,7 +33,7 @@ const categoryRouter = express.Router();
  *                 type: string
  *                 description: The description of the category
  *                 example: Sweet dishes and desserts.
- *               image:
+ *               thumb:
  *                 type: string
  *                 format: binary
  *                 description: The image file for the category
@@ -50,7 +50,7 @@ const categoryRouter = express.Router();
 categoryRouter.post(
   '/',
   auth,
-  uploadCategoryImage.single('image'),
+  uploadCategoryImage.single('thumb'),
   validateBody(createCategorySchema),
   categoryController.createCategory
 );
@@ -88,7 +88,10 @@ categoryRouter.post(
  *       500:
  *         description: Internal server error
  */
-categoryRouter.get("/", categoryController.getAllCategories);
+categoryRouter.get(
+    "/", 
+    categoryController.getAllCategories
+);
 
 export default categoryRouter;
 

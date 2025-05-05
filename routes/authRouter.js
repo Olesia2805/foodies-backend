@@ -81,7 +81,11 @@ authRouter.post(
  *       500:
  *         description: Internal server error
  */
-authRouter.post('/login', validateBody(getUserSchema), authController.login);
+authRouter.post(
+  '/login', 
+  validateBody(getUserSchema), 
+  authController.login
+);
 
 /**
  * @swagger
@@ -101,7 +105,11 @@ authRouter.post('/login', validateBody(getUserSchema), authController.login);
  *       500:
  *         description: Internal server error
  */
-authRouter.post('/logout', auth, authController.logout);
+authRouter.post(
+  '/logout', 
+  auth, 
+  authController.logout
+);
 
 /**
  * @swagger
@@ -187,7 +195,11 @@ authRouter.post(
  *       500:
  *         description: Internal server error
  */
-authRouter.get('/me', auth, authController.getMe);
+authRouter.get(
+  '/me', 
+  auth, 
+  authController.getMe
+);
 
 /**
  * @swagger
@@ -212,7 +224,10 @@ authRouter.get('/me', auth, authController.getMe);
  *       500:
  *         description: Internal server error
  */
-authRouter.get('/verify/:verificationToken', authController.verifyEmail);
+authRouter.get(
+  '/verify/:verificationToken', 
+  authController.verifyEmail
+);
 
 
 export default authRouter;
