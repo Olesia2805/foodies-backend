@@ -19,6 +19,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 
+import { initModels } from './db/initModels.js';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -29,6 +31,9 @@ app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+
+// Initialize Sequelize models and associations
+initModels();
 
 app.use("/api/auth", authRouter);
 app.use("/api/testimonials", testimonialsRouter);
