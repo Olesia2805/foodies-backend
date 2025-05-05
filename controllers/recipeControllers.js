@@ -1,6 +1,40 @@
-import { SUCCESS } from '../constants/messages.js';
+import { SUCCESS, ERROR } from '../constants/messages.js';
 import errorWrapper from '../helpers/errorWrapper.js';
+import HttpError from '../helpers/HttpError.js';
 import recipeService from '../services/recipeServices.js';
+
+const getRecipes = async (req, res) => {
+  let { page, limit, categoryId, areaId, ingredientId } = req.query;
+
+  const filters = {};
+  filters.offset = 0;
+
+  page = Number(page);
+  limit = Number(limit);
+
+  if (limit) {
+    filters.limit = limit;
+
+    if (page) {
+      filters.offset = (page - 1) * limit;
+    }
+  }
+
+  const filterOptions = {
+    categoryId,
+    areaId,
+    ingredientId: ingredientId ? ingredientId.split(',') : null,
+    ...filters,
+  };
+
+  const data = await recipeService.getRecipes(filterOptions);
+
+  if (!Array.isArray(data?.data) || data.data.length === 0) {
+    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  }
+
+  res.json(data);
+};
 
 const createRecipe = async (req, res) => {
   const { _id: owner } = req.user;
@@ -81,15 +115,8 @@ const getRecipeById = async (req, res) => {
   });
 };
 
-const getRecipes = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
-
-  const recipes = await recipeService.listRecipes({ page: Number(page), limit: Number(limit) });
-
-  res.status(200).json(recipes);
-};
-
 export default {
+  getRecipes: errorWrapper(getRecipes),
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
   deleteRecipe: errorWrapper(deleteRecipe),

@@ -12,7 +12,7 @@ const getTestimonials = async (req, res) => {
   const data = await testimonialsService.listTestimonials(filters);
 
   if (!Array.isArray(data?.data) || data.data.length === 0) {
-    throw HttpError(404, ERROR.INGREDIENT_NOT_FOUND);
+    throw HttpError(404, ERROR.TESTIMONIAL_NOT_FOUND);
   }
 
   res.status(200).json(data);

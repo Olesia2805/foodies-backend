@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Recipe from '../db/models/Recipe.js';
 import RecipeIngredient from '../db/models/RecipeIngredient.js';
 import User from '../db/models/User.js';
@@ -10,6 +11,84 @@ import { ERROR, SUCCESS } from '../constants/messages.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';
 
 //TODO errors
+
+const getRecipes = async ({
+  categoryId,
+  areaId,
+  ingredientId,
+  limit,
+  offset,
+}) => {
+  const where = {};
+
+  if (categoryId) where.categoryId = categoryId;
+  if (areaId) where.areaId = areaId;
+
+  if (ingredientId && Array.isArray(ingredientId) && ingredientId.length > 0) {
+    const recipeIngredientLinks = await RecipeIngredient.findAll({
+      where: {
+        ingredientId: { [Op.in]: ingredientId },
+      },
+      attributes: ['recipeId'],
+      group: ['recipeId'],
+      raw: true,
+    });
+
+    const recipeIds = recipeIngredientLinks.map((item) => item.recipeId);
+
+    if (recipeIds.length > 0) {
+      where._id = { [Op.in]: recipeIds };
+    } else {
+      where._id = null;
+    }
+  }
+
+  const include = [
+    {
+      model: Category,
+      as: 'categoryOfRecipe',
+      attributes: ['_id', 'name'],
+    },
+    {
+      model: Area,
+      as: 'areaOfRecipe',
+      attributes: ['_id', 'name'],
+    },
+    {
+      model: User,
+      as: 'owner',
+      attributes: ['_id', 'name', 'avatar'],
+    },
+    {
+      model: Ingredient,
+      as: 'ingredients',
+      attributes: ['_id', 'name', 'desc', 'img'],
+      through: {
+        attributes: ['measure'],
+      },
+    },
+  ];
+
+  const { count, rows } = await Recipe.findAndCountAll({
+    where,
+    attributes: { exclude: ['categoryId', 'areaId', 'userId'] },
+    include,
+    limit,
+    offset,
+    order: [['createdAt', 'DESC']],
+    distinct: true,
+  });
+
+  const pages = Math.ceil(count / (limit || count || 1));
+  const currentPage = limit ? Math.floor(offset / limit) + 1 : 1;
+
+  return {
+    total: count,
+    pages,
+    currentPage,
+    data: rows,
+  };
+};
 
 const createRecipe = async (recipeData) => {
   const { ingredients, ...recipeFields } = recipeData;
@@ -72,11 +151,10 @@ const getUserRecipes = async (owner) => {
   });
 };
 
-  //TODO
-  // if (!recipes || recipes.length === 0) {
-  //   throw HttpError(404, ERROR.RECIPE_NOT_FOUND);
-  // }
-
+//TODO
+// if (!recipes || recipes.length === 0) {
+//   throw HttpError(404, ERROR.RECIPE_NOT_FOUND);
+// }
 
 const deleteRecipe = async (recipeId, userId) => {
   const t = await sequelize.transaction();
@@ -154,27 +232,8 @@ const getRecipeById = async (recipeId) => {
   return recipe;
 };
 
-const listRecipes = async (filters = {}) => {
-  const { page, limit, offset } = calculatePagination(filters);
-
-  const { count, rows: recipes } = await Recipe.findAndCountAll({
-    limit,
-    offset,
-    include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
-    order: [['createdAt', 'DESC']],
-  });
-
-  const totalPages = Math.ceil(count / limit);
-
-  return {
-    total: count,
-    currentPage: page,
-    pages: totalPages,
-    data: recipes,
-  };
-};
-
 export default {
+  getRecipes,
   createRecipe,
   getUserRecipes,
   deleteRecipe,

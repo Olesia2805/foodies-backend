@@ -112,11 +112,7 @@ recipeRouter.post(
  *       500:
  *         description: Internal server error
  */
-recipeRouter.delete(
-  '/:recipeId', 
-  auth, 
-  recipeController.deleteRecipe
-);
+recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
 
 /**
  * @swagger
@@ -151,10 +147,7 @@ recipeRouter.delete(
  *       500:
  *         description: Internal server error
  */
-recipeRouter.get(
-  '/', 
-  recipeController.getRecipes
-);
+recipeRouter.get('/', recipeController.getRecipes);
 
 /**
  * @swagger
@@ -193,11 +186,7 @@ recipeRouter.get(
  *       500:
  *         description: Internal server error
  */
-recipeRouter.get(
-  '/own', 
-  auth, 
-  recipeController.getUserRecipes
-);
+recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
 /**
  * @swagger
@@ -239,9 +228,6 @@ recipeRouter.get(
  *       500:
  *         description: Internal server error
  */
-recipeRouter.get(
-  '/:recipeId', 
-  recipeController.getRecipeById
-);
+recipeRouter.get('/:recipeId', recipeController.getRecipeById);
 
 export default recipeRouter;
