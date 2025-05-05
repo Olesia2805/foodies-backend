@@ -20,6 +20,8 @@
     "nodemailer": "^6.10.1",
     "pg": "^8.14.1",
     "sequelize": "^6.37.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

@@ -18,6 +18,11 @@ const Category = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    thumb: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      comment: 'URL of the category image stored in Cloudinary',
+    },
   },
   {
     timestamps: false,
