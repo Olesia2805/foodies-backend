@@ -9,8 +9,6 @@ import { uploadRecipeImage } from '../middlewares/upload.js';
 
 const recipeRouter = express.Router();
 
-recipeRouter.get('/', recipeController.getRecipes);
-
 /**
  * @swagger
  * /api/recipes:
