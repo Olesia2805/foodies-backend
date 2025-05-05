@@ -7,6 +7,7 @@ import Ingredient from '../db/models/Ingredient.js';
 import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
+import { calculatePagination } from '../helpers/paginationHelper.js';
 
 //TODO errors
 
@@ -126,7 +127,7 @@ const getRecipeById = async (recipeId) => {
       {
         model: Ingredient,
         through: { attributes: ['measure'] },
-        as: 'ingredients',
+        as: 'recipeIngredients',
       },
       {
         model: User,
@@ -135,12 +136,12 @@ const getRecipeById = async (recipeId) => {
       },
       {
         model: Category,
-        as: 'category',
+        as: 'categoryOfRecipe',
         attributes: ['_id', 'name'],
       },
       {
         model: Area,
-        as: 'area',
+        as: 'areaOfRecipe',
         attributes: ['_id', 'name'],
       },
     ],
@@ -153,9 +154,30 @@ const getRecipeById = async (recipeId) => {
   return recipe;
 };
 
+const listRecipes = async (filters = {}) => {
+  const { page, limit, offset } = calculatePagination(filters);
+
+  const { count, rows: recipes } = await Recipe.findAndCountAll({
+    limit,
+    offset,
+    include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
+    order: [['createdAt', 'DESC']],
+  });
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    total: count,
+    currentPage: page,
+    pages: totalPages,
+    data: recipes,
+  };
+};
+
 export default {
   createRecipe,
   getUserRecipes,
   deleteRecipe,
   getRecipeById,
+  listRecipes,
 };

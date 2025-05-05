@@ -61,4 +61,5 @@ User.belongsToMany(User, {
   otherKey: 'followingId',
 });
 
+
 export default User;
