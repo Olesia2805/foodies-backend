@@ -196,8 +196,12 @@ Seed-функція дозволяє заповнити базу даних те
 | DELETE | /api/recipes/:recipeId                              | Delete recipe by id                                          |
 | GET    | /api/recipes/own                                    | Get current user recipes list                                |
 | GET    | /api/recipes/:recipeId                              | Get recipe by id                                             |
+| POST   | /api/recipes/favorites                              | Add to favorites recipe                                      |
+| DELETE | /api/recipes/favorites                              | Delete from favorites recipe                                 |
+| GET    | /api/recipes/favorites                              | Get list of favorites recipes                                |
 
-**Note:** `GET /api/ingredients` and `GET /api/testimonials`
+
+**Note:** `GET /api/ingredients`, `GET /api/testimonials` and `GET /api/recipes/favorites`
 
 | Parameter | Type   | Required | Description             |
 | --------- | ------ | -------- | ----------------------- |
