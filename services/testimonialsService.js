@@ -1,4 +1,4 @@
-import Testimonial from '../db/models/testimonial.js';
+import Testimonial from '../db/models/Testimonial.js';
 import User from '../db/models/User.js';
 import { paginationSchema } from '../schemas/paginationSchema.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';

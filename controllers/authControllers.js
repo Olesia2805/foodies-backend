@@ -3,15 +3,9 @@ import authService from '../services/authServices.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
 
 const register = async (req, res) => {
-  const newUser = await authService.register(req.body);
+  await authService.register(req.body);
 
-  res.status(201).send({
-    user: {
-      name: newUser.name,
-      email: newUser.email,
-      avatar: newUser.avatar,
-    },
-  });
+  res.status(201).send({ message: "Please verify your email" });
 };
 
 const login = async (req, res) => {

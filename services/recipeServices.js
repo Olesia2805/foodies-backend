@@ -1,7 +1,6 @@
 import { Op } from 'sequelize';
 import Recipe from '../db/models/Recipe.js';
 import RecipeIngredient from '../db/models/RecipeIngredient.js';
-import User from '../db/models/User.js';
 import Category from '../db/models/Category.js';
 import Area from '../db/models/Areas.js';
 import Ingredient from '../db/models/Ingredient.js';
