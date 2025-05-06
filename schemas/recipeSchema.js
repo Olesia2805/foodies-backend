@@ -46,6 +46,16 @@ export const createRecipeSchema = Joi.object({
     }),
 });
 
+
+export const addToFavorites = Joi.object({
+  id: Joi.number().integer().min(1).required().messages({
+    'any.required': 'Filed "id" is required',
+    'number.base': 'Filed "id" must be an integer',
+    'number.integer': 'Filed "id" must be an integer',
+    'number.min': 'Filed "id" must be greater than or equal to 1',
+  }),
+});
+
 //TODO area and category
 // .valid('Breakfast', 'Lunch', 'Dinner', 'Snack', 'Dessert')
 // message
@@ -73,3 +83,4 @@ export const createRecipeSchema = Joi.object({
 //     'any.required': 'Ingredients are required',
 //     'array.min': 'At least one ingredient is required',
 //   }),
+

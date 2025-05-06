@@ -7,6 +7,9 @@ import Area from '../db/models/Areas.js';
 import Ingredient from '../db/models/Ingredient.js';
 import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
+import User from '../db/models/User.js';
+import UserFavorites from '../db/models/UserFavorites.js';
+
 import { ERROR, SUCCESS } from '../constants/messages.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';
 
@@ -20,6 +23,7 @@ const getRecipes = async ({
   limit,
   offset,
 }) => {
+  // try {
   const where = {};
 
   if (categoryId) where.categoryId = categoryId;
@@ -80,6 +84,10 @@ const getRecipes = async ({
     order: [['createdAt', 'DESC']],
     distinct: true,
   });
+  //TODO
+  // if (!rows || rows.length === 0) {
+  //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  // }
 
   const pages = Math.ceil(count / (limit || count || 1));
   const currentPage = limit ? Math.floor(offset / limit) + 1 : 1;
@@ -90,6 +98,9 @@ const getRecipes = async ({
     currentPage,
     data: rows,
   };
+  // } catch (error) {
+  //   throw HttpError(500, ERROR.RECIPES_NOT_FOUND || error.message);
+  // }
 };
 
 const createRecipe = async (recipeData) => {
@@ -157,6 +168,77 @@ const getUserRecipes = async (owner) => {
 // if (!recipes || recipes.length === 0) {
 //   throw HttpError(404, ERROR.RECIPE_NOT_FOUND);
 // }
+
+const addToFavorites = async (user, recipeId) => {
+  const recipe = await Recipe.findByPk(recipeId);
+
+  if (!recipe) throw HttpError(400, ERROR.RECIPE_WITH_ID_NOT_FOUND(recipeId));
+
+  const existingFavorite = await UserFavorites.findOne({
+    where: {
+      user_id: user._id,
+      recipe_id: recipeId,
+    },
+  });
+
+  if (existingFavorite) {
+    throw HttpError(400, 'Recipe is already in your favorites');
+  }
+
+  return await UserFavorites.create({
+    user_id: user._id,
+    recipe_id: recipeId,
+  });
+};
+
+const deleteFromFavorites = async (user, recipeId) => {
+  const favorite = await UserFavorites.findOne({
+    where: {
+      user_id: user._id,
+      recipe_id: recipeId,
+    },
+  });
+
+  if (!favorite) {
+    throw HttpError(400, ERROR.RECIPE_WITH_ID_NOT_FOUND(recipeId));
+  }
+
+  return await UserFavorites.destroy({
+    where: {
+      user_id: user._id,
+      recipe_id: recipeId,
+    },
+  });
+};
+
+const getFavorites = async (user, filters = {}) => {
+  const { rows, count } = await UserFavorites.findAndCountAll({
+    where: {
+      user_id: user._id,
+    },
+    include: [{ model: Recipe, as: 'recipe' }],
+    ...filters,
+  });
+
+  // I suppouse empty array is not an error.
+  // if (!rows || rows.length === 0) {
+  //   throw HttpError(400, ERROR.FAVORITES_NOT_FOUND);
+  // }
+
+  const pages = Math.ceil(count / filters?.limit || 1);
+  const currentPage = filters?.limit
+    ? Math.floor(filters?.offset / filters?.limit) + 1
+    : 1;
+
+  const recipes = rows?.map((favorite) => favorite.recipe) || [];
+
+  return {
+    total: count,
+    currentPage: currentPage,
+    pages: pages,
+    data: recipes,
+  };
+};
 
 const deleteRecipe = async (recipeId, userId) => {
   const t = await sequelize.transaction();
@@ -238,6 +320,9 @@ export default {
   getRecipes,
   createRecipe,
   getUserRecipes,
+  addToFavorites,
+  deleteFromFavorites,
+  getFavorites,
   deleteRecipe,
   getRecipeById,
 };

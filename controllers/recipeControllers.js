@@ -84,6 +84,48 @@ const getUserRecipes = async (req, res) => {
   });
 };
 
+const addToFavorites = async (req, res) => {
+  const { user } = req;
+  const { id } = req.body;
+
+  await recipeService.addToFavorites(user, id);
+
+  res.status(201).json({
+    message: SUCCESS.RECIPE_FAVORITES_ADDED(id),
+  });
+};
+
+const deleteFromFavorites = async (req, res) => {
+  const { user } = req;
+  const { id } = req.body;
+
+  await recipeService.deleteFromFavorites(user, id);
+
+  res.status(200).json({
+    message: SUCCESS.RECIPE_FAVORITES_DELETED(id),
+  });
+};
+
+const getFavorites = async (req, res) => {
+  let { page, limit } = req.query;
+  const filters = {};
+  filters.offset = 0;
+
+  page = Number(page);
+  limit = Number(limit);
+
+  if (limit) {
+    filters.limit = limit;
+    if (page) {
+      filters.offset = (page - 1) * limit;
+    }
+  }
+
+  const data = await recipeService.getFavorites(req.user, filters);
+
+  res.status(200).json(data);
+};
+
 const deleteRecipe = async (req, res) => {
   const { recipeId } = req.params;
   const userId = req.user._id;
@@ -120,6 +162,9 @@ export default {
   getRecipes: errorWrapper(getRecipes),
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
+  addToFavorites: errorWrapper(addToFavorites),
+  deleteFromFavorites: errorWrapper(deleteFromFavorites),
+  getFavorites: errorWrapper(getFavorites),
   deleteRecipe: errorWrapper(deleteRecipe),
   getRecipeById: errorWrapper(getRecipeById),
 };

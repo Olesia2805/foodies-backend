@@ -15,6 +15,9 @@ import categoryRouter from './routes/categoryRouter.js';
 import usersRouter from './routes/usersRouter.js';
 import areasRouter from './routes/areasRouter.js';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { initModels } from './db/initModels.js';
 initModels();
 

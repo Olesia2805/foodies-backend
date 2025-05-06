@@ -34,6 +34,7 @@ const getMe = async (req, res) => {
   res.status(200).json(user);
 };
 
+
 const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
 
@@ -72,11 +73,13 @@ const resendVerificationEmail = async (req, res) => {
   res.status(200).json({ message: SUCCESS.VERIFICATION_EMAIL_SENT });
 };
 
+
 const refresh = async (req, res) => {
   const token = await authService.refresh(req.body.refreshToken);
 
   res.status(200).send(token);
 };
+
 
 export default {
   register: errorWrapper(register),

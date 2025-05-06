@@ -27,10 +27,17 @@ const User = sequelize.define('user', {
   avatar: {
     type: DataTypes.STRING,
   },
+
   token: {
     type: DataTypes.STRING,
     defaultValue: null,
   },
+  refreshToken: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+    allowNull: true,
+  }
+
   verify: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
@@ -38,25 +45,20 @@ const User = sequelize.define('user', {
   verificationToken: {
     type: DataTypes.STRING,
   },
-  refreshToken: {
-    type: DataTypes.STRING,
-    defaultValue: null,
-    allowNull: true,
-  }
 });
 
 // User.sync({force: true});
 
 User.belongsToMany(User, {
   as: 'followers',
-  through: 'userFollowers',
+  through: 'user_followers',
   foreignKey: 'followingId',
   otherKey: 'followerId',
 });
 
 User.belongsToMany(User, {
   as: 'following',
-  through: 'userFollowers',
+  through: 'user_followers',
   foreignKey: 'followerId',
   otherKey: 'followingId',
 });

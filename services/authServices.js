@@ -6,12 +6,14 @@ import sendEmail from '../helpers/sendEmail.js';
 
 import User from '../db/models/User.js';
 import HttpError from '../helpers/HttpError.js';
+
 import { ERROR, SUCCESS } from '../constants/messages.js';
 import {
   createAccessToken,
   createRefreshToken,
   verifyRefreshToken,
 } from '../helpers/jwtHelper.js';
+
 
 const register = async ({ name, email, password }) => {
   try {
@@ -109,6 +111,7 @@ const getMe = async (userId) => {
   };
 };
 
+
 const verifyUser = async (verificationToken) => {
   const user = await User.findOne({ where: { verificationToken } });
 
@@ -140,6 +143,7 @@ const resendVerificationEmail = async (user) => {
   });
 };
 
+
 const refresh = async (refreshToken) => {
   let payload;
 
@@ -162,6 +166,7 @@ const refresh = async (refreshToken) => {
     id: user._id,
     email: user.email,
   });
+
 
   user.token = newAccessToken;
   user.refreshToken = newRefreshToken;
