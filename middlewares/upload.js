@@ -2,8 +2,6 @@ import multer from 'multer';
 
 import fs from 'fs/promises';
 
-import path from 'path';
-
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
