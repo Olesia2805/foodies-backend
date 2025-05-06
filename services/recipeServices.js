@@ -238,5 +238,4 @@ export default {
   getUserRecipes,
   deleteRecipe,
   getRecipeById,
-  listRecipes,
 };
