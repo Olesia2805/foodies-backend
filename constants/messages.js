@@ -20,6 +20,8 @@ export const ERROR = {
   RECIPE_CREATION_FAILED:
     'Failed to create the recipe. Please try again later.',
   TESTIMONIAL_NOT_FOUND: 'Testimonial not found',
+  CANT_SUBSCRIBE_TO_YOURSELF: 'You can\'t subscribe to yourself',
+  ALREADY_SIGNED: 'You already signed to this user',
 };
 
 export const SUCCESS = {

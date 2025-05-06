@@ -4,7 +4,7 @@ import HttpError from '../helpers/HttpError.js';
 import recipeService from '../services/recipeServices.js';
 
 const getRecipes = async (req, res) => {
-  let { page, limit, categoryId, areaId, ingredientId } = req.query;
+  let { page, limit, categoryId, areaId, ingredientId, userId } = req.query;
 
   const filters = {};
   filters.offset = 0;
@@ -24,6 +24,7 @@ const getRecipes = async (req, res) => {
     categoryId,
     areaId,
     ingredientId: ingredientId ? ingredientId.split(',') : null,
+    userId: userId ?? null,
     ...filters,
   };
 
@@ -121,5 +122,4 @@ export default {
   getUserRecipes: errorWrapper(getUserRecipes),
   deleteRecipe: errorWrapper(deleteRecipe),
   getRecipeById: errorWrapper(getRecipeById),
-  getRecipes: errorWrapper(getRecipes),
 };
