@@ -21,7 +21,7 @@ const register = async ({ name, email, password }) => {
     const avatarURL = gravatar.url(email, { protocol: 'https' });
     const verificationToken = uuidv4();
 
-    const newUser = await User.create({
+    await User.create({
       name: name,
       email: email,
       password: hashPassword,
@@ -36,7 +36,7 @@ const register = async ({ name, email, password }) => {
       user: { verificationToken },
     });
 
-    return newUser;
+    return true;
   } catch (error) {
     if (error instanceof UniqueConstraintError) {
       throw HttpError(409, ERROR.EMAIL_IN_USE);

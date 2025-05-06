@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import { emailRegexp } from '../../constants/auth.js';
 import sequelize from '../Sequelize.js';
 
-const User = sequelize.define('users', {
+const User = sequelize.define('user', {
   _id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -27,9 +27,15 @@ const User = sequelize.define('users', {
   avatar: {
     type: DataTypes.STRING,
   },
+
   token: {
     type: DataTypes.STRING,
     defaultValue: null,
+  },
+  refreshToken: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+    allowNull: true,
   },
 
   verify: {
@@ -39,12 +45,6 @@ const User = sequelize.define('users', {
   verificationToken: {
     type: DataTypes.STRING,
   },
-
-  refreshToken: {
-    type: DataTypes.STRING,
-    defaultValue: null,
-    allowNull: true,
-  }
 });
 
 // User.sync({force: true});

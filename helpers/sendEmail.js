@@ -16,7 +16,7 @@ const config = {
 const transporter = nodemailer.createTransport(config);
 
 const sendEmail = async ({ to, subject, text, user }) => {
-  const verificationLink = `${process.env.BASE_URL || 'http://localhost:3000'}/auth/verify/${user.verificationToken}`;
+  const verificationLink = `${process.env.FRONTEND_BASE_URL || 'http://localhost:3001'}?token=${user.verificationToken}`;
   const emailOptions = {
     from: process.env.SMTP_USER,
     to,

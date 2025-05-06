@@ -1,13 +1,9 @@
 import User from '../db/models/User.js';
 import HttpError from '../helpers/HttpError.js';
-import path from 'node:path';
-import fs from 'node:fs/promises';
 import { usersReturnsSchema } from '../schemas/userSchemas.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';
 import recipeService from './recipeServices.js';
-
-const avatarsDir = path.join('public', 'avatars');
 
 const getUserById = async (authUser, userId) => {
   // TODO: Added count of favorite recipes and count of created recipes
