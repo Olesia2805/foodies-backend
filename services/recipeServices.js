@@ -205,7 +205,7 @@ const getRecipeById = async (recipeId) => {
       {
         model: Ingredient,
         through: { attributes: ['measure'] },
-        as: 'recipeIngredients',
+        as: 'ingredients',
       },
       {
         model: User,
@@ -238,5 +238,4 @@ export default {
   getUserRecipes,
   deleteRecipe,
   getRecipeById,
-  listRecipes,
 };

@@ -46,7 +46,10 @@ const areasRouter = express.Router();
  *                   description: Error message
  *                   example: "Internal server error"
  */
-areasRouter.get('/', areasControllers.getAreas);
+areasRouter.get(
+  '/', 
+  areasControllers.getAreas
+);
 
 /**
  * @swagger
