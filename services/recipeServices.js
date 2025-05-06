@@ -15,6 +15,7 @@ import { calculatePagination } from '../helpers/paginationHelper.js';
 const getRecipes = async ({
   categoryId,
   areaId,
+  userId,
   ingredientId,
   limit,
   offset,
@@ -23,6 +24,7 @@ const getRecipes = async ({
 
   if (categoryId) where.categoryId = categoryId;
   if (areaId) where.areaId = areaId;
+  if (userId) where.userId = userId;
 
   if (ingredientId && Array.isArray(ingredientId) && ingredientId.length > 0) {
     const recipeIngredientLinks = await RecipeIngredient.findAll({
