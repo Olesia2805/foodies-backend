@@ -210,7 +210,7 @@ const getRecipeById = async (recipeId) => {
       {
         model: User,
         as: 'owner',
-        attributes: ['_id', 'email', 'avatar'],
+        attributes: ['_id', 'name', 'email', 'avatar'],
       },
       {
         model: Category,
