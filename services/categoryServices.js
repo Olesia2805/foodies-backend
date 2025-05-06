@@ -4,6 +4,7 @@ import {ERROR} from "../constants/messages.js";
 
 const getAllCategories = async () => {
   const categories = await Category.findAll({
+    attributes: ['_id', 'name', 'description', 'thumb'],
     order: [['name', 'ASC']]
 });
   if (!categories) {

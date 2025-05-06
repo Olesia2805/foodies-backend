@@ -1,14 +1,48 @@
-import { ERROR, SUCCESS } from '../constants/messages.js';
+import { SUCCESS, ERROR } from '../constants/messages.js';
 import errorWrapper from '../helpers/errorWrapper.js';
+import HttpError from '../helpers/HttpError.js';
 import recipeService from '../services/recipeServices.js';
+
+const getRecipes = async (req, res) => {
+  let { page, limit, categoryId, areaId, ingredientId, userId } = req.query;
+
+  const filters = {};
+  filters.offset = 0;
+
+  page = Number(page);
+  limit = Number(limit);
+
+  if (limit) {
+    filters.limit = limit;
+
+    if (page) {
+      filters.offset = (page - 1) * limit;
+    }
+  }
+
+  const filterOptions = {
+    categoryId,
+    areaId,
+    ingredientId: ingredientId ? ingredientId.split(',') : null,
+    userId: userId ?? null,
+    ...filters,
+  };
+
+  const data = await recipeService.getRecipes(filterOptions);
+
+  if (!Array.isArray(data?.data) || data.data.length === 0) {
+    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  }
+
+  res.json(data);
+};
 
 const createRecipe = async (req, res) => {
   const { _id: owner } = req.user;
 
   let thumb = null;
   if (req.file) {
-    const { filename } = req.file;
-    thumb = `/recipes/${filename}`;
+    thumb = req.file.path;
   }
 
   const ingredients = JSON.parse(req.body.ingredients || '[]');
@@ -125,6 +159,7 @@ const getRecipeById = async (req, res) => {
 };
 
 export default {
+  getRecipes: errorWrapper(getRecipes),
   createRecipe: errorWrapper(createRecipe),
   getUserRecipes: errorWrapper(getUserRecipes),
   addToFavorites: errorWrapper(addToFavorites),

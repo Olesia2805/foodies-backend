@@ -169,32 +169,33 @@ Seed-функція дозволяє заповнити базу даних те
 
 ## API
 
-| Method | Endpoint                            | Description                                                  |
-| ------ |-------------------------------------|--------------------------------------------------------------|
-| POST   | /api/auth/register                  | Register a new user                                          |
-| POST   | /api/auth/login                     | Login a user and generate a JWT token                        |
-| POST   | /api/auth/logout                    | Logout a user by invalidating the token                      |
-| GET    | /api/auth/me                        | Get information about a current user                         |
-| GET    | /api/auth/verify/:verificationToken | Verify a user with a verification token (by email)           |
-| GET    | /api/auth/verify                    | Request to resend the verification token to the user's email |
-| GET    | /api/auth/refresh-token             | Refresh JWT token                                            |
-| PATCH  | /api/users/avatars                  | Update a user avatar                                         |
-| GET    | /api/users/followings/:userId       | Get user followings list by user Id                          |
-| POST   | /api/users/followings/:followerId   | Follow the user with followerId                              |
-| DELETE | /api/users/followings/:followerId   | Unfollow the user with followerId                            |
-| GET    | /api/users/followers/:userId        | Get user followers list by user Id                           |
-| GET    | /api/users/:userId                  | Get user by Id                                               |
-| GET    | /api/categories                     | Get list of all categories                                   |
-| GET    | /api/ingredients                    | Get all ingredients (paginated)                              |
-| GET    | /api/ingredients/list?ids=1&ids=2   | Get requested ingredients by ID list                         |
-| GET    | /api/ingredients/:id                | Get ingredient by ID                                         |
-| GET    | /api/areas                          | Get List of All Areas                                        |
-| GET    | /api/areas/search?name=someName     | Get Country by name                                          |
-| GET    | /api/testimonials                   | Get list of all testimonials (paginated)                     |
-| POST   | /api/recipes                        | Create a new recipe                                          |
-| DELETE | /api/recipes/:recipeId              | Delete recipe by id                                          |
-| GET    | /api/recipes/own                    | Get current user recipes list                                |
-| GET    | /api/recipes/:recipeId              | Get recipe by id                                             |
+| Method | Endpoint                                            | Description                                                  |
+| ------ | --------------------------------------------------- | ------------------------------------------------------------ |
+| POST   | /api/auth/register                                  | Register a new user                                          |
+| POST   | /api/auth/login                                     | Login a user and generate a JWT token                        |
+| POST   | /api/auth/logout                                    | Logout a user by invalidating the token                      |
+| GET    | /api/auth/me                                        | Get information about a current user                         |
+| GET    | /api/auth/verify/:verificationToken                 | Verify a user with a verification token (by email)           |
+| GET    | /api/auth/verify                                    | Request to resend the verification token to the user's email |
+| GET    | /api/auth/refresh-token                             | Refresh JWT token                                            |
+| PATCH  | /api/users/avatars                                  | Update a user avatar                                         |
+| GET    | /api/users/followings/:userId                       | Get user followings list by user Id                          |
+| POST   | /api/users/followings/:followerId                   | Follow the user with followerId                              |
+| DELETE | /api/users/followings/:followerId                   | Unfollow the user with followerId                            |
+| GET    | /api/users/followers/:userId                        | Get user followers list by user Id                           |
+| GET    | /api/users/:userId                                  | Get user by Id                                               |
+| GET    | /api/categories                                     | Get list of all categories                                   |
+| GET    | /api/ingredients                                    | Get all ingredients (paginated)                              |
+| GET    | /api/ingredients/list?ids=1&ids=2                   | Get requested ingredients by ID list                         |
+| GET    | /api/ingredients/:id                                | Get ingredient by ID                                         |
+| GET    | /api/areas                                          | Get List of All Areas                                        |
+| GET    | /api/areas/search?name=someName                     | Get Country by name                                          |
+| GET    | /api/testimonials                                   | Get list of all testimonials (paginated)                     |
+| GET    | /api/recipes?categoryId=1&areaId=1&ingredientId=1,2 | Get list of all recipes with filters (paginated)             |
+| POST   | /api/recipes                                        | Create a new recipe                                          |
+| DELETE | /api/recipes/:recipeId                              | Delete recipe by id                                          |
+| GET    | /api/recipes/own                                    | Get current user recipes list                                |
+| GET    | /api/recipes/:recipeId                              | Get recipe by id                                             |
 | POST   | /api/recipes/favorites              | Add to favorites recipe                  |
 | DELETE | /api/recipes/favorites              | Delete from favorites recipe             |
 | GET    | /api/recipes/favorites              | Get list of favorites recipes            |

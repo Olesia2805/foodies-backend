@@ -17,16 +17,18 @@ export const ERROR = {
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
 
-
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
   VERIFICATION_TOKEN_MISSING: 'Verification token is missing',
   RECIPE_NOT_FOUND: 'Recipe not found',
+  RECIPES_NOT_FOUND: 'Recipes not found',
   RECIPE_DELETE_PERMISSION_DENIED:
     'Recipe not found or you do not have permission to delete it',
   RECIPE_CREATION_FAILED:
     'Failed to create the recipe. Please try again later.',
-
+  TESTIMONIAL_NOT_FOUND: 'Testimonial not found',
+  CANT_SUBSCRIBE_TO_YOURSELF: "You can't subscribe to yourself",
+  ALREADY_SIGNED: 'You already signed to this user',
 };
 
 export const SUCCESS = {
@@ -43,5 +45,5 @@ export const SUCCESS = {
   VERIFICATION_ALREADY_PASSED: 'Verification has already been passed',
   RECIPE_CREATED: 'Recipe created successfully',
   RECIPE_DELETED: 'Recipe deleted successfully',
-
+  CATEGORY_CREATED: 'Category created successfully',
 };

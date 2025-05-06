@@ -50,6 +50,23 @@ const storage = new CloudinaryStorage({
   },
 });
 
+
+const categoryStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'categories',
+    allowed_formats: AVAILABLE_AVATAR_IMAGE_TYPES,
+  },
+});
+
+const recipeStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'recipes',
+    allowed_formats: AVAILABLE_AVATAR_IMAGE_TYPES,
+  },
+});
+
 const limits = {
   fileSize: 1024 * 1024 * 5,
 };
@@ -66,7 +83,23 @@ const fileFilter = (req, file, callback) => {
   callback(null, true);
 };
 
-const upload = multer({ storage, limits, fileFilter });
+const upload = multer({ 
+  storage, 
+  limits, 
+  fileFilter 
+});
+
+const uploadRecipeImage = multer({
+  storage: recipeStorage,
+  limits,
+  fileFilter,
+});
+
+const uploadCategoryImage = multer({
+  storage: categoryStorage,
+  limits,
+  fileFilter,
+});
 
 const moveFile = (destination) => async (req, res, next) => {
   if (!req.file) {
@@ -109,3 +142,5 @@ upload.moveAvatarToPublic = moveFile(avatarsDir);
 upload.moveRecipeImageToPublic = moveFile(recipesDir);
 
 export default upload;
+
+export { uploadCategoryImage, uploadRecipeImage };
