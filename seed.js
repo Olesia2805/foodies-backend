@@ -11,6 +11,7 @@ import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
 import Testimonial from './db/models/testimonial.js';
+import UserFavorites from './db/models/UserFavorites.js';
 
 // import Recipe from './db/models/Recipe.js';
 
