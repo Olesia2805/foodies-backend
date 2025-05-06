@@ -2,75 +2,119 @@
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f8a"
   },
-  "name": "Seafood"
+  "name": "Seafood",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378264/categories/Seafood.png",
+  "description": "A category that includes various types of fish and shellfish, commonly consumed as food. Seafood is known for its rich flavors and nutritional benefits, including high levels of omega-3 fatty acids."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f8b"
   },
-  "name": "Lamb"
+  "name": "Lamb",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378264/categories/Lamb.png",
+  "description": "A type of meat that comes from young sheep, known for its tender texture and rich flavor. Lamb is commonly used in various cuisines around the world and can be prepared in many ways, including roasting, grilling, and braising."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f8c"
   },
-  "name": "Starter"
+  "name": "Starter",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378262/categories/Starter.png",
+  "description": "A small dish served before the main course, often designed to stimulate the appetite. Starters can include a variety of items such as soups, salads, or appetizers, and are typically enjoyed in smaller portions."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f8d"
   },
-  "name": "Chicken"
+  "name": "Chicken",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378261/categories/Goat.png",
+  "description": "A type of poultry that is widely consumed around the world. Chicken can be prepared in various ways, including roasting, grilling, frying, and baking. It is a versatile ingredient used in many cuisines and is known for its mild flavor and tender texture."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f8e"
   },
-  "name": "Beef"
+  "name": "Beef",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378264/categories/Beef.png",
+  "description": "A type of meat that comes from cattle, commonly used in various cuisines around the world. Beef can be prepared in many ways, including grilling, roasting, and braising, and is often enjoyed for its rich flavor and tenderness."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f8f"
   },
-  "name": "Dessert"
+  "name": "Dessert",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378266/categories/Desserts.png",
+  "description": "A sweet course typically served at the end of a meal. Desserts can include a wide variety of items such as cakes, pastries, ice cream, and fruit, and are often enjoyed for their rich flavors and textures."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f90"
   },
-  "name": "Vegan"
+  "name": "Vegan",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378262/categories/Vegan.png",
+  "description": "A diet that excludes all animal products, including meat, dairy, eggs, and honey. Veganism is often adopted for ethical, environmental, or health reasons, and focuses on plant-based foods such as fruits, vegetables, grains, legumes, nuts, and seeds."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f91"
   },
-  "name": "Pork"
+  "name": "Pork",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378262/categories/Pork.png",
+  "description": "A type of meat that comes from pigs, commonly used in various cuisines around the world. Pork can be prepared in many ways, including roasting, grilling, and frying, and is often used in dishes such as sausages, bacon, and ham."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f92"
   },
-  "name": "Vegetarian"
+  "name": "Vegetarian",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378262/categories/Vegetarian.png",
+  "description": "A diet that excludes meat and fish, focusing instead on plant-based foods such as fruits, vegetables, grains, legumes, nuts, and seeds. Vegetarianism can vary in strictness, with some individuals allowing dairy and eggs while others do not."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f93"
   },
-  "name": "Miscellaneous"
+  "name": "Miscellaneous",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378261/categories/Miscellaneous.png",
+  "description": "A category that includes a variety of food items that do not fit into the standard classifications. This can include unique or specialty dishes, snacks, or ingredients that are not commonly categorized."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f94"
   },
-  "name": "Pasta"
+  "name": "Pasta",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378263/categories/Pasta.png",
+  "description": "A type of Italian dish made from unleavened dough, typically consisting of wheat flour and water, and formed into various shapes. Pasta is often served with a variety of sauces and ingredients, making it a versatile and popular food choice."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f95"
   },
-  "name": "Breakfast"
+  "name": "Breakfast",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378267/categories/Breakfast.png",
+  "description": "The first meal of the day, typically eaten in the morning. Breakfast foods can vary widely by culture and may include items such as eggs, toast, cereal, fruit, and beverages like coffee or juice."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f96"
   },
-  "name": "Side"
+  "name": "Side",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378263/categories/Side.png",
+  "description": "A dish served alongside the main course, often complementing the flavors and textures of the primary dish. Sides can include vegetables, grains, or other accompaniments that enhance the overall meal experience."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f97"
   },
-  "name": "Goat"
+  "name": "Goat",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378261/categories/Goat.png",
+  "description": "A type of meat that is lean and flavorful, often used in various cuisines around the world. Goat meat is known for its distinct taste and is commonly used in dishes such as curries, stews, and barbecues."
 },{
   "_id": {
     "$oid": "6462a6cd4c3d0ddd28897f98"
   },
-  "name": "Soup"
+  "name": "Soup",
+  "thumb": "https://res.cloudinary.com/dhjcmd62c/image/upload/v1746378261/categories/Goat.png",
+  "description": "A dish typically consisting of a liquid base, such as broth or stock, combined with various ingredients like vegetables, meat, or grains. Soups can be served hot or cold and are often enjoyed as a comforting and nourishing meal option."
 }]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
