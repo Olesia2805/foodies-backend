@@ -87,6 +87,36 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
+//TODO: check swagger documentation for this endpoint
+/**
+ * @swagger
+ * /api/recipes/favorites:
+ *   post:
+ *     summary: Add a recipe to favorites
+ *     description: Add a recipe to the user's favorites list. Requires authentication.
+ *     tags:
+ *       - Recipes
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               recipeId:
+ *                 type: string
+ *                 description: The ID of the recipe to add to favorites
+ *                 example: 6462a6f04c3d0ddd28897f9b
+ *     responses:
+ *       200:
+ *         description: Recipe added to favorites successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Recipe not found
+ */
 recipeRouter.post(
   '/favorites',
   auth,
@@ -94,6 +124,36 @@ recipeRouter.post(
   recipeController.addToFavorites
 );
 
+//TODO: check swagger documentation for this endpoint
+/**
+ * @swagger
+ * /api/recipes/favorites:
+ *   delete:
+ *     summary: Remove a recipe from favorites
+ *     description: Remove a recipe from the user's favorites list. Requires authentication.
+ *     tags:
+ *       - Recipes
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               recipeId:
+ *                 type: string
+ *                 description: The ID of the recipe to remove from favorites
+ *                 example: 6462a6f04c3d0ddd28897f9b
+ *     responses:
+ *       200:
+ *         description: Recipe removed from favorites successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Recipe not found
+ */
 recipeRouter.delete(
   '/favorites',
   auth,
@@ -101,27 +161,53 @@ recipeRouter.delete(
   recipeController.deleteFromFavorites
 );
 
-recipeRouter.get(
-  '/favorites',
-  auth,
-  validateQuery(paginationSchema),
-  recipeController.getFavorites
-);
-
-recipeRouter.post(
-  '/favorites',
-  auth,
-  validateBody(addToFavorites),
-  recipeController.addToFavorites
-);
-
-recipeRouter.delete(
-  '/favorites',
-  auth,
-  validateBody(addToFavorites),
-  recipeController.deleteFromFavorites
-);
-
+//TODO: check swagger documentation for this endpoint
+/**
+ * @swagger
+ * /api/recipes/favorites:
+ *   get:
+ *     summary: Get user favorites
+ *     description: Retrieve a list of favorite recipes for the authenticated user.
+ *     tags:
+ *       - Recipes
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: The page number for pagination (default is 1)
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: The number of items per page (default is 10)
+ *     responses:
+ *       200:
+ *         description: A list of favorite recipes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The recipe ID
+ *                     example: 6462a6f04c3d0ddd28897f9b
+ *                   title:
+ *                     type: string
+ *                     description: The title of the recipe
+ *                     example: Spaghetti Carbonara
+ *                   description:
+ *                     type: string
+ *                     description: The description of the recipe
+ *                     example: A classic Italian pasta dish.
+ */
 recipeRouter.get(
   '/favorites',
   auth,

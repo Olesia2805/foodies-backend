@@ -23,6 +23,7 @@ const getRecipes = async ({
   limit,
   offset,
 }) => {
+  // try {
   const where = {};
 
   if (categoryId) where.categoryId = categoryId;
@@ -83,6 +84,10 @@ const getRecipes = async ({
     order: [['createdAt', 'DESC']],
     distinct: true,
   });
+  //TODO
+  // if (!rows || rows.length === 0) {
+  //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  // }
 
   const pages = Math.ceil(count / (limit || count || 1));
   const currentPage = limit ? Math.floor(offset / limit) + 1 : 1;
@@ -93,6 +98,9 @@ const getRecipes = async ({
     currentPage,
     data: rows,
   };
+  // } catch (error) {
+  //   throw HttpError(500, ERROR.RECIPES_NOT_FOUND || error.message);
+  // }
 };
 
 const createRecipe = async (recipeData) => {
