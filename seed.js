@@ -10,7 +10,7 @@ import Area from './db/models/Areas.js';
 import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
-import Testimonial from './db/models/testimonial.js';
+import Testimonial from './db/models/Testimonial.js';
 
 // import Recipe from './db/models/Recipe.js';
 
