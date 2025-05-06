@@ -238,5 +238,5 @@ export default {
   getUserRecipes,
   deleteRecipe,
   getRecipeById,
-  listRecipes,
+//  listRecipes,
 };
