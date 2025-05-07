@@ -91,4 +91,4 @@ const initModels = () => {
   });
 };
 
-export { Ingredient, initModels, Recipe, RecipeIngredient, User, Category };
+export { Category, Ingredient, initModels, Recipe, RecipeIngredient, User };
