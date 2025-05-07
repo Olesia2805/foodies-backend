@@ -3,15 +3,9 @@ import authService from '../services/authServices.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
 
 const register = async (req, res) => {
-  const newUser = await authService.register(req.body);
+  await authService.register(req.body);
 
-  res.status(201).send({
-    user: {
-      name: newUser.name,
-      email: newUser.email,
-      avatar: newUser.avatar,
-    },
-  });
+  res.status(201).send({ message: "Please verify your email" });
 };
 
 const login = async (req, res) => {
@@ -39,6 +33,7 @@ const getMe = async (req, res) => {
 
   res.status(200).json(user);
 };
+
 
 const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
@@ -78,11 +73,13 @@ const resendVerificationEmail = async (req, res) => {
   res.status(200).json({ message: SUCCESS.VERIFICATION_EMAIL_SENT });
 };
 
+
 const refresh = async (req, res) => {
   const token = await authService.refresh(req.body.refreshToken);
 
   res.status(200).send(token);
 };
+
 
 export default {
   register: errorWrapper(register),

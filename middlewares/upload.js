@@ -1,14 +1,15 @@
 import multer from 'multer';
 
 import fs from 'fs/promises';
-import path from 'path';
 
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
+
 import HttpError from '../helpers/HttpError.js';
 import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
 import { ERROR } from '../constants/messages.js';
+import path from 'node:path';
 
 const tempDir = path.resolve('temp');
 const avatarsDir = path.resolve('public', 'avatars');
@@ -37,6 +38,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
 
 const storage = new CloudinaryStorage({
   cloudinary,

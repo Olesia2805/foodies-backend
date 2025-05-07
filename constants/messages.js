@@ -10,6 +10,10 @@ export const ERROR = {
     `Not found ingredients with IDs: ${ids.join(', ')}`,
   CATEGORY_NOT_FOUND: 'Category not found',
   AREAS_NOT_FOUND: 'Areas not found',
+  RECIPE_WITH_ID_NOT_FOUND: (id) => `Not found recipe ${id}`,
+  FAVORITES_NOT_FOUND: `No favorite recipes found`,
+  INVALID_REFRESH_TOKEN: 'Invalid refresh token',
+  ACCESS_TOKEN_EXPIRED: 'Access token expired',
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
   VERIFICATION_TOKEN_MISSING: 'Verification token is missing',
@@ -20,11 +24,17 @@ export const ERROR = {
   RECIPE_CREATION_FAILED:
     'Failed to create the recipe. Please try again later.',
   TESTIMONIAL_NOT_FOUND: 'Testimonial not found',
+  CANT_SUBSCRIBE_TO_YOURSELF: "You can't subscribe to yourself",
+  ALREADY_SIGNED: 'You already signed to this user',
 };
 
 export const SUCCESS = {
   FOLLOWED: 'Successfully followed',
   UNFOLLOWED: 'Successfully unfollowed',
+  RECIPE_FAVORITES_ADDED: (id) =>
+    `Recipe with Id: "${id}" added to favorite successfully`,
+  RECIPE_FAVORITES_DELETED: (id) =>
+    `Recipe with Id: "${id}" deleted from favorite successfully`,
   VERIFICATION_EMAIL_SENT: 'Verification email sent',
   VERIFICATION_SUCCESSFULL: 'Verification successful',
   VERIFICATION_ALREADY_PASSED: 'Verification has already been passed',

@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import { emailRegexp } from '../../constants/auth.js';
 import sequelize from '../Sequelize.js';
 
-const User = sequelize.define('User', {
+const User = sequelize.define('user', {
   _id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -27,10 +27,17 @@ const User = sequelize.define('User', {
   avatar: {
     type: DataTypes.STRING,
   },
+
   token: {
     type: DataTypes.STRING,
     defaultValue: null,
   },
+  refreshToken: {
+    type: DataTypes.STRING,
+    defaultValue: null,
+    allowNull: true,
+  },
+
   verify: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
@@ -38,25 +45,20 @@ const User = sequelize.define('User', {
   verificationToken: {
     type: DataTypes.STRING,
   },
-  refreshToken: {
-    type: DataTypes.STRING,
-    defaultValue: null,
-    allowNull: true,
-  }
 });
 
 // User.sync({force: true});
 
 User.belongsToMany(User, {
   as: 'followers',
-  through: 'UserFollowers',
+  through: 'user_followers',
   foreignKey: 'followingId',
   otherKey: 'followerId',
 });
 
 User.belongsToMany(User, {
   as: 'following',
-  through: 'UserFollowers',
+  through: 'user_followers',
   foreignKey: 'followerId',
   otherKey: 'followingId',
 });

@@ -14,14 +14,13 @@ const Category = sequelize.define(
       allowNull: false,
       unique: true,
     },
-    image: {
-      type: DataTypes.STRING,
+    description: {
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     thumb: {
       type: DataTypes.STRING,
       allowNull: true,
-      comment: 'URL of the category image stored in Cloudinary',
     },
   },
   {
