@@ -14,7 +14,6 @@ import {
   verifyRefreshToken,
 } from '../helpers/jwtHelper.js';
 
-
 const register = async ({ name, email, password }) => {
   try {
     const hashPassword = bcrypt.hashSync(password, 10);
@@ -105,12 +104,12 @@ const getMe = async (userId) => {
   }
 
   return {
+    id: userId,
     email: user.email,
     name: user.name,
     avatar: user.avatar,
   };
 };
-
 
 const verifyUser = async (verificationToken) => {
   const user = await User.findOne({ where: { verificationToken } });
@@ -143,7 +142,6 @@ const resendVerificationEmail = async (user) => {
   });
 };
 
-
 const refresh = async (refreshToken) => {
   let payload;
 
@@ -166,7 +164,6 @@ const refresh = async (refreshToken) => {
     id: user._id,
     email: user.email,
   });
-
 
   user.token = newAccessToken;
   user.refreshToken = newRefreshToken;
