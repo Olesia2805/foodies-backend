@@ -1,14 +1,15 @@
 import multer from 'multer';
 
 import fs from 'fs/promises';
-import path from 'path';
 
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
+
 import HttpError from '../helpers/HttpError.js';
 import { AVAILABLE_AVATAR_IMAGE_TYPES } from '../constants/fileTypes.js';
 import { ERROR } from '../constants/messages.js';
+import path from 'node:path';
 
 const tempDir = path.resolve('temp');
 const avatarsDir = path.resolve('public', 'avatars');
@@ -38,10 +39,20 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'avatars',
+    allowed_formats: AVAILABLE_AVATAR_IMAGE_TYPES,
+  },
+});
+
+
+const categoryStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'categories',
     allowed_formats: AVAILABLE_AVATAR_IMAGE_TYPES,
   },
 });
@@ -81,6 +92,12 @@ const uploadRecipeImage = multer({
   limits,
   fileFilter,
   fieldName: 'thumb',
+});
+
+const uploadCategoryImage = multer({
+  storage: categoryStorage,
+  limits,
+  fileFilter,
 });
 
 const moveFile = (destination) => async (req, res, next) => {
@@ -124,4 +141,5 @@ upload.moveAvatarToPublic = moveFile(avatarsDir);
 upload.moveRecipeImageToPublic = moveFile(recipesDir);
 
 export default upload;
-export { uploadRecipeImage };
+
+export { uploadCategoryImage, uploadRecipeImage };

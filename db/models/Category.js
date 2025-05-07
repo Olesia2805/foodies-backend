@@ -14,6 +14,14 @@ const Category = sequelize.define(
       allowNull: false,
       unique: true,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    thumb: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     timestamps: false,

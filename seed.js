@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
 import path from 'path';
 import sequelize from './db/Sequelize.js';
-import { initModels, RecipeIngredient, Recipe } from './db/initModels.js';
+import { initModels, RecipeIngredient, Recipe, Category } from './db/initModels.js';
 
 
 // # TODO from initModels.js or from models?
@@ -10,7 +10,8 @@ import Area from './db/models/Areas.js';
 import Category from './db/models/Category.js';
 import Ingredient from './db/models/Ingredient.js';
 import User from './db/models/User.js';
-import Testimonial from './db/models/testimonial.js';
+import Testimonial from './db/models/Testimonial.js';
+import UserFavorites from './db/models/UserFavorites.js';
 
 // import Recipe from './db/models/Recipe.js';
 
@@ -94,6 +95,8 @@ const seedData = async () => {
     const categoriesForSequelize = categoriesData.map((category) => ({
       // _id: category._id.$oid,
       name: category.name,
+      description: category.description,
+      thumb: category.thumb,
     }));
     await Category.bulkCreate(categoriesForSequelize);
     console.log(`Створено ${categoriesForSequelize.length} категорій`);

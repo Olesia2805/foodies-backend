@@ -6,6 +6,7 @@ import sendEmail from '../helpers/sendEmail.js';
 
 import User from '../db/models/User.js';
 import HttpError from '../helpers/HttpError.js';
+
 import { ERROR, SUCCESS } from '../constants/messages.js';
 import {
   createAccessToken,
@@ -13,13 +14,14 @@ import {
   verifyRefreshToken,
 } from '../helpers/jwtHelper.js';
 
+
 const register = async ({ name, email, password }) => {
   try {
     const hashPassword = bcrypt.hashSync(password, 10);
     const avatarURL = gravatar.url(email, { protocol: 'https' });
     const verificationToken = uuidv4();
 
-    const newUser = await User.create({
+    await User.create({
       name: name,
       email: email,
       password: hashPassword,
@@ -34,7 +36,7 @@ const register = async ({ name, email, password }) => {
       user: { verificationToken },
     });
 
-    return newUser;
+    return true;
   } catch (error) {
     if (error instanceof UniqueConstraintError) {
       throw HttpError(409, ERROR.EMAIL_IN_USE);
@@ -109,6 +111,7 @@ const getMe = async (userId) => {
   };
 };
 
+
 const verifyUser = async (verificationToken) => {
   const user = await User.findOne({ where: { verificationToken } });
 
@@ -140,6 +143,7 @@ const resendVerificationEmail = async (user) => {
   });
 };
 
+
 const refresh = async (refreshToken) => {
   let payload;
 
@@ -162,6 +166,7 @@ const refresh = async (refreshToken) => {
     id: user._id,
     email: user.email,
   });
+
 
   user.token = newAccessToken;
   user.refreshToken = newRefreshToken;

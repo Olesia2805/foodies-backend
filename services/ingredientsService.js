@@ -1,23 +1,13 @@
 import Ingredient from '../db/models/Ingredient.js';
-import { paginationSchema } from '../schemas/paginationSchema.js';
-import { calculatePagination } from '../helpers/paginationHelper.js';
 
-const listIngredients = async (query = {}, filters = {}) => {
-  const { page, limit, offset } = calculatePagination(filters);
-
-  const { count, rows } = await Ingredient.findAndCountAll({
+const listIngredients = async (query = {}) => {
+  const ingredients = await Ingredient.findAll({
     where: query,
-    limit,
-    offset,
   });
 
-  const pages = Math.ceil(count / limit);
-
   return {
-    total: count,
-    currentPage: page,
-    pages,
-    data: rows,
+    total: ingredients.length,
+    data: ingredients,
   };
 };
 
