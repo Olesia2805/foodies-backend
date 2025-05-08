@@ -101,6 +101,7 @@ const createRecipe = async (recipeData) => {
           recipeId: recipe._id,
           ingredientId: item.ingredientId || item._id,
           quantity: item.quantity || item.measure,
+          measure: item.quantity || item.measure,
         };
       });
 
@@ -110,7 +111,13 @@ const createRecipe = async (recipeData) => {
     await t.commit();
 
     return await Recipe.findByPk(recipe._id, {
-      include: [{ model: Ingredient, through: { attributes: ['quantity'] } }],
+      include: [
+        {
+          model: Ingredient,
+          through: { attributes: ['measure'] },
+          as: 'ingredients',
+        },
+      ],
     });
   } catch (error) {
     if (t && !t.finished) {
@@ -132,7 +139,7 @@ const getUserRecipes = async (owner) => {
         include: [
           {
             model: Ingredient,
-            as: 'ingredient',
+            as: 'ingredients',
             attributes: ['_id', 'name', 'desc', 'img'],
           },
         ],
@@ -331,6 +338,16 @@ const getPopularRecipes = async () => {
   return recipes;
 };
 
+const getCategoryIdByName = async (categoryName) => {
+  const category = await Category.findOne({ where: { name: categoryName } });
+  return category ? category._id : null;
+};
+
+const getAreaIdByName = async (areaName) => {
+  const area = await Area.findOne({ where: { name: areaName } });
+  return area ? area._id : null;
+};
+
 export default {
   getRecipes,
   createRecipe,
@@ -341,4 +358,6 @@ export default {
   deleteRecipe,
   getRecipeById,
   getPopularRecipes,
+  getCategoryIdByName,
+  getAreaIdByName,
 };

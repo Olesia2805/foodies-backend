@@ -82,7 +82,7 @@ const recipeRouter = express.Router();
 recipeRouter.post(
   '/',
   auth,
-  uploadRecipeImage.single('image'),
+  uploadRecipeImage.single('thumb'),
   validateBody(createRecipeSchema),
   recipeController.createRecipe
 );
@@ -362,5 +362,6 @@ recipeRouter.get('/own', auth, recipeController.getUserRecipes);
  *         description: Internal server error
  */
 recipeRouter.get('/:recipeId', recipeController.getRecipeById);
+
 
 export default recipeRouter;

@@ -91,6 +91,7 @@ const uploadRecipeImage = multer({
   storage: recipeStorage,
   limits,
   fileFilter,
+  fieldName: 'thumb',
 });
 
 const uploadCategoryImage = multer({
