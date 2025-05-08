@@ -29,7 +29,7 @@ const initModels = () => {
 
   Recipe.hasMany(RecipeIngredient, {
     foreignKey: 'recipeId',
-    as: 'recipeIngredients',
+    as: 'RecipeIngredients',
   });
 
   Recipe.belongsToMany(User, {
@@ -50,7 +50,7 @@ const initModels = () => {
 
   RecipeIngredient.belongsTo(Recipe, {
     foreignKey: 'recipeId',
-    as: 'recipeIngredients',
+    as: 'RecipeIngredients',
   });
 
   RecipeIngredient.belongsTo(Ingredient, {
@@ -92,4 +92,4 @@ const initModels = () => {
   });
 };
 
-export { initModels, Ingredient, Recipe, RecipeIngredient, User, Category };
+export { Category, Ingredient, initModels, Recipe, RecipeIngredient, User };

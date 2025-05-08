@@ -38,7 +38,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'https://foodies-backend-yutr.onrender.com',
         description: 'Local server',
       },
     ],

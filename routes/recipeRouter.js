@@ -316,6 +316,9 @@ recipeRouter.get('/', recipeController.getRecipes);
  *       500:
  *         description: Internal server error
  */
+
+recipeRouter.get('/popular', recipeController.getPopularRecipes);
+
 recipeRouter.get('/own', auth, recipeController.getUserRecipes);
 
 /**

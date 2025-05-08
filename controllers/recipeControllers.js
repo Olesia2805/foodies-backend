@@ -164,6 +164,16 @@ const getRecipeById = async (req, res) => {
   });
 };
 
+const getPopularRecipes = async (req, res) => {
+  const data = await recipeService.getPopularRecipes();
+
+  if (!Array.isArray(data) || data.length === 0) {
+    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  }
+
+  res.json(data);
+};
+
 export default {
   getRecipes: errorWrapper(getRecipes),
   createRecipe: errorWrapper(createRecipe),
@@ -173,4 +183,5 @@ export default {
   getFavorites: errorWrapper(getFavorites),
   deleteRecipe: errorWrapper(deleteRecipe),
   getRecipeById: errorWrapper(getRecipeById),
+  getPopularRecipes: errorWrapper(getPopularRecipes),
 };
