@@ -30,10 +30,6 @@ const getRecipes = async (req, res) => {
 
   const data = await recipeService.getRecipes(filterOptions);
 
-  if (!Array.isArray(data?.data) || data.data.length === 0) {
-    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
-  }
-
   res.json(data);
 };
 
@@ -160,10 +156,6 @@ const getRecipeById = async (req, res) => {
 
 const getPopularRecipes = async (req, res) => {
   const data = await recipeService.getPopularRecipes();
-
-  if (!Array.isArray(data) || data.length === 0) {
-    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
-  }
 
   res.json(data);
 };
