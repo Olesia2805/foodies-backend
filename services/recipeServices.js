@@ -48,36 +48,16 @@ const getRecipes = async ({
     }
   }
 
-  const include = [
-    {
-      model: Category,
-      as: 'categoryOfRecipe',
-      attributes: ['_id', 'name'],
-    },
-    {
-      model: Area,
-      as: 'areaOfRecipe',
-      attributes: ['_id', 'name'],
-    },
-    {
-      model: User,
-      as: 'owner',
-      attributes: ['_id', 'name', 'avatar'],
-    },
-    {
-      model: Ingredient,
-      as: 'ingredients',
-      attributes: ['_id', 'name', 'desc', 'img'],
-      through: {
-        attributes: ['measure'],
-      },
-    },
-  ];
-
   const { count, rows } = await Recipe.findAndCountAll({
     where,
-    attributes: { exclude: ['categoryId', 'areaId', 'userId'] },
-    include,
+    attributes: { exclude: ['userId'] },
+    include: [
+      {
+        model: User,
+        as: 'owner',
+        attributes: ['_id', 'name', 'avatar'],
+      },
+    ],
     limit,
     offset,
     order: [['createdAt', 'DESC']],
@@ -315,6 +295,42 @@ const getRecipeById = async (recipeId) => {
   return recipe;
 };
 
+const getPopularRecipes = async () => {
+  const popular = await UserFavorites.findAll({
+    attributes: [
+      'recipe_id',
+      [sequelize.fn('COUNT', sequelize.col('user_id')), 'favoritesCount'],
+    ],
+    group: ['recipe_id'],
+    order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
+    limit: 4,
+    raw: true,
+  });
+
+  if (!popular || popular.length === 0) {
+    return [];
+  }
+
+  const recipeIds = popular.map((item) => item.recipe_id);
+
+  const recipes = await Recipe.findAll({
+    where: {
+      _id: {
+        [Op.in]: recipeIds,
+      },
+    },
+    include: [
+      {
+        model: User,
+        as: 'owner',
+        attributes: ['_id', 'name', 'avatar'],
+      },
+    ],
+  });
+
+  return recipes;
+};
+
 export default {
   getRecipes,
   createRecipe,
@@ -324,4 +340,5 @@ export default {
   getFavorites,
   deleteRecipe,
   getRecipeById,
+  getPopularRecipes,
 };
