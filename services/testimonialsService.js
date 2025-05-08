@@ -1,17 +1,17 @@
 import Testimonial from '../db/models/Testimonial.js';
 import User from '../db/models/User.js';
-import { paginationSchema } from '../schemas/paginationSchema.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';
+import { formatPaginatedResponse } from '../helpers/responseHelper.js';
 
 const listTestimonials = async (filters = {}) => {
-  const { page, limit, offset } = calculatePagination(filters);
+  const { page, limit, offset, totalPages } = calculatePagination(filters);
 
   const { count, rows: testimonials } = await Testimonial.findAndCountAll({
     include: [
       {
         model: User,
         as: 'user',
-        attributes: ['_id', 'name','email', 'avatar'],
+        attributes: ['_id', 'name', 'email', 'avatar'],
         required: false,
       },
     ],
@@ -20,14 +20,14 @@ const listTestimonials = async (filters = {}) => {
     offset,
   });
 
-  const totalPages = Math.ceil(count / limit);
 
-  return {
+
+  return formatPaginatedResponse({ testimonials }, {
+    page,
+    limit,
+    totalPages,
     total: count,
-    currentPage: page,
-    pages: totalPages,
-    data: testimonials,
-  };
+  });
 };
 
 export default {

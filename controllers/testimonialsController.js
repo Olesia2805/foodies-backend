@@ -11,7 +11,7 @@ const getTestimonials = async (req, res) => {
 
   const data = await testimonialsService.listTestimonials(filters);
 
-  if (!Array.isArray(data?.data) || data.data.length === 0) {
+  if (!Array.isArray(data?.data.testimonials) || data.data.length === 0) {
     throw HttpError(404, ERROR.TESTIMONIAL_NOT_FOUND);
   }
 

@@ -4,37 +4,20 @@ import HttpError from '../helpers/HttpError.js';
 import recipeService from '../services/recipeServices.js';
 
 const getRecipes = async (req, res) => {
-  let { page, limit, categoryId, areaId, ingredientId, userId } = req.query;
+  const { page = 1, limit = 10, categoryId, areaId, ingredientId, userId } = req.query;
 
-  const filters = {};
-  filters.offset = 0;
-
-  page = Number(page);
-  limit = Number(limit);
-
-  if (limit) {
-    filters.limit = limit;
-
-    if (page) {
-      filters.offset = (page - 1) * limit;
-    }
-  }
-
-  const filterOptions = {
+  const filters = {
+    page: Number(page),
+    limit: Number(limit),
     categoryId,
     areaId,
     ingredientId: ingredientId ? ingredientId.split(',') : null,
     userId: userId ?? null,
-    ...filters,
   };
 
-  const data = await recipeService.getRecipes(filterOptions);
+  const data = await recipeService.getRecipes(filters);
 
-  if (!Array.isArray(data?.data) || data.data.length === 0) {
-    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
-  }
-
-  res.json(data);
+  res.status(200).json(data);
 };
 
 const createRecipe = async (req, res) => {
@@ -71,17 +54,13 @@ const createRecipe = async (req, res) => {
 
 const getUserRecipes = async (req, res) => {
   const { _id: userId } = req.user;
+  const { page = 1, limit = 10 } = req.query;
 
-  const recipes = await recipeService.getUserRecipes(userId);
+  const filters = { page: Number(page), limit: Number(limit) };
 
-  //TODO
-  // if (!recipes || recipes.length === 0) {
-  //   return res.status(404).json({ message: 'No recipes found for this user' });
-  // }
+  const data = await recipeService.getUserRecipes(userId, filters);
 
-  res.status(200).send({
-    recipes,
-  });
+  res.status(200).json(data);
 };
 
 const addToFavorites = async (req, res) => {

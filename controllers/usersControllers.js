@@ -38,7 +38,11 @@ const unfollowUser = async (req, res) => {
 };
 
 const getFollowing = async (req, res) => {
-  const response = await usersServices.getFollowing(req.params.userId);
+  const { page = 1, limit = 10 } = req.query; // Установлены значения по умолчанию
+
+  const validatedQuery = await paginationSchema.validateAsync({ page, limit });
+
+  const response = await usersServices.getFollowing(req.params.userId, validatedQuery);
 
   res.status(200).json(response);
 };

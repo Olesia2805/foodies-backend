@@ -8,6 +8,7 @@ import HttpError from '../helpers/HttpError.js';
 import sequelize from '../db/Sequelize.js';
 import User from '../db/models/User.js';
 import UserFavorites from '../db/models/UserFavorites.js';
+import { formatPaginatedResponse } from '../helpers/responseHelper.js';
 
 import { ERROR, SUCCESS } from '../constants/messages.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';
@@ -19,11 +20,11 @@ const getRecipes = async ({
   areaId,
   userId,
   ingredientId,
+  page,
   limit,
-  offset,
 }) => {
-  // try {
-  console.log('Fetching recipes for userId:', userId);
+  const { offset, totalPages } = calculatePagination({ page, limit });
+
   const where = {};
 
   if (categoryId) where.categoryId = categoryId;
@@ -75,7 +76,7 @@ const getRecipes = async ({
     },
   ];
 
-  const { count, rows } = await Recipe.findAndCountAll({
+  const { count, rows: recipes } = await Recipe.findAndCountAll({
     where,
     attributes: { exclude: ['categoryId', 'areaId', 'userId'] },
     include,
@@ -84,24 +85,13 @@ const getRecipes = async ({
     order: [['createdAt', 'DESC']],
     distinct: true,
   });
-  // console.log('Recipes fetched from database:', rows);
-  //TODO
-  // if (!rows || rows.length === 0) {
-  //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
-  // }
 
-  const pages = Math.ceil(count / (limit || count || 1));
-  const currentPage = limit ? Math.floor(offset / limit) + 1 : 1;
-
-  return {
+  return formatPaginatedResponse({ recipes }, {
+    page,
+    limit,
+    totalPages,
     total: count,
-    pages,
-    currentPage,
-    data: rows,
-  };
-  // } catch (error) {
-  //   throw HttpError(500, ERROR.RECIPES_NOT_FOUND || error.message);
-  // }
+  });
 };
 
 const createRecipe = async (recipeData) => {
@@ -144,8 +134,10 @@ const createRecipe = async (recipeData) => {
   }
 };
 
-const getUserRecipes = async (owner) => {
-  return await Recipe.findAll({
+const getUserRecipes = async (owner, { page, limit }) => {
+  const { offset, totalPages } = calculatePagination({ page, limit });
+
+  const { count, rows: recipes } = await Recipe.findAndCountAll({
     where: { userId: owner },
     include: [
       {
@@ -161,7 +153,16 @@ const getUserRecipes = async (owner) => {
         attributes: ['measure'],
       },
     ],
+    limit,
+    offset,
     order: [['createdAt', 'DESC']],
+  });
+
+  return formatPaginatedResponse({ recipes }, {
+    page,
+    limit,
+    totalPages,
+    total: count,
   });
 };
 
@@ -212,33 +213,26 @@ const deleteFromFavorites = async (user, recipeId) => {
   });
 };
 
-const getFavorites = async (user, filters = {}) => {
+const getFavorites = async (user, { page, limit }) => {
+  const { offset, totalPages } = calculatePagination({ page, limit });
+
   const { rows, count } = await UserFavorites.findAndCountAll({
     where: {
       user_id: user._id,
     },
     include: [{ model: Recipe, as: 'recipe' }],
-    ...filters,
+    limit,
+    offset,
   });
-
-  // I suppouse empty array is not an error.
-  // if (!rows || rows.length === 0) {
-  //   throw HttpError(400, ERROR.FAVORITES_NOT_FOUND);
-  // }
-
-  const pages = Math.ceil(count / filters?.limit || 1);
-  const currentPage = filters?.limit
-    ? Math.floor(filters?.offset / filters?.limit) + 1
-    : 1;
 
   const recipes = rows?.map((favorite) => favorite.recipe) || [];
 
-  return {
+  return formatPaginatedResponse(recipes, {
+    page,
+    limit,
+    totalPages,
     total: count,
-    currentPage: currentPage,
-    pages: pages,
-    data: recipes,
-  };
+  });
 };
 
 const deleteRecipe = async (recipeId, userId) => {

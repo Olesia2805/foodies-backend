@@ -4,6 +4,7 @@ import { usersReturnsSchema } from '../schemas/userSchemas.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
 import { calculatePagination } from '../helpers/paginationHelper.js';
 import recipeService from './recipeServices.js';
+import { formatPaginatedResponse } from '../helpers/paginationHelper.js';
 
 const getUserById = async (authUser, userId) => {
   // TODO: Added count of favorite recipes and count of created recipes
@@ -102,51 +103,66 @@ const unfollow = async (followerId, followingId) => {
 };
 
 const getFollowing = async (userId, { page, limit }) => {
-  const { offset } = calculatePagination({ page, limit });
-
   const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
+
+  const total = await user.countFollowing();
+  const { offset, totalPages } = calculatePagination({ page, limit }, total);
 
   const following = await user.getFollowing({
     limit,
     offset,
   });
 
-  const total = await user.countFollowing();
-
-  return usersReturnsSchema(following, page, limit, total);
+  return formatPaginatedResponse(usersReturnsSchema(following, page, limit, total), {
+    page,
+    limit,
+    totalPages,
+    total,
+  });
 };
 
 const getFollowers = async (userId, { page, limit }) => {
-  const { offset } = calculatePagination({ page, limit });
-
   const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
+  const total = await user.countFollowers();
+  const { offset, totalPages } = calculatePagination({ page, limit }, total);
+
   const followers = await user.getFollowers({
     limit,
     offset,
   });
 
-  const total = await user.countFollowers();
+  console.log('Followers:', followers);
+  try {
+    const followersWithRecipes = await Promise.all(
+      followers.map(async (follower) => {
+        const recipes = await recipeService.getRecipes({ userId: follower._id });
+        return {
+          ...follower.toJSON(),
+          recipes: recipes.data,
+        };
+      })
+    );
 
-  const followersWithRecipes = await Promise.all(
-    followers.map(async (follower) => {
-      const recipes = await recipeService.getRecipes({ userId: follower._id });
-      return {
-        ...follower.toJSON(),
-        recipes: recipes.data,
-      };
-    })
-  );
 
-  return usersReturnsSchema(followersWithRecipes, page, limit, total);
+    return formatPaginatedResponse(usersReturnsSchema(followersWithRecipes, page, limit, total), {
+      page,
+      limit,
+      totalPages,
+      total,
+    });
+  } catch (error) {
+    console.error('Error in Promise.all:', error);
+    throw error;
+  }
 };
 
 const listUsers = async (filters = {}) => {
