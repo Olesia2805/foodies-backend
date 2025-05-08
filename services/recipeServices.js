@@ -86,6 +86,11 @@ const getRecipes = async ({
     distinct: true,
   });
 
+  //TODO
+  // if (!rows || rows.length === 0) {
+  //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  // }
+
   return formatPaginatedResponse({ recipes }, {
     page,
     limit,
@@ -93,6 +98,10 @@ const getRecipes = async ({
     total: count,
   });
 };
+
+  // } catch (error) {
+  //   throw HttpError(500, ERROR.RECIPES_NOT_FOUND || error.message);
+  // }
 
 const createRecipe = async (recipeData) => {
   const { ingredients, ...recipeFields } = recipeData;
@@ -224,6 +233,11 @@ const getFavorites = async (user, { page, limit }) => {
     limit,
     offset,
   });
+
+  // I suppouse empty array is not an error.
+  // if (!rows || rows.length === 0) {
+  //   throw HttpError(400, ERROR.FAVORITES_NOT_FOUND);
+  // }
 
   const recipes = rows?.map((favorite) => favorite.recipe) || [];
 

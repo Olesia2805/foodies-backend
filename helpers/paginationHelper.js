@@ -3,8 +3,6 @@ export const calculatePagination = (filters = {}, total = 0) => {
   const offset = (page - 1) * limit;
   const totalPages = Math.ceil(total / limit);
 
-  console.log('Pagination details:', { page, limit, offset, totalPages });
-
   return { page, limit, offset, totalPages };
 };
 

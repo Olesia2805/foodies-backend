@@ -140,7 +140,6 @@ const getFollowers = async (userId, { page, limit }) => {
     offset,
   });
 
-  console.log('Followers:', followers);
   try {
     const followersWithRecipes = await Promise.all(
       followers.map(async (follower) => {

@@ -48,7 +48,6 @@ const getFollowing = async (req, res) => {
 };
 
 const getFollowers = async (req, res) => {
-  console.log('getFollowers called with userId:', req.params.userId);
   const { page, limit } = await paginationSchema.validateAsync(req.query);
   const response = await usersServices.getFollowers(req.params.userId, { page, limit });
 
