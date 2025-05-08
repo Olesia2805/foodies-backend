@@ -307,6 +307,10 @@ const getPopularRecipes = async () => {
     raw: true,
   });
 
+  if (!popular || popular.length === 0) {
+    return [];
+  }
+
   const recipeIds = popular.map((item) => item.recipe_id);
 
   const recipes = await Recipe.findAll({
