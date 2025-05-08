@@ -1,5 +1,6 @@
 import errorWrapper from '../helpers/errorWrapper.js';
 import usersServices from '../services/usersServices.js';
+import { paginationSchema } from '../schemas/paginationSchema.js';
 
 const getUserById = async (req, res) => {
   const user = await usersServices.getUserById(req.user, req.params.userId);
@@ -43,7 +44,9 @@ const getFollowing = async (req, res) => {
 };
 
 const getFollowers = async (req, res) => {
-  const response = await usersServices.getFollowers(req.params.userId);
+  console.log('getFollowers called with userId:', req.params.userId);
+  const { page, limit } = await paginationSchema.validateAsync(req.query);
+  const response = await usersServices.getFollowers(req.params.userId, { page, limit });
 
   res.status(200).json(response);
 };

@@ -37,7 +37,7 @@ const getUserById = async (authUser, userId) => {
     name: user.name,
     email: user.email,
     avatar: user.avatar,
-
+    res: userRecipes,
     recipes: userRecipesCount,
     followers: user.followers.length,
     ...(isCurrentUser && {
@@ -101,28 +101,52 @@ const unfollow = async (followerId, followingId) => {
   return { message: SUCCESS.UNFOLLOWED };
 };
 
-const getFollowing = async (userId) => {
+const getFollowing = async (userId, { page, limit }) => {
+  const { offset } = calculatePagination({ page, limit });
+
   const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
-  const following = await user.getFollowing();
+  const following = await user.getFollowing({
+    limit,
+    offset,
+  });
 
-  return usersReturnsSchema(following);
+  const total = await user.countFollowing();
+
+  return usersReturnsSchema(following, page, limit, total);
 };
 
-const getFollowers = async (userId) => {
+const getFollowers = async (userId, { page, limit }) => {
+  const { offset } = calculatePagination({ page, limit });
+
   const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
-  const followers = await user.getFollowers();
+  const followers = await user.getFollowers({
+    limit,
+    offset,
+  });
 
-  return usersReturnsSchema(followers);
+  const total = await user.countFollowers();
+
+  const followersWithRecipes = await Promise.all(
+    followers.map(async (follower) => {
+      const recipes = await recipeService.getRecipes({ userId: follower._id });
+      return {
+        ...follower.toJSON(),
+        recipes: recipes.data,
+      };
+    })
+  );
+
+  return usersReturnsSchema(followersWithRecipes, page, limit, total);
 };
 
 const listUsers = async (filters = {}) => {
