@@ -37,7 +37,7 @@ const getUserById = async (authUser, userId) => {
     name: user.name,
     email: user.email,
     avatar: user.avatar,
-    res: userRecipes,
+    // res: userRecipes,
 
     recipes: userRecipesCount,
     followers: user.followers.length,
