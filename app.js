@@ -38,8 +38,22 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'https://foodies-backend-yutr.onrender.com',
+        url: 'http://localhost:3000',
         description: 'Local server',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        BearerAuth: [],
       },
     ],
   },
