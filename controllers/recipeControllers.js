@@ -78,17 +78,17 @@ const createRecipe = async (req, res) => {
 
 const getUserRecipes = async (req, res) => {
   const { _id: userId } = req.user;
+  const { page = 1, limit = 10 } = req.query;
 
-  const recipes = await recipeService.getUserRecipes(userId);
+  const filters = { page: Number(page), limit: Number(limit) };
 
   //TODO
   // if (!recipes || recipes.length === 0) {
   //   return res.status(404).json({ message: 'No recipes found for this user' });
   // }
+  const recipes = await recipeService.getUserRecipes(userId, filters);
 
-  res.status(200).send({
-    recipes,
-  });
+  res.status(200).send(recipes);
 };
 
 const addToFavorites = async (req, res) => {

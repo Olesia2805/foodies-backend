@@ -101,28 +101,58 @@ const unfollow = async (followerId, followingId) => {
   return { message: SUCCESS.UNFOLLOWED };
 };
 
-const getFollowing = async (userId) => {
+const getFollowing = async (userId, filters) => {
   const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
-  const following = await user.getFollowing();
+  const { page, limit, offset } = calculatePagination(filters);
 
-  return usersReturnsSchema(following);
+  const followingData = await user.getFollowing({
+    limit,
+    offset,
+    attributes: ['_id', 'name', 'email', 'avatar'],
+  });
+
+  const count = await user.countFollowing();
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    total: count,
+    currentPage: page,
+    pages: totalPages,
+    data: followingData,
+  };
 };
 
-const getFollowers = async (userId) => {
+const getFollowers = async (userId, filters) => {
   const user = await User.findByPk(userId);
 
   if (!user) {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
-  const followers = await user.getFollowers();
+  const { page, limit, offset } = calculatePagination(filters);
 
-  return usersReturnsSchema(followers);
+  const followersData = await user.getFollowers({
+    limit,
+    offset,
+    attributes: ['_id', 'name', 'email', 'avatar'],
+  });
+
+  const count = await user.countFollowers();
+
+  const totalPages = Math.ceil(count / limit);
+
+  return {
+    total: count,
+    currentPage: page,
+    pages: totalPages,
+    data: followersData,
+  };
 };
 
 const listUsers = async (filters = {}) => {

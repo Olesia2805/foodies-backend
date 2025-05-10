@@ -129,8 +129,10 @@ const createRecipe = async (recipeData) => {
   }
 };
 
-const getUserRecipes = async (owner) => {
-  return await Recipe.findAll({
+const getUserRecipes = async (owner, { page, limit }) => {
+  const { offset } = calculatePagination({ page, limit });
+
+  const { count, rows } = await Recipe.findAndCountAll({
     where: { userId: owner },
     include: [
       {
@@ -146,8 +148,20 @@ const getUserRecipes = async (owner) => {
         attributes: ['measure'],
       },
     ],
+    limit,
+    offset,
     order: [['createdAt', 'DESC']],
   });
+
+  const pages = Math.ceil(count / limit);
+  const currentPage = Math.floor(offset / limit) + 1;
+
+  return {
+    total: count,
+    pages,
+    currentPage,
+    data: rows,
+  };
 };
 
 //TODO
