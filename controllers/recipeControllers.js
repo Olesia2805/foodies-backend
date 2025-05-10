@@ -82,6 +82,10 @@ const getUserRecipes = async (req, res) => {
 
   const filters = { page: Number(page), limit: Number(limit) };
 
+  //TODO
+  // if (!recipes || recipes.length === 0) {
+  //   return res.status(404).json({ message: 'No recipes found for this user' });
+  // }
   const recipes = await recipeService.getUserRecipes(userId, filters);
 
   res.status(200).send(recipes);
