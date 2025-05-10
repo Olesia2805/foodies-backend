@@ -23,6 +23,7 @@ const getRecipes = async ({
   offset,
 }) => {
   // try {
+  console.log('Fetching recipes for userId:', userId);
   const where = {};
 
   if (categoryId) where.categoryId = categoryId;
@@ -63,6 +64,7 @@ const getRecipes = async ({
     order: [['createdAt', 'DESC']],
     distinct: true,
   });
+  // console.log('Recipes fetched from database:', rows);
   //TODO
   // if (!rows || rows.length === 0) {
   //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
