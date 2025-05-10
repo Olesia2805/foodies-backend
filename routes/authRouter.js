@@ -33,6 +33,10 @@ const authRouter = express.Router();
  *                 type: string
  *                 description: User email
  *                 example: user@example.com
+ *               name:
+ *                 type: string
+ *                 description: User name
+ *                 example: name
  *               password:
  *                 type: string
  *                 description: User password
@@ -42,6 +46,8 @@ const authRouter = express.Router();
  *         description: User registered successfully
  *       400:
  *         description: Bad request
+ *       409:
+ *         description: Email already in use
  *       500:
  *         description: Internal server error
  */
@@ -82,7 +88,11 @@ authRouter.post(
  *       500:
  *         description: Internal server error
  */
-authRouter.post('/login', validateBody(getUserSchema), authController.login);
+authRouter.post(
+  '/login', 
+  validateBody(getUserSchema), 
+  authController.login
+);
 
 /**
  * @swagger
@@ -93,16 +103,22 @@ authRouter.post('/login', validateBody(getUserSchema), authController.login);
  *     tags:
  *       - Auth
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: User logged out successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       500:
  *         description: Internal server error
  */
-authRouter.post('/logout', auth, authController.logout);
+authRouter.post(
+  '/logout', 
+  auth, 
+  authController.logout
+);
 
 /**
  * @swagger
@@ -128,6 +144,10 @@ authRouter.post('/logout', auth, authController.logout);
  *         description: Verification email resent successfully
  *       400:
  *         description: Invalid email
+ *       404:
+ *         description: User not found
+ *       409:
+ *         description: User already verified
  *       500:
  *         description: Internal server error
  */
@@ -161,6 +181,12 @@ authRouter.post(
  *         description: Token refreshed successfully
  *       400:
  *         description: Invalid refresh token
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       409:
+ *         description: Refresh token not found
  *       500:
  *         description: Internal server error
  */
@@ -179,16 +205,24 @@ authRouter.post(
  *     tags:
  *       - Auth
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: User profile retrieved successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
  *       500:
  *         description: Internal server error
  */
-authRouter.get('/me', auth, authController.getMe);
+authRouter.get(
+  '/me', 
+  auth, 
+  authController.getMe
+);
 
 /**
  * @swagger
@@ -210,9 +244,18 @@ authRouter.get('/me', auth, authController.getMe);
  *         description: Email verified successfully
  *       400:
  *         description: Invalid or expired token
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
+ *       409:
+ *         description: User already verified
  *       500:
  *         description: Internal server error
  */
-authRouter.get('/verify/:verificationToken', authController.verifyEmail);
+authRouter.get(
+  '/verify/:verificationToken', 
+  authController.verifyEmail
+);
 
 export default authRouter;
