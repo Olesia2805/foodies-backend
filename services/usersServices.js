@@ -110,19 +110,13 @@ const getFollowing = async (userId, filters) => {
 
   const { page, limit, offset } = calculatePagination(filters);
 
-  console.log('Pagination values:', { page, limit, offset });
-
   const followingData = await user.getFollowing({
     limit,
     offset,
     attributes: ['_id', 'name', 'email', 'avatar'],
   });
 
-  console.log('Raw following data:', followingData);
-
   const count = await user.countFollowing();
-
-  console.log('Total following count:', count);
 
   const totalPages = Math.ceil(count / limit);
 
@@ -143,19 +137,13 @@ const getFollowers = async (userId, filters) => {
 
   const { page, limit, offset } = calculatePagination(filters);
 
-  console.log('Pagination values:', { page, limit, offset });
-
   const followersData = await user.getFollowers({
     limit,
     offset,
     attributes: ['_id', 'name', 'email', 'avatar'],
   });
 
-  console.log('Raw followers data:', followersData);
-
   const count = await user.countFollowers();
-
-  console.log('Total followers count:', count);
 
   const totalPages = Math.ceil(count / limit);
 
