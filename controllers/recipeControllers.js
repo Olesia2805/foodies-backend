@@ -95,10 +95,13 @@ const addToFavorites = async (req, res) => {
   const { user } = req;
   const { id } = req.body;
 
-  await recipeService.addToFavorites(user, id);
+  const recipeFavorites = await recipeService.addToFavorites(user, id);
+
+  const recipe = await recipeService.getRecipeById(recipeFavorites.recipe_id);
 
   res.status(201).json({
     message: SUCCESS.RECIPE_FAVORITES_ADDED(id),
+    recipe,
   });
 };
 
