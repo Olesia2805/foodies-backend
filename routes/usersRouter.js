@@ -15,7 +15,7 @@ const usersRouter = express.Router();
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: followerId
@@ -28,8 +28,12 @@ const usersRouter = express.Router();
  *         description: User followed successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: User not found
+ *       409:
+ *         description: User already followed
  *       500:
  *         description: Internal server error
  */
@@ -48,7 +52,7 @@ usersRouter.post(
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: followerId
@@ -61,8 +65,12 @@ usersRouter.post(
  *         description: User unfollowed successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: User not found
+ *       409:
+ *         description: User not followed
  *       500:
  *         description: Internal server error
  */
@@ -81,7 +89,7 @@ usersRouter.delete(
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -100,6 +108,12 @@ usersRouter.delete(
  *         description: Invalid input
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: User not found
+ *       409:
+ *         description: User already exists
  *       500:
  *         description: Internal server error
  */
@@ -119,7 +133,7 @@ usersRouter.patch(
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -147,6 +161,8 @@ usersRouter.patch(
  *                     example: John Doe
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: User not found
  *       500:
@@ -167,7 +183,7 @@ usersRouter.get(
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -195,8 +211,12 @@ usersRouter.get(
  *                     example: John Doe
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: User not found
+ *       409:
+ *          description: User not found
  *       500:
  *         description: Internal server error
  */
@@ -215,7 +235,7 @@ usersRouter.get(
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: userId
@@ -241,6 +261,8 @@ usersRouter.get(
  *                   example: John Doe
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: User not found
  *       500:
@@ -261,7 +283,7 @@ usersRouter.get(
  *     tags:
  *       - Users
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of users
@@ -280,8 +302,16 @@ usersRouter.get(
  *                     type: string
  *                     description: The name of the user
  *                     example: John Doe
+ *       400:
+ *        description: Invalid query parameters
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       409:
+ *         description: User already exists
  *       500:
  *         description: Internal server error
  */

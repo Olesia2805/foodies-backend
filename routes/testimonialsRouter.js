@@ -54,7 +54,6 @@ const testimonialsRouter = express.Router();
  *       500:
  *         description: Internal server error
  */
-
 testimonialsRouter.get(
   '/',
   validateQuery(paginationSchema),
