@@ -50,7 +50,16 @@ const verifyEmail = async (req, res) => {
 
   const response = await authService.verifyUser(verificationToken);
 
-  res.status(200).json(response);
+  res.status(200).send({
+    token: response.token,
+    refreshToken: response.refreshToken,
+    message: response.message,
+    user: {
+      name: response.name,
+      email: response.email,
+      avatar: response.avatar,
+    },
+  });
 };
 
 const resendVerificationEmail = async (req, res) => {
