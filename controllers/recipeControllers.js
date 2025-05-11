@@ -30,9 +30,10 @@ const getRecipes = async (req, res) => {
 
   const data = await recipeService.getRecipes(filterOptions);
 
-  if (!Array.isArray(data?.data) || data.data.length === 0) {
-    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
-  }
+  //TODO
+  // if (!Array.isArray(data?.data) || data.data.length === 0) {
+  //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  // }
 
   res.json(data);
 };
@@ -77,27 +78,30 @@ const createRecipe = async (req, res) => {
 
 const getUserRecipes = async (req, res) => {
   const { _id: userId } = req.user;
+  const { page = 1, limit = 10 } = req.query;
 
-  const recipes = await recipeService.getUserRecipes(userId);
+  const filters = { page: Number(page), limit: Number(limit) };
 
   //TODO
   // if (!recipes || recipes.length === 0) {
   //   return res.status(404).json({ message: 'No recipes found for this user' });
   // }
+  const recipes = await recipeService.getUserRecipes(userId, filters);
 
-  res.status(200).send({
-    recipes,
-  });
+  res.status(200).send(recipes);
 };
 
 const addToFavorites = async (req, res) => {
   const { user } = req;
   const { id } = req.body;
 
-  await recipeService.addToFavorites(user, id);
+  const recipeFavorites = await recipeService.addToFavorites(user, id);
+
+  const recipe = await recipeService.getRecipeById(recipeFavorites.recipe_id);
 
   res.status(201).json({
     message: SUCCESS.RECIPE_FAVORITES_ADDED(id),
+    recipe,
   });
 };
 
@@ -167,9 +171,10 @@ const getRecipeById = async (req, res) => {
 const getPopularRecipes = async (req, res) => {
   const data = await recipeService.getPopularRecipes();
 
-  if (!Array.isArray(data) || data.length === 0) {
-    throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
-  }
+  //TODO
+  // if (!Array.isArray(data) || data.length === 0) {
+  //   throw HttpError(404, ERROR.RECIPES_NOT_FOUND);
+  // }
 
   res.json(data);
 };

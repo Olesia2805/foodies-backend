@@ -15,7 +15,6 @@ export const ERROR = {
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
   ACCESS_TOKEN_EXPIRED: 'Access token expired',
   INVALID_REFRESH_TOKEN: 'Invalid refresh token',
-  ACCESS_TOKEN_EXPIRED: 'Access token expired',
   VERIFICATION_TOKEN_MISSING: 'Verification token is missing',
   RECIPE_NOT_FOUND: 'Recipe not found',
   RECIPES_NOT_FOUND: 'Recipes not found',
