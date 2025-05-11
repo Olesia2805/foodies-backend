@@ -31,7 +31,7 @@ const register = async ({ name, email, password }) => {
     await sendEmail({
       to: email,
       subject: 'Verify your email',
-      text: 'Please verify your email.',
+      text: 'HELLO FOODIES LOVER :P',
       user: { verificationToken },
     });
 
