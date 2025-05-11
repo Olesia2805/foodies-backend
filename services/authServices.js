@@ -118,11 +118,30 @@ const verifyUser = async (verificationToken) => {
     throw HttpError(404, ERROR.USER_NOT_FOUND);
   }
 
+  const payload = {
+    id: user._id,
+    email: user.email,
+  };
+
+  const accessToken = createAccessToken(payload);
+  const refreshToken = createRefreshToken(payload);
+
+  user.token = accessToken;
+  user.refreshToken = refreshToken;
+
   user.verificationToken = null;
   user.verify = true;
+
   await user.save();
 
-  return { message: SUCCESS.VERIFICATION_SUCCESSFULL };
+  return {
+    avatar: user.avatar,
+    name: user.name,
+    email: user.email,
+    token: accessToken,
+    refreshToken: refreshToken,
+    message: SUCCESS.VERIFICATION_SUCCESSFULL,
+  };
 };
 
 const findUserByEmail = async (email) => {
