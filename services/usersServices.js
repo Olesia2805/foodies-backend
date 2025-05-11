@@ -1,5 +1,6 @@
 import User from '../db/models/User.js';
 import Recipe from '../db/models/Recipe.js';
+import UserFavorites from '../db/models/UserFavorites.js';
 import HttpError from '../helpers/HttpError.js';
 import { usersReturnsSchema } from '../schemas/userSchemas.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
@@ -7,7 +8,6 @@ import { calculatePagination } from '../helpers/paginationHelper.js';
 import recipeService from './recipeServices.js';
 
 const getUserById = async (authUser, userId) => {
-  // TODO: Added count of favorite recipes and count of created recipes
   const user = await User.findByPk(userId, {
     include: [
       {
@@ -34,6 +34,10 @@ const getUserById = async (authUser, userId) => {
   const userRecipes = await recipeService.getRecipes({ userId: user._id });
   const userRecipesCount = userRecipes.data?.length;
 
+  const favoritesCount = await UserFavorites.count({
+    where: { user_id: user._id },
+  });
+
   return {
     name: user.name,
     email: user.email,
@@ -43,6 +47,7 @@ const getUserById = async (authUser, userId) => {
     followers: user.followers.length,
     ...(isCurrentUser && {
       following: user.following.length,
+      favorites: favoritesCount,
     }),
   };
 };
