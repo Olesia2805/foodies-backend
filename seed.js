@@ -13,7 +13,6 @@ import User from './db/models/User.js';
 import Testimonial from './db/models/Testimonial.js';
 import UserFavorites from './db/models/UserFavorites.js';
 
-// import Recipe from './db/models/Recipe.js';
 
 
 initModels();
@@ -48,7 +47,7 @@ const seedData = async () => {
 
     // Синхронізуємо моделі з базою даних
     console.log('Синхронізуємо моделі з базою даних...');
-    // initModels();
+    
     await sequelize.sync({ force: true });
     console.log('Моделі успішно синхронізовано');
 
@@ -116,12 +115,12 @@ const seedData = async () => {
     console.log('Створюємо рецепти з інгредієнтами...');
 
     const recipesForSequelize = recipesData.map((recipe) => ({
-      // _id: recipe._id.$oid,
+      
       title: recipe.title,
-      // category: recipe.category,
+      
       categoryId:
         categoriesData.findIndex((c) => c.name === recipe.category) + 1,
-      // area: recipe.area,
+      
       areaId: areasData.findIndex((a) => a.name === recipe.area) + 1,
       instructions: recipe.instructions,
       description: recipe.description,

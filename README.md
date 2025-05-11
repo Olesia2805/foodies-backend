@@ -212,5 +212,4 @@ Example:
 
 ```bash
 GET /api/ingredients?limit=10&page=2
-GET /api/ingredients?limit=10&page=2
 ```
