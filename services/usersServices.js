@@ -1,4 +1,6 @@
 import User from '../db/models/User.js';
+import Recipe from '../db/models/Recipe.js';
+import UserFavorites from '../db/models/UserFavorites.js';
 import HttpError from '../helpers/HttpError.js';
 import { usersReturnsSchema } from '../schemas/userSchemas.js';
 import { ERROR, SUCCESS } from '../constants/messages.js';
@@ -6,7 +8,6 @@ import { calculatePagination } from '../helpers/paginationHelper.js';
 import recipeService from './recipeServices.js';
 
 const getUserById = async (authUser, userId) => {
-  // TODO: Added count of favorite recipes and count of created recipes
   const user = await User.findByPk(userId, {
     include: [
       {
@@ -30,8 +31,12 @@ const getUserById = async (authUser, userId) => {
 
   const isCurrentUser = authUser._id === user._id;
 
-  const userRecipes = await recipeService.getRecipes({userId: user._id});
+  const userRecipes = await recipeService.getRecipes({ userId: user._id });
   const userRecipesCount = userRecipes.data?.length;
+
+  const favoritesCount = await UserFavorites.count({
+    where: { user_id: user._id },
+  });
 
   return {
     name: user.name,
@@ -42,6 +47,7 @@ const getUserById = async (authUser, userId) => {
     followers: user.followers.length,
     ...(isCurrentUser && {
       following: user.following.length,
+      favorites: favoritesCount,
     }),
   };
 };
@@ -57,15 +63,12 @@ const updateUserAvatar = async (userId, file) => {
 
   if (!user) throw HttpError(404, ERROR.USER_NOT_FOUND);
 
-  return user.update(
-    { avatar: avatarURL },
-    { returning: true }
-  );
+  return user.update({ avatar: avatarURL }, { returning: true });
 };
 
 const follow = async (followerId, followingId) => {
   if (Number(followingId) === Number(followerId)) {
-    throw HttpError(409, ERROR.CANT_SUBSCRIBE_TO_YOURSELF)
+    throw HttpError(409, ERROR.CANT_SUBSCRIBE_TO_YOURSELF);
   }
 
   const following = await User.findByPk(followingId);
@@ -77,7 +80,9 @@ const follow = async (followerId, followingId) => {
 
   const followings = await follower.getFollowing();
 
-  const isSubscribed = followings.some((follower) => follower._id === Number(followingId));
+  const isSubscribed = followings.some(
+    (follower) => follower._id === Number(followingId)
+  );
 
   if (isSubscribed) {
     throw HttpError(409, ERROR.ALREADY_SIGNED);
@@ -114,6 +119,15 @@ const getFollowing = async (userId, filters) => {
     limit,
     offset,
     attributes: ['_id', 'name', 'email', 'avatar'],
+    include: [
+      {
+        model: Recipe,
+        as: 'recipes',
+        attributes: ['_id', 'title', 'thumb', 'description'],
+        limit: 4,
+        order: [['createdAt', 'DESC']],
+      },
+    ],
   });
 
   const count = await user.countFollowing();
@@ -141,6 +155,15 @@ const getFollowers = async (userId, filters) => {
     limit,
     offset,
     attributes: ['_id', 'name', 'email', 'avatar'],
+    include: [
+      {
+        model: Recipe,
+        as: 'recipes',
+        attributes: ['_id', 'title', 'thumb', 'description'],
+        limit: 4,
+        order: [['createdAt', 'DESC']],
+      },
+    ],
   });
 
   const count = await user.countFollowers();
