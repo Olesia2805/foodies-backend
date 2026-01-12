@@ -52,10 +52,11 @@ const ingredientsRouter = express.Router();
  *                   example: 100
  *       400:
  *         description: Invalid query parameters
+ *       403:
+ *         description: Forbidden
  *       500:
  *         description: Internal server error
  */
-
 ingredientsRouter.get(
   '/',
   validateQuery(paginationSchema),
@@ -96,10 +97,13 @@ ingredientsRouter.get(
  *                     example: Sugar
  *       400:
  *         description: Invalid query parameters
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
  *       500:
  *         description: Internal server error
  */
-
 ingredientsRouter.get(
   '/list',
   validateQuery(ingredientsGetList),
@@ -137,12 +141,15 @@ ingredientsRouter.get(
  *                   type: string
  *                   description: The name of the ingredient
  *                   example: Sugar
+ *       400:
+ *         description: Invalid ID format
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: Ingredient not found
  *       500:
  *         description: Internal server error
  */
-
 ingredientsRouter.get(
   '/:id', 
   ingredientController.getIngredientByID

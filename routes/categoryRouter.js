@@ -17,7 +17,7 @@ const categoryRouter = express.Router();
  *     tags:
  *       - Categories
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -44,6 +44,10 @@ const categoryRouter = express.Router();
  *         description: Invalid input
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       409:
+ *         description: Category already exists
  *       500:
  *         description: Internal server error
  */
@@ -85,6 +89,10 @@ categoryRouter.post(
  *                     type: string
  *                     description: The description of the category
  *                     example: Sweet dishes and desserts.
+ *       403: 
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
  *       500:
  *         description: Internal server error
  */

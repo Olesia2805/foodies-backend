@@ -20,7 +20,7 @@ const recipeRouter = express.Router();
  *     tags:
  *       - Recipes
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -76,6 +76,10 @@ const recipeRouter = express.Router();
  *         description: Invalid input
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       409:
+ *         description: Recipe already exists
  *       500:
  *         description: Internal server error
  */
@@ -87,7 +91,6 @@ recipeRouter.post(
   recipeController.createRecipe
 );
 
-//TODO: check swagger documentation for this endpoint
 /**
  * @swagger
  * /api/recipes/favorites:
@@ -97,7 +100,7 @@ recipeRouter.post(
  *     tags:
  *       - Recipes
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -114,8 +117,14 @@ recipeRouter.post(
  *         description: Recipe added to favorites successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: Recipe not found
+ *       409:
+ *         description: Recipe already in favorites
+ *       500:
+ *        description: Internal server error
  */
 recipeRouter.post(
   '/favorites',
@@ -124,7 +133,6 @@ recipeRouter.post(
   recipeController.addToFavorites
 );
 
-//TODO: check swagger documentation for this endpoint
 /**
  * @swagger
  * /api/recipes/favorites:
@@ -134,7 +142,7 @@ recipeRouter.post(
  *     tags:
  *       - Recipes
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -151,8 +159,14 @@ recipeRouter.post(
  *         description: Recipe removed from favorites successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
  *         description: Recipe not found
+ *       409:
+ *         description: Recipe not in favorites
+ *       500:
+ *         description: Internal server error
  */
 recipeRouter.delete(
   '/favorites',
@@ -161,7 +175,6 @@ recipeRouter.delete(
   recipeController.deleteFromFavorites
 );
 
-//TODO: check swagger documentation for this endpoint
 /**
  * @swagger
  * /api/recipes/favorites:
@@ -171,7 +184,7 @@ recipeRouter.delete(
  *     tags:
  *       - Recipes
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
@@ -207,6 +220,16 @@ recipeRouter.delete(
  *                     type: string
  *                     description: The description of the recipe
  *                     example: A classic Italian pasta dish.
+ *       400:
+ *         description: Bad request 
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal server error
  */
 recipeRouter.get(
   '/favorites',
@@ -224,7 +247,7 @@ recipeRouter.get(
  *     tags:
  *       - Recipes
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: recipeId
@@ -237,12 +260,20 @@ recipeRouter.get(
  *         description: Recipe deleted successfully
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  *       404:
+ *         description: Recipe not found
+ *       409:
  *         description: Recipe not found
  *       500:
  *         description: Internal server error
  */
-recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
+recipeRouter.delete(
+  '/:recipeId', 
+  auth, 
+  recipeController.deleteRecipe
+);
 
 /**
  * @swagger
@@ -274,10 +305,67 @@ recipeRouter.delete('/:recipeId', auth, recipeController.deleteRecipe);
  *                     type: string
  *                     description: The description of the recipe
  *                     example: A classic Italian pasta dish.
+ *       400:
+ *         description: Bad request
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       409:
+ *         description: Recipe not found
  *       500:
  *         description: Internal server error
  */
-recipeRouter.get('/', recipeController.getRecipes);
+recipeRouter.get(
+  '/', 
+  recipeController.getRecipes
+);
+
+/**
+ * @swagger
+ * /api/recipes/popular:
+ *   get:
+ *     summary: Get popular recipes
+ *     description: Retrieve a list of popular recipes.
+ *     tags:
+ *       - Recipes
+ *     responses:
+ *       200:
+ *         description: A list of popular recipes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: The recipe ID
+ *                     example: 6462a6f04c3d0ddd28897f9b
+ *                   title:
+ *                     type: string
+ *                     description: The title of the recipe
+ *                     example: Spaghetti Carbonara
+ *                   description:
+ *                     type: string
+ *                     description: The description of the recipe
+ *                     example: A classic Italian pasta dish.
+ *       400:
+ *         description: Bad request
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       409:
+ *         description: Recipe not found
+ *       500:
+ *         description: Internal server error
+ */
+recipeRouter.get(
+  '/popular', 
+  recipeController.getPopularRecipes
+);
 
 /**
  * @swagger
@@ -288,7 +376,7 @@ recipeRouter.get('/', recipeController.getRecipes);
  *     tags:
  *       - Recipes
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of user recipes
@@ -311,15 +399,24 @@ recipeRouter.get('/', recipeController.getRecipes);
  *                     type: string
  *                     description: The description of the recipe
  *                     example: A classic Italian pasta dish.
+ *       400:
+ *         description: Bad request
  *       401:
  *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       409:
+ *         description: Recipe not found
  *       500:
  *         description: Internal server error
  */
-
-recipeRouter.get('/popular', recipeController.getPopularRecipes);
-
-recipeRouter.get('/own', auth, recipeController.getUserRecipes);
+recipeRouter.get(
+  '/own', 
+  auth, 
+  recipeController.getUserRecipes
+);
 
 /**
  * @swagger
@@ -356,12 +453,21 @@ recipeRouter.get('/own', auth, recipeController.getUserRecipes);
  *                   type: string
  *                   description: The description of the recipe
  *                   example: A classic Italian pasta dish.
+ *       400:
+ *         description: Bad request
+ *       403:
+ *         description: Forbidden
  *       404:
+ *         description: Recipe not found
+ *       409:
  *         description: Recipe not found
  *       500:
  *         description: Internal server error
  */
-recipeRouter.get('/:recipeId', recipeController.getRecipeById);
+recipeRouter.get(
+  '/:recipeId', 
+  recipeController.getRecipeById
+);
 
 
 export default recipeRouter;
