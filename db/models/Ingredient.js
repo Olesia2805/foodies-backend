@@ -4,11 +4,6 @@ import sequelize from '../Sequelize.js';
 const Ingredient = sequelize.define(
   'ingredient',
   {
-    // _id: {
-    //   type: DataTypes.STRING,
-    //   primaryKey: true,
-    //   allowNull: false,
-    // },
     _id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
